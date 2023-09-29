@@ -34,8 +34,14 @@ def factorialNumero(num):
                 continue
             
             for i in range(1, num + 1):
-                if num <= i:
-                    resultadoFactorial *= i
+                resultadoFactorial *= i
+            
+            return print(f"El resultado del factorial del número {num:,.0f} es: {resultadoFactorial:,.0f}")
             
         except ValueError:
             print("Error al momento de digital el número. Inténtelo de nuevo.")
+
+
+test = int(input("Número factorial: "))
+msj = factorialNumero(test)
+print(msj)
