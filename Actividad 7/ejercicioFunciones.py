@@ -44,7 +44,7 @@ def factorialNumero(num):
             
 
 # Ejercicio n°2: 
-def Salary(horas):
+def salary(horas):
     # DEFINICIÓN DE LAS VARIABLES NECESARIAS
     precioHora = 10
     porcentajeHorasExtra = 50
@@ -65,7 +65,7 @@ def Salary(horas):
         horasExtra = horasTrabajadas - 40
         
         precioHoraRegular = horasTrabajadas * precioHora
-        precioHoraExtra = horasExtra * ((precioHora * porcentajeHorasExtra) / 100)
+        precioHoraExtra = horasExtra * ((precioHora * porcentajeHorasExtra) // 100)
         precioTotal = precioHoraRegular + precioHoraExtra
         
     else:
@@ -73,3 +73,5 @@ def Salary(horas):
         precioTotal = precioHoraRegular
     
     return precioTotal
+
+
