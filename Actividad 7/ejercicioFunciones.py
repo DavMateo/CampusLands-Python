@@ -45,5 +45,20 @@ def factorialNumero(num):
 
 # Ejercicio n°2: 
 def Salary(horas):
+    # DEFINICIÓN DE LAS VARIABLES NECESARIAS
     precioHora = 10
     porcentajeHorasExtra = 50
+    
+    while True:
+        try:
+            horasTrabajadas = float(input(horas))
+            
+            if horasTrabajadas < 0.0:
+                print("Error: El número ingresado es inválido. Ingrese solo números positivos.")
+                continue
+            break
+            
+        except ValueError:
+            print("Error: Ingrese un valor numérico válido.")
+    
+    
