@@ -93,7 +93,9 @@ def palabrasParrafo(palabra):
     palabrasArray = palabras.split(" ")
     longitudPalabra = len(palabrasArray)
     
+    return longitudPalabra
+    
 
-print(factorialNumero("Ingrese factor: "))
-print(salary("Ingrese salario: "))
-print(palabrasParrafo("Ingrese la(s) palabra(s): "))
+
+# ESTRUCTURA LÓGICA DEL PROGRAMA
+
