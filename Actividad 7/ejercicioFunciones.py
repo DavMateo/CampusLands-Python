@@ -14,11 +14,11 @@ def menu():
             opcionUsuario = int(input("Escoja una opción (1-4): "))
             
             if opcionUsuario < 1 or opcionUsuario > 4:
-                print("Error: Elije una opción válida")
+                print("\nError: Elije una opción válida")
                 continue
             return opcionUsuario
             
         except ValueError:
             print("Has elegido una opción errónea. Ingresa un número entero dentro del rango 1-4.")
             
-menu()
+print("\n", menu())
