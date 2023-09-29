@@ -91,7 +91,10 @@ def palabrasParrafo(palabra):
             print(f"Ha ocurrido un problema al ingresar la palabra. Error: {e}")
         
     palabrasArray = palabras.split(" ")
+    print(palabrasArray)
     longitudPalabra = len(palabrasArray)
+    
+    
     
     return longitudPalabra
     
@@ -109,7 +112,7 @@ while True:
     
     elif opcionUsuario == 2:
         print("\n\n*** CALCULAR SALARIO ***")
-        resultadoSalario = factorialNumero("Ingrese las horas trabajadas: ")
+        resultadoSalario = salary("Ingrese las horas trabajadas: ")
 
         print(f"\nEl salario del empleado es de: {resultadoSalario}")
     
