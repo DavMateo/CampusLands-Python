@@ -75,3 +75,25 @@ def salary(horas):
     return precioTotal
 
 
+# Ejercicio n°3
+
+def palabrasParrafo(palabra):
+    while True:
+        try:
+            palabras = input(palabra)
+        
+            if palabras == "" or palabras.isdigit():
+                print("Error: Debes introducir una palabra, no una cadena vacía ni números.")
+                continue
+            break
+        
+        except Exception as e:
+            print(f"Ha ocurrido un problema al ingresar la palabra. Error: {e}")
+        
+    palabrasArray = palabras.split(" ")
+    longitudPalabra = len(palabrasArray)
+    
+
+print(factorialNumero("Ingrese factor: "))
+print(salary("Ingrese salario: "))
+print(palabrasParrafo("Ingrese la(s) palabra(s): "))
