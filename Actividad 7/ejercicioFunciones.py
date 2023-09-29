@@ -23,7 +23,7 @@ def menu():
 
 
 # Ejercicio n°1: Factorial de un número.
-def factorialNumero(num):    
+def factorialNumero(num): 
     while True:        
         try:
             # DEFINICIÓN DE LAS VARIABLES NECESARIAS
@@ -98,4 +98,29 @@ def palabrasParrafo(palabra):
 
 
 # ESTRUCTURA LÓGICA DEL PROGRAMA
+while True:
+    opcionUsuario = menu()
 
+    if opcionUsuario == 1:
+        print("\n\n*** FACTORIAL DE UN NÚMERO ***")
+        resultadoFactorial = factorialNumero("Ingrese el número del que desea conocer su factorial: ")
+        
+        print(f"\nEl factorial del número ingresado es: {resultadoFactorial}")
+    
+    elif opcionUsuario == 2:
+        print("\n\n*** CALCULAR SALARIO ***")
+        resultadoSalario = factorialNumero("Ingrese las horas trabajadas: ")
+
+        print(f"\nEl salario del empleado es de: {resultadoSalario}")
+    
+    elif opcionUsuario == 3:
+        print("\n\n*** CALCULAR NÚMERO DE PALABRAS ***")
+        resultadoPalabraCantidad = palabrasParrafo("Ingrese la(s) palabra(s) a contar: ")
+        
+        print(f"La cantidad de palabras que contiene la entrada anterior es de: {resultadoPalabraCantidad} palabras.")
+    
+    else:
+        print("\n\nGracias por usar el software. Saliendo...")
+        break
+    
+    input("Presione cualquier tecla para continuar.")
