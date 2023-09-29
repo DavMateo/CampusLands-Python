@@ -20,5 +20,22 @@ def menu():
             
         except ValueError:
             print("Has elegido una opción errónea. Ingresa un número entero dentro del rango 1-4.")
+
+
+# Ejercicio n°1: Factorial de un número.
+def factorialNumero(num):
+    # DEFINICIÓN DE LAS VARIABLES NECESARIAS
+    resultadoFactorial = 1
+    
+    while True:        
+        try:
+            if int(num) < 0:
+                print("Error: Debes ingresar un número entero positivo.")
+                continue
             
-print("\n", menu())
+            for i in range(1, num + 1):
+                if num <= i:
+                    resultadoFactorial *= i
+            
+        except ValueError:
+            print("Error al momento de digital el número. Inténtelo de nuevo.")
