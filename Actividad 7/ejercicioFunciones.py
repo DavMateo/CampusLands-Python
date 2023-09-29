@@ -34,15 +34,10 @@ def factorialNumero(num):
                 print("Error: Debes ingresar un número entero positivo.")
                 continue
             
-            for i in range(1, num + 1):
+            for i in range(1, numero + 1):
                 resultadoFactorial *= i
                 
             return resultadoFactorial
             
         except ValueError:
             print("Error al momento de digital el número. Inténtelo de nuevo.")
-            
-
-test = int(input("Número factorial: "))
-msj = factorialNumero(test)
-print(f"El resultado del factorial del número {test:,.0f} es: {msj:,.0f}")
