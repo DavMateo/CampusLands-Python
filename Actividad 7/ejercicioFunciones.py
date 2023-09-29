@@ -41,3 +41,9 @@ def factorialNumero(num):
             
         except ValueError:
             print("Error al momento de digital el número. Inténtelo de nuevo.")
+            
+
+# Ejercicio n°2: 
+def Salary(horas):
+    precioHora = 10
+    porcentajeHorasExtra = 50
