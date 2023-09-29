@@ -23,25 +23,25 @@ def menu():
 
 
 # Ejercicio n°1: Factorial de un número.
-def factorialNumero(num):
-    # DEFINICIÓN DE LAS VARIABLES NECESARIAS
-    resultadoFactorial = 1
-    
+def factorialNumero(num):    
     while True:        
         try:
-            if int(num) < 0:
+            # DEFINICIÓN DE LAS VARIABLES NECESARIAS
+            resultadoFactorial = 1
+            numero = int(input(num))
+            
+            if num < 0:
                 print("Error: Debes ingresar un número entero positivo.")
                 continue
             
             for i in range(1, num + 1):
                 resultadoFactorial *= i
-            
-            return print(f"El resultado del factorial del número {num:,.0f} es: {resultadoFactorial:,.0f}")
+            return resultadoFactorial
             
         except ValueError:
             print("Error al momento de digital el número. Inténtelo de nuevo.")
-
+            
 
 test = int(input("Número factorial: "))
 msj = factorialNumero(test)
-print(msj)
+print(f"El resultado del factorial del número {test:,.0f} es: {msj:,.0f}")
