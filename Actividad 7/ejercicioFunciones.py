@@ -51,9 +51,9 @@ def Salary(horas):
     
     while True:
         try:
-            horasTrabajadas = float(input(horas))
+            horasTrabajadas = int(input(horas))
             
-            if horasTrabajadas < 0.0:
+            if horasTrabajadas < 0:
                 print("Error: El número ingresado es inválido. Ingrese solo números positivos.")
                 continue
             break
@@ -61,4 +61,15 @@ def Salary(horas):
         except ValueError:
             print("Error: Ingrese un valor numérico válido.")
     
+    if horasTrabajadas > 40:
+        horasExtra = horasTrabajadas - 40
+        
+        precioHoraRegular = horasTrabajadas * precioHora
+        precioHoraExtra = horasExtra * ((precioHora * porcentajeHorasExtra) / 100)
+        precioTotal = precioHoraRegular + precioHoraExtra
+        
+    else:
+        precioHoraRegular = horasTrabajadas * precioHora
+        precioTotal = precioHoraRegular
     
+    return precioTotal
