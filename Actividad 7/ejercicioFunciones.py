@@ -94,12 +94,6 @@ def palabrasParrafo(palabra):
     print(palabrasArray)
     longitudPalabra = len(palabrasArray)
     
-    for i in range (1, len(palabrasArray)):
-        if palabrasArray[i] == " ":
-            
-        else:
-            continue
-    
     return longitudPalabra
     
 
