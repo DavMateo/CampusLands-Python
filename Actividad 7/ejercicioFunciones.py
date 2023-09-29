@@ -30,12 +30,13 @@ def factorialNumero(num):
             resultadoFactorial = 1
             numero = int(input(num))
             
-            if num < 0:
+            if numero < 0:
                 print("Error: Debes ingresar un número entero positivo.")
                 continue
             
             for i in range(1, num + 1):
                 resultadoFactorial *= i
+                
             return resultadoFactorial
             
         except ValueError:
