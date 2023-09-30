@@ -16,7 +16,7 @@ num5 = float(input("Ingrese la nota 5: "))
 
 resultadoNotaEstudiante = resultadoEstudiante(num1, num2, num3, num4, num5)
 
-if resultadoNotaEstudiante:
+if resultadoNotaEstudiante:     # Es lo mismo que decir "resultadoNotaEstudiante == True"
     print("El estudiante ha aprobado el curso.")
 else:
     print("El estudiante reprobó el curso.")
