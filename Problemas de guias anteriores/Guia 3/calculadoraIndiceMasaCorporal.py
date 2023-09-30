@@ -3,9 +3,6 @@
 # de la misma.
 
 
-# IMPORTAR LAS LIBRERÍAS PERTINENTES
-import math as Math
-
 # DEFINIENDO LAS VARIABLES PRINCIPALES
 pesoLibras = float(input("\nIngrese su peso en libras: "))
 alturaPulgadas = float(input("Ingrese su altura en pulgadas: "))
