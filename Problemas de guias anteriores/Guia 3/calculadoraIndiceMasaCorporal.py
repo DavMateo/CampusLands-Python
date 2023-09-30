@@ -7,7 +7,7 @@
 import math as Math
 
 # DEFINIENDO LAS VARIABLES PRINCIPALES
-pesoLibras = float(input("Ingrese su peso en libras: "))
+pesoLibras = float(input("\nIngrese su peso en libras: "))
 alturaPulgadas = float(input("Ingrese su altura en pulgadas: "))
 
 # CONVIRTIENDO LOS VALORES DE LIBRAS Y PULGADAS A KG Y MTS
@@ -17,6 +17,7 @@ alturaMetros = alturaPulgadas * 0.0254
 # CALCULANDO EL BMI
 valorBMI = pesoKilogramos / (alturaMetros) ** 2
 
+print("\n", "=" * 35)
 if valorBMI < 18.5:
     print(f"Tu índice de masa corporal es muy bajo. Valor: {valorBMI:.1f} BMI")
 elif valorBMI > 18.5 and valorBMI < 24.9:
