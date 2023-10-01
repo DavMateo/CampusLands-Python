@@ -59,14 +59,14 @@ while isVerdadero:
             
             #Validación del nombre ingresado
             if len(nombreFiltradoArray) < 2 or nombreFiltradoFinal.isalnum():
-                print("Error: Ingresa al menos un nombre y un apellido. Solo letras.")
+                print("Error: Ingresa al menos un nombre y un apellido. Solo letras.\n")
                 continue
             break
         
         except Exception as e:
-            print("Ha ocurrido un problema al ingresar el nombre, inténtalo de nuevo.")
+            print("Ha ocurrido un problema al ingresar el nombre, inténtalo de nuevo.\n")
         except:
-            print("Algo ha ido mal, inténtalo de nuevo.")
+            print("Algo ha ido mal, inténtalo de nuevo.\n")
     
     
     
@@ -76,14 +76,14 @@ while isVerdadero:
             tipoVendedor = int(input("Ingrese el tipo de vendedor: 1 Puerta a puerta, 2 Telemercadeo o 3 Ejecutivo de ventas: "))
             
             if tipoVendedor < 1 or tipoVendedor > 3:
-                print("Error: Elije una opción válida (1, 2 o 3).")
+                print("Error: Elije una opción válida (1, 2 o 3).\n")
                 continue
             break
         
         except ValueError:
-            print("Ha ocurrido un error en la digitación de la opción. Inténtalo de nuevo.")
+            print("Ha ocurrido un error en la digitación de la opción. Inténtalo de nuevo.\n")
         except:
-            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o ponte en contacto con un administrador.")
+            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o ponte en contacto con un administrador.\n")
     
     
     
@@ -93,54 +93,58 @@ while isVerdadero:
             valorVentasMes = int(input("Ingrese el valor de las ventas en el mes (Sin puntos ni comas): "))
             
             if valorVentasMes < 0:
-                print("Error: Debes ingresar un valor entero positivo. Ingrese únicamente números, no letras.")
+                print("Error: Debes ingresar un valor entero positivo. Ingrese únicamente números, no letras.\n")
                 continue
             break
         
         except ValueError:
-            print("Ha ocurrido un problema. Asegúrate de digitar correctamente el valor de las ventas")
+            print("Ha ocurrido un problema. Asegúrate de digitar correctamente el valor de las ventas.\n")
         except:
-            print("Ha ocurrido un problema inesperado. Inténtelo de nuevo o ponte en contacto con un administrador.")
+            print("Ha ocurrido un problema inesperado. Inténtelo de nuevo o ponte en contacto con un administrador.\n")
     
     
     
     #Definir la estructura lógica del programa (if-else)
-    valorTotalVentas += valorVentasMes
-    
-    if tipoVendedor == 1:
-        porcentajeComision = 20
-        nombreTipoVendedor = "Puerta a Puerta"
+    while isVerdadero:
+        valorTotalVentas += valorVentasMes
         
-        valorComision = (valorVentasMes * porcentajeComision) / 100
-        ValorTotalComisiones += valorComision
-        pagoVendedor = valorVentasMes + valorComision
+        if tipoVendedor == 1:
+            porcentajeComision = 20
+            nombreTipoVendedor = "Puerta a Puerta"
+            
+            valorComision = (valorVentasMes * porcentajeComision) / 100
+            ValorTotalComisiones += valorComision
+            pagoVendedor = valorVentasMes + valorComision
+            
+        elif tipoVendedor == 2:
+            porcentajeComision = 15
+            nombreTipoVendedor = "Telemercadeo"
+            
+            valorComision = (valorVentasMes * porcentajeComision) / 100
+            ValorTotalComisiones += valorComision
+            pagoVendedor = valorVentasMes + valorComision
+            
+        elif tipoVendedor == 3:
+            porcentajeComision = 25
+            nombreTipoVendedor = "Ejecutivo de ventas"
+            
+            valorComision = (valorVentasMes * porcentajeComision) / 100
+            ValorTotalComisiones += valorComision
+            pagoVendedor = valorVentasMes + valorComision
         
-    elif tipoVendedor == 2:
-        porcentajeComision = 15
-        nombreTipoVendedor = "Telemercadeo"
         
-        valorComision = (valorVentasMes * porcentajeComision) / 100
-        ValorTotalComisiones += valorComision
-        pagoVendedor = valorVentasMes + valorComision
+        #Imprimir la información + pago de cada vendedor
+        print("\n", "=" * 35)
+        print(f"Vendedor: {nombreFiltradoFinal.title()}")
+        print(f"C.C: {cedula}")
+        print(f"Tipo vendedor: {tipoVendedor} - {nombreTipoVendedor}")
+        print(f"Valor ventas realizadas en el mes: ${valorVentasMes:,.0f} COP")
+        print(f"Valor a pagar por comisión: ${valorComision:,.0f} COP")
         
-    else:
-        porcentajeComision = 25
-        nombreTipoVendedor = "Ejecutivo de ventas"
-        
-        valorComision = (valorVentasMes * porcentajeComision) / 100
-        ValorTotalComisiones += valorComision
-        pagoVendedor = valorVentasMes + valorComision
-    
-    
-    #Imprimir la información + pago de cada vendedor
-    print("\n", "=" * 35)
-    print(f"Vendedor: {nombreFiltradoFinal}")
-    print(f"C.C: {cedula}")
-    print(f"Tipo vendedor: {tipoVendedor} - {nombreTipoVendedor}")
-    print(f"Valor ventas realizadas en el mes: ${valorVentasMes:,.0f} COP")
-    print(f"Valor a pagar por comisión: ${valorComision:,.0f} COP")
+        break   #Evita que este bucle sea infinito
 
 
 #Imprimiendo los valores recolectados durante la ejecución del software
 print("\n", "====== RESUMEN ======")
-print()
+print(f"Valor total de las ventas del mes: ${valorTotalVentas:,.0f} COP")
+print(f"Valor total a pagar por comisiones: ${ValorTotalComisiones:,.0f} COP")
