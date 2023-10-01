@@ -39,6 +39,12 @@ def calculoCombinatoria(msj):
     # Esta fórmula calcula el número de veces que se puede elegir "k" elemenots desde un conjunto de
     # "n" elementos sin considerar su orden. Las combinaciones son comúnmente usadas en probabilidad, 
     # estadística, y varios problemas de cálculo en las matemáticas y la ciencia.
+    #
+    # Escribe un programa en Python que calcule las combinaciones basadas en la función factorial.
+    # Use la siguiente fórmula: (Ver fórmula en la guía).
+    #
+    # El programa debe tomar dos entradas, "n" y "k", y luego calcularlo y mostrar en pantalla
+    # el valor de "C(n, k)" usando la fórmula proporcionada.
     
     while True:
         try:
