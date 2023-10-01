@@ -48,6 +48,7 @@ while isVerdadero:
                 if nombreArray[i] != "":
                     nombreFiltradoArray.append(nombreArray[i])
             
+            nombreFiltradoFinal = ""
             nombreFiltradoFinal += " ".join(nombreFiltradoArray)
             
             #Validación del nombre ingresado
