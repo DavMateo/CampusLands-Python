@@ -26,10 +26,8 @@ while isVerdadero:
         
         except ValueError:
             print("Error: Ingresa un número entero válido.")
-        
         except Exception as e:
             print(f"\nHa ocurrido un problema al digitar su cédula de ciudadanía. \nError: {e}")
-        
         except:
             print("Algo ha ido mal. Asegúrate de ingresar solo valores válidos.")
     
@@ -52,6 +50,7 @@ while isVerdadero:
             nombreFiltradoFinal = ""
             nombreFiltradoFinal += " ".join(nombreFiltradoArray)
             
+            
             #Validación del nombre ingresado
             if len(nombreFiltradoArray) < 2 or nombreFiltradoFinal.isalnum():
                 print("Error: Ingresa al menos un nombre y un apellido. Solo letras.")
@@ -60,10 +59,27 @@ while isVerdadero:
         
         except Exception as e:
             print("Ha ocurrido un problema al ingresar el nombre, inténtelo de nuevo.")
-            
         except:
             print("Algo ha ido mal, inténtalo de nuevo.")
     
     
     
-    #
+    #Verificación del tipo de vendedor
+    while isVerdadero:
+        try:
+            tipoVendedor = int(input("Ingrese el tipo de vendedor: 1 Puerta a puerta, 2 Telemercadeo o 3 Ejecutivo de ventas: "))
+            
+            if tipoVendedor < 1 or tipoVendedor > 3:
+                print("Error: Elije una opción válida (1, 2 o 3).")
+                continue
+            break
+        
+        except ValueError:
+            print("Ha ocurrido un error en la digitación de la opción. Inténtalo de nuevo.")
+        except:
+            print("Ha ocurrido un error inesperado. Inténtalo de nuevo o ponte en contacto con un administrador.")
+    
+    
+    
+    #Validar el valor de las ventas en el mes
+    
