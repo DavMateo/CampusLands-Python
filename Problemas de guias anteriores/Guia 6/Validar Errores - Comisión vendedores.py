@@ -5,6 +5,8 @@
 
 # DEFINIENDO LAS VARIABLES PRINCIPALES
 isVerdadero = True
+valorTotalVentas = 0
+ValorTotalComisiones = 0
 
 
 # DEFINIR LA ESTRUCTURA WHILE DEL PROGRAMA
@@ -30,8 +32,9 @@ while isVerdadero:
             print(f"\nHa ocurrido un problema al digitar su cédula de ciudadanía. \nError: {e}")
         except:
             print("Algo ha ido mal. Asegúrate de ingresar solo valores válidos.")
-            #El uso de este "except:" sin nada más, así solo, es que pueda camputar algún error 
-            #inesperado y así poderlo manejar de manera más amena con el usuario.
+            #El uso de este "except:" sin nada más, así solo (Y de los demás en el programa), 
+            #es que pueda captuar algún error inesperado y así poderlo manejar de manera 
+            #más amena al usuario.
     
     
     #Validación del nombre
@@ -39,15 +42,17 @@ while isVerdadero:
         try:
             nombre = input("Ingrese el nombre: ").strip()
             nombreArray = nombre.split(" ")
-            nombreFiltradoArray = []    #Creando una lista vacía
+            nombreFiltradoArray = []    #Creando una lista vacía - Investigado en Google para el algoritmo ;)
             
             #Algoritmo para evitar que "split()" cuente un espacio como parte del Array
             for i in range(len(nombreArray)):
                 if nombreArray[i] != "":
                     nombreFiltradoArray.append(nombreArray[i])
+                    #El método .append() añade un nuevo elemento al final de una lista
             
-            #Seteo la variable en vacío antes de agregarle información para evitar 
-            #sobreescrituras no deseadas
+            
+            #Seteo la variable "nombreFiltradoFinal" en vacío antes de agregarle 
+            #información para evitar sobreescrituras no deseadas
             nombreFiltradoFinal = ""
             nombreFiltradoFinal += " ".join(nombreFiltradoArray)
             
@@ -59,7 +64,7 @@ while isVerdadero:
             break
         
         except Exception as e:
-            print("Ha ocurrido un problema al ingresar el nombre, inténtelo de nuevo.")
+            print("Ha ocurrido un problema al ingresar el nombre, inténtalo de nuevo.")
         except:
             print("Algo ha ido mal, inténtalo de nuevo.")
     
@@ -97,4 +102,45 @@ while isVerdadero:
         except:
             print("Ha ocurrido un problema inesperado. Inténtelo de nuevo o ponte en contacto con un administrador.")
     
+    
+    
     #Definir la estructura lógica del programa (if-else)
+    valorTotalVentas += valorVentasMes
+    
+    if tipoVendedor == 1:
+        porcentajeComision = 20
+        nombreTipoVendedor = "Puerta a Puerta"
+        
+        valorComision = (valorVentasMes * porcentajeComision) / 100
+        ValorTotalComisiones += valorComision
+        pagoVendedor = valorVentasMes + valorComision
+        
+    elif tipoVendedor == 2:
+        porcentajeComision = 15
+        nombreTipoVendedor = "Telemercadeo"
+        
+        valorComision = (valorVentasMes * porcentajeComision) / 100
+        ValorTotalComisiones += valorComision
+        pagoVendedor = valorVentasMes + valorComision
+        
+    else:
+        porcentajeComision = 25
+        nombreTipoVendedor = "Ejecutivo de ventas"
+        
+        valorComision = (valorVentasMes * porcentajeComision) / 100
+        ValorTotalComisiones += valorComision
+        pagoVendedor = valorVentasMes + valorComision
+    
+    
+    #Imprimir la información + pago de cada vendedor
+    print("\n", "=" * 35)
+    print(f"Vendedor: {nombreFiltradoFinal}")
+    print(f"C.C: {cedula}")
+    print(f"Tipo vendedor: {tipoVendedor} - {nombreTipoVendedor}")
+    print(f"Valor ventas realizadas en el mes: ${valorVentasMes:,.0f} COP")
+    print(f"Valor a pagar por comisión: ${valorComision:,.0f} COP")
+
+
+#Imprimiendo los valores recolectados durante la ejecución del software
+print("\n", "====== RESUMEN ======")
+print()

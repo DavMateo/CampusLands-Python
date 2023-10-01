@@ -18,9 +18,17 @@
 
 
 
-test = " 13,445.24 ".strip()
-print(test.isdigit())
-print(test.count(" "))
+# test = " 13,445.24 ".strip()
+# print(test.isdigit())
+# print(test.count(" "))
+
+
+
+nuevaVariable = "65"
+print(nuevaVariable.isalnum())
+
+
+
 
 
 
