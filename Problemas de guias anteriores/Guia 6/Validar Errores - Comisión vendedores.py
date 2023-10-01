@@ -30,7 +30,8 @@ while isVerdadero:
             print(f"\nHa ocurrido un problema al digitar su cédula de ciudadanía. \nError: {e}")
         except:
             print("Algo ha ido mal. Asegúrate de ingresar solo valores válidos.")
-    
+            #El uso de este "except:" sin nada más, así solo, es que pueda camputar algún error 
+            #inesperado y así poderlo manejar de manera más amena con el usuario.
     
     
     #Validación del nombre
@@ -77,9 +78,23 @@ while isVerdadero:
         except ValueError:
             print("Ha ocurrido un error en la digitación de la opción. Inténtalo de nuevo.")
         except:
-            print("Ha ocurrido un error inesperado. Inténtalo de nuevo o ponte en contacto con un administrador.")
+            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o ponte en contacto con un administrador.")
     
     
     
     #Validar el valor de las ventas en el mes
+    while isVerdadero:
+        try:
+            valorVentasMes = int(input("Ingrese el valor de las ventas en el mes (Sin puntos ni comas): "))
+            
+            if valorVentasMes < 0:
+                print("Error: Debes ingresar un valor entero positivo. Ingrese únicamente números, no letras.")
+                continue
+            break
+        
+        except ValueError:
+            print("Ha ocurrido un problema. Asegúrate de digitar correctamente el valor de las ventas")
+        except:
+            print("Ha ocurrido un problema inesperado. Inténtelo de nuevo o ponte en contacto con un administrador.")
     
+    #Definir la estructura lógica del programa (if-else)

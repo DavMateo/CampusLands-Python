@@ -1,20 +1,27 @@
-textoArray = "Hola  Mundo".split(" ")
-nuevoTextoArray = []
-elementosEliminadosArray = []
-string = ""
+# textoArray = "Hola  Mundo".split(" ")
+# nuevoTextoArray = []
+# elementosEliminadosArray = []
+# string = ""
 
 
-for i in range(len(textoArray)):
-    if textoArray[i] != "":
-        nuevoTextoArray.append(textoArray[i])
-    else:
-        elementosEliminadosArray.append(textoArray[i])
+# for i in range(len(textoArray)):
+#     if textoArray[i] != "":
+#         nuevoTextoArray.append(textoArray[i])
+#     else:
+#         elementosEliminadosArray.append(textoArray[i])
     
-string += " ".join(nuevoTextoArray)
+# string += " ".join(nuevoTextoArray)
     
     
         
-print(f"Cadena de texto: {string}, {len(string)}")
+# print(f"Cadena de texto: {string}, {len(string)}")
+
+
+
+test = " 13,445.24 ".strip()
+print(test.isdigit())
+print(test.count(" "))
+
 
 
 
