@@ -51,10 +51,13 @@ while isVerdadero:
             nombreFiltradoFinal += " ".join(nombreFiltradoArray)
             
             #Validación del nombre ingresado
-            if len(nombreFiltradoArray) < 2 or nombreFiltradoFinal.isalnum() == False:
+            if len(nombreFiltradoArray) < 2 or nombreFiltradoFinal.isalnum():
                 print("Error: Ingresa al menos un nombre y un apellido. Solo letras.")
                 continue
             break
+        
+        except Exception as e:
+            print("Ha ocurrido un problema al ingresar el nombre, inténtelo de nuevo.")
             
         except:
             print("Algo ha ido mal, inténtalo de nuevo.")
