@@ -5,7 +5,6 @@
 
 # DEFINIENDO LAS VARIABLES PRINCIPALES
 isVerdadero = True
-nombreFiltradoFinal = ""
 
 
 # DEFINIR LA ESTRUCTURA WHILE DEL PROGRAMA
@@ -41,13 +40,15 @@ while isVerdadero:
         try:
             nombre = input("Ingrese el nombre: ").strip()
             nombreArray = nombre.split(" ")
-            nombreFiltradoArray = []
+            nombreFiltradoArray = []    #Creando una lista vacía
             
             #Algoritmo para evitar que "split()" cuente un espacio como parte del Array
             for i in range(len(nombreArray)):
                 if nombreArray[i] != "":
                     nombreFiltradoArray.append(nombreArray[i])
             
+            #Seteo la variable en vacío antes de agregarle información para evitar 
+            #sobreescrituras no deseadas
             nombreFiltradoFinal = ""
             nombreFiltradoFinal += " ".join(nombreFiltradoArray)
             
@@ -62,3 +63,7 @@ while isVerdadero:
             
         except:
             print("Algo ha ido mal, inténtalo de nuevo.")
+    
+    
+    
+    #
