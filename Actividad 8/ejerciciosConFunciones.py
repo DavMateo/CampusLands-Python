@@ -160,20 +160,25 @@ while isVerdadero:
             #Preguntar al usuario si desea continuar agregando elementos por si se le ha 
             #olvidado ingresar algún dato adicional o necesita cambiar el valor del IVA.
             while True:
-                continuarPrograma = input("¿Deseas continuar? S/N: ")
+                try:
+                    continuarPrograma = input("¿Deseas continuar? S/N: ")
+                    
+                    if continuarPrograma.upper() == "S" or continuarPrograma.upper() == "N":
+                        if continuarPrograma.upper() == "S":
+                            continuar = True
+                        else:
+                            continuar = False
+                            
+                    elif continuarPrograma.upper() != "S" or continuarPrograma.upper() != "N":
+                        print("Error: Has digitado una opción inválida.")
+                        print("Escribe \"S\" para continuar o \"N\" para salir y regresar al menú.")
+                        continue
+                    
+                    break
+                    
+                except Exception as e:
+                    print("Ha ocurrido un error al ingresar la opción.")
+                    print(f"Error: {e}")
                 
-                if continuarPrograma.upper() == "S":
-                    continuar = True
-                else:
-                    continuar = False
-                
-                if continuarPrograma.upper() != "S" or continuarPrograma.upper() != "N":
-                    print("Error: Has digitado una opción inválida.")
-                    print("Escribe \"S\" para continuar o \"N\" para salir y regresar al menú.")
-                    continue
-                
-                #Validar y corregir Bugs
-                
-
     elif opcionUsuario == 4:
         isVerdadero = False
