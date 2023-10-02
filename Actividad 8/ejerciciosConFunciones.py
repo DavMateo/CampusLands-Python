@@ -3,6 +3,11 @@
 # ejecute ese ejercicio en específico.
 
 
+
+# DEFINIENDO LAS VARIABLES PRINCIPALES
+isVerdadero = True
+
+
 # DEFINICIÓN DE FUNCIONES
 def menu(msj):
     while True:
@@ -47,7 +52,6 @@ def calculoCombinatoria(n, k):
             print("Ha ocurrido un error inesperado. Es probable que la salida contenga un número muy elevado.")
             print("Inténtelo de nuevo o póngase en contacto con el administrador.\n")
             
-
 def factorial(num):
     resultadoFactorial = 1
     
@@ -60,22 +64,37 @@ def factorial(num):
 def textoNumero(msj):
     while True:
         try:
-            pass
-        except:
-            pass
+            stringFiltrado = ""
+            stringUsuario = input(msj)
+            stringUsuario = stringUsuario.strip()
+            
+            if len(stringUsuario) == 0:
+                print("Error: No puedes enviar una entrada de texto vacía.")
+                continue
+            
+            #Algoritmo para filtrar el string a solo dígitos
+            for i in range(len(stringUsuario)):
+                if stringUsuario[i].isdigit():
+                    stringFiltrado += stringUsuario[i]
+    
+            return stringFiltrado
+            
+        except Exception as e:
+            print("Ha ocurrido un problema al ingresar la entrada de texto.")
+            print(f"Error: {e}")
 
 
 def ivaFactura(msj):
+    # Escribir una función que calcule el total de una factura tras aplicarle el IVA. 
+    # La función debe recibir la cantidad sin IVA y el porcentaje de IVA a aplicar, y 
+    # devolver el total de la factura.
+    
     while True:
         try:
             pass
         except:
             pass
 
-
-
-# DEFINIENDO LAS VARIABLES PRINCIPALES
-isVerdadero = True
 
 
 # ESTRUCTURA DEL PROGRAMA
@@ -87,12 +106,16 @@ while isVerdadero:
         print("En la fórmula de combinaciones el valor N indica el total de elementos y el valor K los elementos por grupos.\n")    
         resultadoCombinatoria = calculoCombinatoria("Valor n: ", "Valor k: ")
 
-        print("\n", "**** RESULTADO ****")
+        print("\n", "*** RESULTADO ***")
         print(f"Puedes realizar: C(n,k) = {resultadoCombinatoria:.0f} combinaciones distintas.")
-        input("Presione \"enter\" para continuar: ")
+        input("Presione \"Enter\" para continuar... ")
 
     elif opcionUsuario == 2:
-        pass
+        resultadoString = textoNumero("Escribe a continuación letras y números: ")
+        
+        print("\n", "*** RESULTADO ***")
+        print(f"Tu cadena de texto de solo números quedó así: {resultadoString}")
+        input("Presione \"Enter\" para continuar...")
 
     elif opcionUsuario == 3:
         pass

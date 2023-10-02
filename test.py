@@ -1,5 +1,12 @@
-def suma(num1, num2):
-    return num1 + num2
+stringUsuario = "  re324d @gsd3  434  234a sfsdf3   ".strip()
+filtrarString = []
+count = 0
+stringFiltrada = ""
 
+for i in range(len(stringUsuario)):
+    if stringUsuario[i].isdigit():
+        # filtrarString.append(stringUsuario[i])
+        stringFiltrada += stringUsuario[i]
 
-print(suma(10, 10) * suma(20, 20))
+# stringFiltrada += "".join(filtrarString)        
+print(stringFiltrada)
