@@ -118,14 +118,14 @@ while isVerdadero:
 
         print("\n", "*** RESULTADO ***")
         print(f"Puedes realizar: C(n,k) = {resultadoCombinatoria:.0f} combinaciones distintas.")
-        input("Presione \"Enter\" para continuar... ")
+        input("Presione cualquier tecla para continuar... ")
 
     elif opcionUsuario == 2:
-        resultadoString = textoNumero("Escribe a continuación letras y números: ")
+        resultadoString = textoNumero("\nEscribe a continuación letras y números: ")
         
         print("\n", "*** RESULTADO ***")
         print(f"Tu cadena de texto de solo números quedó así: {resultadoString}")
-        input("Presione \"Enter\" para continuar...")
+        input("Presione cualquier tecla para continuar...")
 
     elif opcionUsuario == 3:            
         while continuar:
@@ -133,6 +133,7 @@ while isVerdadero:
             #digitar múltiples veces un valor de IVA que permanecerá en el mismo valor.
             valorIva = int(input("\nIngrese el porcentaje del IVA: "))
             valorProductosIva = 0
+            
             
             #Obteniendo los resultados del IVA.
             while True:
@@ -148,13 +149,18 @@ while isVerdadero:
                             print("Error: No puedes ingresar números negativos.")
                             continue
                         valorProductosIva += factura("\nIngrese el valor del producto para calcular su IVA: ", valorIva)
-                    
-                    print(f"La factura con el iva es de: ${valorProductosIva:,.2f}")
                     break
+                
                 except ValueError:
                     print("Ha ocurrido un error. Ingrese un número entero positivo válido.")
                 except:
                     print("Ha ocurrido un error inesperado. Inténtelo de nuevo o póngase en contacto con el administrador.")
+            
+            
+            #Imprimiendo en pantalla los valores recolectados
+            print("\n", "*** RESULTADO ***")
+            print(f"Con el precio del IVA, la factura ingresada tiene un valor de: ${valorProductosIva:,.2f}")
+            input("Presione cualquier tecla para continuar...")
             
             
             #Preguntar al usuario si desea continuar agregando elementos por si se le ha 
@@ -163,17 +169,17 @@ while isVerdadero:
                 try:
                     continuarPrograma = input("¿Deseas continuar? S/N: ")
                     
-                    if continuarPrograma.upper() == "S" or continuarPrograma.upper() == "N":
-                        if continuarPrograma.upper() == "S":
-                            continuar = True
-                        else:
-                            continuar = False
-                            
+                    if continuarPrograma.upper() == "S":
+                        continuar = True
+                    
+                    elif continuarPrograma.upper() == "N":
+                        continuar = False
+                        print("Regresando al menú...")
+                                                
                     elif continuarPrograma.upper() != "S" or continuarPrograma.upper() != "N":
                         print("Error: Has digitado una opción inválida.")
                         print("Escribe \"S\" para continuar o \"N\" para salir y regresar al menú.")
                         continue
-                    
                     break
                     
                 except Exception as e:
