@@ -88,7 +88,7 @@ while isVerdadero:
         resultadoCombinatoria = calculoCombinatoria("Valor n: ", "Valor k: ")
 
         print("\n", "**** RESULTADO ****")
-        print(f"Puedes realizar {resultadoCombinatoria:.0f} combinaciones distintas.")
+        print(f"Puedes realizar: C(n,k) = {resultadoCombinatoria:.0f} combinaciones distintas.")
         input("Presione \"enter\" para continuar: ")
 
     elif opcionUsuario == 2:
