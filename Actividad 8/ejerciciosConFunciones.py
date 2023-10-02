@@ -89,17 +89,16 @@ def factura(costoSinIva, ivaPorcentaje):
     while True:
         try:
             valorProducto = float(input(costoSinIva))
-            porcentajeIva = float(input(ivaPorcentaje))
             
             if valorProducto < 0:
                 print("Error: No puedes introducir un valor negativo, solo se acepta números positivos.")
                 continue
             
-            elif porcentajeIva < 0 or porcentajeIva > 100:
+            elif ivaPorcentaje < 0 or ivaPorcentaje > 100:
                 print("Error: No puedes introducir un valor menor a 0 o mayor a 100 como porcentaje del IVA.")
-                continue
                     
-            return valorProducto + (valorProducto * porcentajeIva) / 100
+            valorProductoFinal = valorProducto + (valorProducto * ivaPorcentaje) / 100
+            return valorProductoFinal
                         
         except ValueError:
             print("Ha ocurrido un error al digitar el valor del producto. Inténtelo de nuevo.")
@@ -128,31 +127,17 @@ while isVerdadero:
         print(f"Tu cadena de texto de solo números quedó así: {resultadoString}")
         input("Presione \"Enter\" para continuar...")
 
-    elif opcionUsuario == 3:
+    elif opcionUsuario == 3:            
         while continuar:
-            valorProductosIva = 0
-            
             #Estableciedo un valor de IVA fijo. Esto para evitar que el usuario tenga que 
             #digitar múltiples veces un valor de IVA que permanecerá en el mismo valor.
-            while True:
-                try:
-                    valorIva = int(input("\nIngrese el porcentaje del IVA: "))
-                    
-                    if valorIva < 0 or valorIva > 100:
-                        print("Error: Ingresa un valor entre 0 a 100.")
-                        continue
-                    break
-                    
-                except ValueError:
-                    print("Ha ocurrido un error al ingresar el porcentaje del iva. Inténtelo de nuevo.")
-                except:
-                    print("Ha ocurrido un error inesperado. Inténtelo de nuevo o póngase en contacto con el administrador.")
-            
+            valorIva = int(input("\nIngrese el porcentaje del IVA: "))
+            valorProductosIva = 0
             
             #Obteniendo los resultados del IVA.
             while True:
                 try:
-                    items = int(input("\n¿Cuántos elementos desea agregar?: "))
+                    items = int(input("¿Cuántos elementos desea agregar?: "))
                     
                     if items < 0:
                         print("Error: Debes ingresar un valor positivo entero.")
@@ -162,7 +147,7 @@ while isVerdadero:
                         if items < 0:
                             print("Error: No puedes ingresar números negativos.")
                             continue
-                        valorProductosIva += factura("Ingrese el valor del producto para calcular su IVA: ", valorIva)
+                        valorProductosIva += factura("\nIngrese el valor del producto para calcular su IVA: ", valorIva)
                     
                     print(f"La factura con el iva es de: ${valorProductosIva:,.2f}")
                     break
@@ -175,17 +160,20 @@ while isVerdadero:
             #Preguntar al usuario si desea continuar agregando elementos por si se le ha 
             #olvidado ingresar algún dato adicional o necesita cambiar el valor del IVA.
             while True:
-                continuar = input("¿Deseas continuar? S/N: ").upper()
+                continuarPrograma = input("¿Deseas continuar? S/N: ")
                 
-                if continuar != "S" or continuar != "N":
+                if continuarPrograma.upper() == "S":
+                    continuar = True
+                else:
+                    continuar = False
+                
+                if continuarPrograma.upper() != "S" or continuarPrograma.upper() != "N":
                     print("Error: Has digitado una opción inválida.")
                     print("Escribe \"S\" para continuar o \"N\" para salir y regresar al menú.")
                     continue
                 
-                if continuar == "S":
-                    continuar = True
-                else:
-                    continuar = False
+                #Validar y corregir Bugs
+                
 
     elif opcionUsuario == 4:
         isVerdadero = False
