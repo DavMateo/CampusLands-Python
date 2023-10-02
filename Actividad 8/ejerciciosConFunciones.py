@@ -6,7 +6,6 @@
 
 # DEFINIENDO LAS VARIABLES PRINCIPALES
 isVerdadero = True
-continuar = True
 
 
 # DEFINICIÓN DE FUNCIONES
@@ -28,7 +27,7 @@ def menu(msj):
         except ValueError:
             print("Ha ocurrido un error en la digitación del número.")
         except:
-            print("Ha ocurrido un problema inesperado. Inténtelo de nuevo o pongase en contacto con el administrador.")
+            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
 
 
 def calculoCombinatoria(n, k):
@@ -51,7 +50,7 @@ def calculoCombinatoria(n, k):
             print("Ha ocurrido un problema al ingresar los números. Inténtelo de nuevo.")
         except:
             print("Ha ocurrido un error inesperado. Es probable que la salida contenga un número muy elevado.")
-            print("Inténtelo de nuevo o póngase en contacto con el administrador.\n")
+            print("Inténtelo de nuevo o comuníquese con un administrador.\n")
             
 def factorial(num):
     resultadoFactorial = 1
@@ -93,9 +92,6 @@ def factura(costoSinIva, ivaPorcentaje):
             if valorProducto < 0:
                 print("Error: No puedes introducir un valor negativo, solo se acepta números positivos.")
                 continue
-            
-            elif ivaPorcentaje < 0 or ivaPorcentaje > 100:
-                print("Error: No puedes introducir un valor menor a 0 o mayor a 100 como porcentaje del IVA.")
                     
             valorProductoFinal = valorProducto + (valorProducto * ivaPorcentaje) / 100
             return valorProductoFinal
@@ -103,7 +99,7 @@ def factura(costoSinIva, ivaPorcentaje):
         except ValueError:
             print("Ha ocurrido un error al digitar el valor del producto. Inténtelo de nuevo.")
         except:
-            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o póngase en contacto con el administrador.")
+            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
 
 
 
@@ -127,12 +123,27 @@ while isVerdadero:
         print(f"Tu cadena de texto de solo números quedó así: {resultadoString}")
         input("Presione cualquier tecla para continuar...")
 
-    elif opcionUsuario == 3:            
+    elif opcionUsuario == 3:
+        continuar = True
+        valorProductosIva = 0
+        
         while continuar:
             #Estableciedo un valor de IVA fijo. Esto para evitar que el usuario tenga que 
             #digitar múltiples veces un valor de IVA que permanecerá en el mismo valor.
-            valorIva = int(input("\nIngrese el porcentaje del IVA: "))
-            valorProductosIva = 0
+            
+            while True:
+                try:
+                    valorIva = int(input("\nIngrese el porcentaje del IVA: "))
+                    
+                    if valorIva < 0 or valorIva > 100:
+                        print("Error: No puedes introducir un valor menor a 0 o mayor a 100 como porcentaje del IVA.")
+                        continue
+                    break
+                
+                except ValueError:
+                    print("Ha ocurrido un error al ingresar el porcentaje de IVA. Inténtelo de nuevo.")
+                except:
+                    print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
             
             
             #Obteniendo los resultados del IVA.
@@ -141,7 +152,7 @@ while isVerdadero:
                     items = int(input("¿Cuántos elementos desea agregar?: "))
                     
                     if items < 0:
-                        print("Error: Debes ingresar un valor positivo entero.")
+                        print("\nError: Debes ingresar un valor positivo entero.")
                         continue
                     
                     for i in range(items):
@@ -187,4 +198,5 @@ while isVerdadero:
                     print(f"Error: {e}")
                 
     elif opcionUsuario == 4:
+        print("¡Gracias por usar nuestro programa!")
         isVerdadero = False
