@@ -25,32 +25,36 @@ def menu(msj):
             print("Ha ocurrido un problema inesperado. Inténtelo de nuevo o pongase en contacto con el administrador.")
 
 
-def calculoCombinatoria(msj):
-    # La combinatoria es una rama de las matemáticas que trata de contar, organizar y seleccionar
-    # objetos sin considerar un orden en específico. Se ocupa con el conteo de números de tal 
-    # manera para elegir u organizar elementos de un conjunto. Un concepto importante en la 
-    # combinatoria es el concepto de "Combinaciones".
-    # 
-    # Una combinación de un conjunto de elementos es la selección de esos elementos donde su 
-    # orden no importa. La fórmula para calcular el número de combinaciones (denotado como "C(n, k)")
-    # desde un conjunto de "n" elementos, eligiendo "k" elementos al mismo tiempo, está dada por:
-    # (Ver fórmula en la guía).
-    #
-    # Esta fórmula calcula el número de veces que se puede elegir "k" elemenots desde un conjunto de
-    # "n" elementos sin considerar su orden. Las combinaciones son comúnmente usadas en probabilidad, 
-    # estadística, y varios problemas de cálculo en las matemáticas y la ciencia.
-    #
-    # Escribe un programa en Python que calcule las combinaciones basadas en la función factorial.
-    # Use la siguiente fórmula: (Ver fórmula en la guía).
-    #
-    # El programa debe tomar dos entradas, "n" y "k", y luego calcularlo y mostrar en pantalla
-    # el valor de "C(n, k)" usando la fórmula proporcionada.
-    
+def calculoCombinatoria(n, k):
     while True:
         try:
-            pass
+            valorN = int(input(n))
+            valorK = int(input(k))
+            
+            if valorN < 0 or valorK < 0:
+                print("Error: No puedes ingresar números negativos. Ingresa números positivos.\n")
+                continue
+            elif valorN < valorK:
+                print("Error: El total de elementos debe ser mayor a los elementos por grupo.\n")
+                continue
+            
+            combinacionResultado = factorial(valorN) / (factorial(valorN-valorK) * factorial(valorK))
+            return combinacionResultado
+        
+        except ValueError:
+            print("Ha ocurrido un problema al ingresar los números. Inténtelo de nuevo.")
         except:
-            pass
+            print("Ha ocurrido un error inesperado. Es probable que la salida contenga un número muy elevado.")
+            print("Inténtelo de nuevo o póngase en contacto con el administrador.\n")
+            
+
+def factorial(num):
+    resultadoFactorial = 1
+    
+    for i in range(1, num + 1):
+        resultadoFactorial *=  i
+    
+    return resultadoFactorial
 
 
 def textoNumero(msj):
@@ -70,17 +74,28 @@ def ivaFactura(msj):
 
 
 
+# DEFINIENDO LAS VARIABLES PRINCIPALES
+isVerdadero = True
+
+
 # ESTRUCTURA DEL PROGRAMA
-opcionUsuario = menu("   >> Escoja una opción (1-4): ")
+while isVerdadero:
+    opcionUsuario = menu("   >> Escoja una opción (1-4): ")
 
-if opcionUsuario == 1:
-    resultadoCombinatoria = calculoCombinatoria("Valor: ")
+    if opcionUsuario == 1:
+        print("\n", "==== Indicaciones ====")
+        print("En la fórmula de combinaciones el valor N indica el total de elementos y el valor K los elementos por grupos.\n")    
+        resultadoCombinatoria = calculoCombinatoria("Valor n: ", "Valor k: ")
 
-elif opcionUsuario == 2:
-    pass
+        print("\n", "**** RESULTADO ****")
+        print(f"Puedes realizar {resultadoCombinatoria:.0f} combinaciones distintas.")
+        input("Presione \"enter\" para continuar: ")
 
-elif opcionUsuario == 3:
-    pass
+    elif opcionUsuario == 2:
+        pass
 
-elif opcionUsuario == 4:
-    pass
+    elif opcionUsuario == 3:
+        pass
+
+    elif opcionUsuario == 4:
+        isVerdadero = False
