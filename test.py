@@ -1,3 +1,8 @@
-for i in range(0):
-    print(i)
-    
+listas = []
+
+listas.append([1, 2, 3])
+
+listas.append([id, nombre, horasTrabajadas, valorHora])
+
+
+print(listas)
