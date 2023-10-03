@@ -33,7 +33,7 @@ def leerNotas(msj):
         try:
             n = float(input(msj))
             
-            if n < 0:
+            if n < 0 or n > 5:
                 print("Nota inválida. Debe ser mayor o igual a cero.")
                 continue
             return n
