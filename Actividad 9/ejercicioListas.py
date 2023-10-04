@@ -152,6 +152,12 @@ def desempaquetarInfoEmpleados(lista):
     
     for i in range(len(lista)):
         print("{:<10} {:<20} {:<40}".format(f"{i + 1}", lista[i][0], lista[i][1]))
+        
+
+def actualizarLista():
+    for i in empleados:
+        for j in range(1, len(empleados)):
+            print(j)
 
 
 # DEFINIENDO LAS FUNCIONES DE LOS ENUNCIADOS
@@ -198,9 +204,10 @@ def modificarEmpleado(opcionModificar):
             
             print(f"Nombre antiguo: {listaInfoEmpleadoModificar[0]}")
             nombreFinal = validacionNombre("Ingrese el nuevo nombre: ")
-            empleados[usuarioModificar][1] = nombreFinal
+            actualizarLista()
             print(f"Nuevo nombre: {listaInfoEmpleadoModificar[0]}")
             
+            actualizarLista()
             modificar = validacionContinuar("\n¿Desea realizar otra modificación? (S/N): ")
             
         elif opcionModificar == 2:
