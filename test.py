@@ -1,9 +1,12 @@
-nombre = input("Ingrese el nombre: ").strip()
+nombre = "     David      mateo    carreño     ".strip()
 nombreArray = nombre.split(" ")
+nombreArrayFiltrado = []
     
 for i in range(len(nombreArray)):
-    print(i)
-    if i == " ":
-        nombreArray.pop(i, "")
+    if nombreArray[i] != "":
+        nombreArrayFiltrado.append(nombreArray[i])
 
-print(nombreArray)
+nombreFinal = " ".join(nombreArrayFiltrado).title()
+test = "".join(nombreArrayFiltrado)
+print(nombreFinal, len(nombreFinal))
+print(test.isalnum())
