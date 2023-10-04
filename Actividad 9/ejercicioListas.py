@@ -35,7 +35,6 @@ def menu(msj):
 
 def agregarEmpleado(id, nombre, horasTrabajadas, valorHora):
     empleados.append([id, nombre, horasTrabajadas, valorHora])
-    print(empleados, len(empleados))
     return True
 
 
@@ -54,6 +53,7 @@ while isVerdadero:
     
     if opcionUsuario == 1:
         isContinuar = True
+        print("\n", "*** AGREGAR EMPLEADO ***")
         
         while isContinuar:
             # Validación ID del empleado
@@ -188,7 +188,7 @@ while isVerdadero:
     elif opcionUsuario == 8:
         while True:
             try:
-                confirmacion = input("¿Desea salir de la aplicación? (S/N): ").lower()
+                confirmacion = input("\n¿Desea salir de la aplicación? (S/N): ").lower()
                 
                 if confirmacion != "s" and confirmacion != "n":
                     print("Error: Introduce una opción válida (S para Si o N para No).")
