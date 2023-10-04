@@ -7,10 +7,135 @@ isVerdadero = True
 empleados = list()
 
 
-# DEFINIENDO LAS FUNCIONES
-def buscarEmpleado():
-    print(empleados, len(empleados))
+# DEFINIENDO LAS FUNCIONES DE VALIDACIÓN DE DATOS
+def validacionID(id):
+    while True:
+        try:
+            id = int(input("\nIngrese el id: "))
+            
+            if id < 0:
+                print("Error: introduzca un valor de ID válido (No negativos, sólo números positivos enteros).")
+                continue
+            return id
+                
+        except ValueError:
+            print("Ha ocurrido un error al ingresar el ID. Inténtelo de nuevo.")
+        except:
+            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
 
+
+def validacionNombre(nombre):
+    while True:
+        try:
+            nombre = input("\nIngrese el nombre: ").strip()
+            nombreArray = nombre.split(" ")
+            nombreArrayFiltrado = []
+            
+            # Algoritmo para filtrar la entrada del nombre para su posterior validación.
+            for i in range(len(nombreArray)):
+                if nombreArray[i] != "":
+                    nombreArrayFiltrado.append(nombreArray[i])
+            nombreValidar = "".join(nombreArrayFiltrado)
+            
+            if len(nombreArrayFiltrado) < 2 or len(nombreValidar) == 0 or nombreValidar.isalnum() == False:
+                print("Error: Debes ingresar un nombre válido.")
+                continue
+
+            nombreFinal = " ".join(nombreArrayFiltrado).title()
+            return nombreFinal
+        
+        except Exception as e:
+            print(f"Ha ocurrido un problema al ingresar el nombre. Error: {e}")
+        except:
+            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+
+
+def validacionHorasTrabajadas(horasTrabajadas):
+    while True:
+        try:
+            horasTrabajadas = int(input("\nIngrese las horas trabajadas: "))
+            
+            if horasTrabajadas < 1 or horasTrabajadas > 160:
+                print("Error: Debes ingresar un valor entero numérico entre 1 y 160.")
+                continue
+            return horasTrabajadas
+        
+        except ValueError:
+            print("Ha ocurrido un error al ingresar las horas trabajadas. Inténtelo de nuevo.")
+        except:
+            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+
+
+def validacionValorHora(valorHora):
+    while True:
+        try:
+            valorHora = int(input("\nIngrese el valor de la hora: "))
+            
+            if valorHora < 8000:
+                print("Error: El valor de la hora no puede ser menor a $8.000 COP.")
+                continue
+            
+            elif valorHora > 150000:
+                print("Error: El valor de la hora no puede ser superior a $150.000 COP.")
+                continue
+            return valorHora
+        
+        except ValueError:
+            print("Ha ocurrido un error al ingresar el valor de la hora. Inténtelo de nuevo.")
+        except:
+            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+
+
+def validacionContinuar(msj):
+    while True:
+        try:
+            confirmacion = input(msj).lower()
+
+            if confirmacion != "s" and confirmacion != "n":
+                print("Error: Introduce una opción válida (S para Si o N para No).")
+                continue
+
+            if confirmacion == "s":
+                return True
+
+            elif confirmacion == "n":
+                print("Regresando al menú principal...")
+                return False
+            break
+        
+        except Exception as e:
+            print(f"Ha ocurrido un problema al ingresar la opción. Error {e}")
+        except:
+            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+
+
+# DEFINIENDO LAS FUNCIONES COMPLEMENTARIAS A LAS FUNCIONES DE LOS ENUNCIADOS
+def buscarEmpleado(empleado):
+    respuesta = []
+    
+    for i in range(len(empleados)):
+        sublista = empleados[i][0]
+        print("XD")
+        print(sublista) 
+        respuesta.append(sublista)
+    
+    respuesta.insert(0, True)
+    return respuesta
+
+
+def listarEmpleadosModificar():
+    informacionEmpleadosModificar = list()
+    
+    for i in range(len(empleados)):
+        idEmpleado = empleados[i][0]
+        nombreEmpleado = empleados[i][1]
+
+        informacionEmpleadosModificar.append([idEmpleado, nombreEmpleado])
+    
+    return informacionEmpleadosModificar
+
+
+# DEFINIENDO LAS FUNCIONES DE LOS ENUNCIADOS
 def menu(msj):
     while True:
         try:
@@ -38,31 +163,41 @@ def menu(msj):
 
 def agregarEmpleado(id, nombre, horasTrabajadas, valorHora):
     empleados.append([id, nombre, horasTrabajadas, valorHora])
-    print(empleados)
     return True
 
 
-def modificarEmpleado(opcionModificar):
-    if opcionModificar == 1:
-        while True:
-            try:
-                buscarID = int(input("Introduzca el ID del empleado: "))
-                
-                if id < 0:
-                    print("Error: introduzca un valor de ID válido (No negativos, sólo números positivos enteros).")
-                    continue
-                break
-                
-            except ValueError:
-                print("Ha ocurrido un error al ingresar el ID. Inténtelo de nuevo.")
-            except:
-                print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+def modificarEmpleado(opcionModificar):  
+    modificar = True
     
-    elif opcionModificar == 2:
-        pass
+    while modificar:
+        if opcionModificar == 1:
+            print("Opción 1")
+            informacionEmpleadoModificar = listarEmpleadosModificar()
+            
+            modificar = validacionContinuar("\n¿Desea realizar otra modificación? (S/N): ")
+            
+        elif opcionModificar == 2:
+            print("Opción 2")
+            informacionEmpleadoModificar = listarEmpleadosModificar()
+
+            modificar = validacionContinuar("\n¿Desea realizar otra modificación? (S/N): ")
+        
+        elif opcionModificar == 3:
+            print("Opción 3")
+            informacionEmpleadoModificar = listarEmpleadosModificar()
+
+            modificar = validacionContinuar("\n¿Desea realizar otra modificación? (S/N): ")
+        
+        elif opcionModificar == 4:
+            modificar = False
+            input("\nRegresando al menú. Presione cualquier tecla para continuar...")
 
 
 def eliminarEmpleado():
+    pass
+
+
+def listarEmpleados():
     pass
 
 
@@ -77,84 +212,22 @@ while isVerdadero:
         
         while isContinuar:
             # Validación ID del empleado
-            while True:
-                try:
-                    id = int(input("\nIngrese el id: "))
-                    
-                    if id < 0:
-                        print("Error: introduzca un valor de ID válido (No negativos, sólo números positivos enteros).")
-                        continue
-                    break
-                
-                except ValueError:
-                    print("Ha ocurrido un error al ingresar el ID. Inténtelo de nuevo.")
-                except:
-                    print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+            id = validacionID("\nIngrese el id: ")
             
             
             # Validación Nombre del empleado
-            while True:
-                try:
-                    nombre = input("\nIngrese el nombre: ").strip()
-                    nombreArray = nombre.split(" ")
-                    nombreArrayFiltrado = []
-                    
-                    # Algoritmo para filtrar la entrada del nombre para su posterior validación.
-                    for i in range(len(nombreArray)):
-                        if nombreArray[i] != "":
-                            nombreArrayFiltrado.append(nombreArray[i])
-                    nombreValidar = "".join(nombreArrayFiltrado)
-                    
-                    if len(nombreArrayFiltrado) < 2 or len(nombreValidar) == 0 or nombreValidar.isalnum() == False:
-                        print("Error: Debes ingresar un nombre válido.")
-                        continue
-
-                    nombreFinal = " ".join(nombreArrayFiltrado).title()
-                    break
-                
-                except Exception as e:
-                    print(f"Ha ocurrido un problema al ingresar el nombre. Error: {e}")
-                except:
-                    print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+            nombre = validacionNombre("\nIngrese el nombre: ")
             
             
             # Validación horas trabajadas
-            while True:
-                try:
-                    horasTrabajadas = int(input("\nIngrese las horas trabajadas: "))
-                    
-                    if horasTrabajadas < 1 or horasTrabajadas > 160:
-                        print("Error: Debes ingresar un valor entero numérico entre 1 y 160.")
-                        continue
-                    break
-                
-                except ValueError:
-                    print("Ha ocurrido un error al ingresar las horas trabajadas. Inténtelo de nuevo.")
-                except:
-                    print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+            horasTrabajadas = validacionHorasTrabajadas("\nIngrese las horas trabajadas: ")
             
             
             # Validación valor de la hora
-            while True:
-                try:
-                    valorHora = int(input("\nIngrese el valor de la hora: "))
-                    
-                    if valorHora < 8000:
-                        print("Error: El valor de la hora no puede ser menor a $8.000 COP.")
-                        continue
-                    
-                    elif valorHora > 150000:
-                        print("Error: El valor de la hora no puede ser superior a $150.000 COP.")
-                        continue
-                    break
-                
-                except ValueError:
-                    print("Ha ocurrido un error al ingresar el valor de la hora. Inténtelo de nuevo.")
-                except:
-                    print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+            valorHora = validacionValorHora("\nIngrese el valor de la hora: ")
 
             # Invocando y almacenando el valor de retorno de la función "agregarEmpleado()"
-            resultado = agregarEmpleado(id, nombreFinal, horasTrabajadas, valorHora)
+            resultado = agregarEmpleado(id, nombre, horasTrabajadas, valorHora)
             
             if resultado:
                 print("\n¡Se ha agregado el nuevo usuario con éxito!")
@@ -187,12 +260,14 @@ while isVerdadero:
         while True:
             try:
                 print("\n", "==== OPCIONES MODIFICAR ====")
-                print("1. Modificar con el ID del empleado")
-                print("2. Modificar con el nombre del empleado")
+                print("1. Modificar el nombre de un empleado")
+                print("2. Modificar la cantidad de horas de un empleado")
+                print("3. Modificar el valor de la hora de un empleado")
+                print("4. Regresar al menú")
                 opcionModificar = int(input("    >>> "))
                 
-                if opcionModificar < 1 or opcionModificar > 2:
-                    print("Error: Debes ingresar una opción válida (1-2).")
+                if opcionModificar < 1 or opcionModificar > 4:
+                    print("Error: Debes ingresar una opción válida (1-4).")
                     continue
                 break
             
@@ -202,8 +277,6 @@ while isVerdadero:
                 print("Ha ocurrido un error inesperado al ingresar la opción. Inténtelo de nuevo o comuníquese con un administrador.")
         
         modificarEmpleado(opcionModificar)
-        buscarEmpleado()
-        
     
     elif opcionUsuario == 3:
         print("\n", "*** BUSCAR EMPLEADO ***")
@@ -227,25 +300,7 @@ while isVerdadero:
     
     elif opcionUsuario == 8:
         print("\n", "*** SALIR ***")
+        isVerdadero = not validacionContinuar("¿Desea salir de la aplicación? (S/N): ")
         
-        while True:
-            try:
-                confirmacion = input("¿Desea salir de la aplicación? (S/N): ").lower()
-                
-                if confirmacion != "s" and confirmacion != "n":
-                    print("Error: Introduce una opción válida (S para Si o N para No).")
-                    continue
-        
-                if confirmacion == "s":
-                    print("\n\n¡Gracias por usar nuestra aplicación!")
-                    isVerdadero = False
-                    
-                elif confirmacion == "n":
-                    print("Regresando al menú principal...")
-                    isVerdadero = True
-                break
-            
-            except Exception as e:
-                print(f"Ha ocurrido un problema al ingresar la opción. Error {e}")
-            except:
-                print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+
+print("\n\n¡Gracias por usar nuestra aplicación!")
