@@ -91,7 +91,7 @@ def validacionSeleccionUsuario(numero):
         try:
             num = int(input(numero))
             
-            if num < 0:
+            if num < 1:
                 print("Error: introduzca un valor válido (No negativos, sólo números positivos enteros).")
                 continue
             return num
@@ -126,16 +126,12 @@ def validacionContinuar(msj):
 
 
 # DEFINIENDO LAS FUNCIONES COMPLEMENTARIAS A LAS FUNCIONES DE LOS ENUNCIADOS
-def buscarEmpleado(empleado):
+def buscarEmpleado(numero):
     respuesta = []
     
-    for i in range(len(empleados)):
-        sublista = empleados[i][0]
-        print("XD")
-        print(sublista) 
-        respuesta.append(sublista)
+    for i in range(1, len(empleados[numero - 1])):
+        respuesta.append(empleados[numero - 1][i])
     
-    respuesta.insert(0, True)
     return respuesta
 
 
@@ -198,6 +194,7 @@ def modificarEmpleado(opcionModificar):
             desempaquetarInfoEmpleados(informacionEmpleadoModificar)
             
             usuarioModificar = validacionSeleccionUsuario("\nIngrese el número de usuario: ")
+            buscarEmpleado(usuarioModificar)
             print(informacionEmpleadoModificar, len(informacionEmpleadoModificar))
             
             modificar = validacionContinuar("\n¿Desea realizar otra modificación? (S/N): ")
@@ -207,6 +204,7 @@ def modificarEmpleado(opcionModificar):
             desempaquetarInfoEmpleados(informacionEmpleadoModificar)
 
             usuarioModificar = validacionSeleccionUsuario("\nIngrese el número de usuario: ")
+            buscarEmpleado(usuarioModificar)
             print(informacionEmpleadoModificar, len(informacionEmpleadoModificar))
             
             modificar = validacionContinuar("\n¿Desea realizar otra modificación? (S/N): ")
@@ -216,6 +214,7 @@ def modificarEmpleado(opcionModificar):
             desempaquetarInfoEmpleados(informacionEmpleadoModificar)
             
             usuarioModificar = validacionSeleccionUsuario("\nIngrese el número de usuario: ")
+            buscarEmpleado(usuarioModificar)
             print(informacionEmpleadoModificar, len(informacionEmpleadoModificar))
 
             modificar = validacionContinuar("\n¿Desea realizar otra modificación? (S/N): ")
