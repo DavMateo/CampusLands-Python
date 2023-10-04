@@ -162,33 +162,35 @@ while isVerdadero:
 
     
     elif opcionUsuario == 2:
-        pass
+        print("\n", "*** MODIFICAR EMPLEADO ***")
     
     
     elif opcionUsuario == 3:
-        pass
+        print("\n", "*** BUSCAR EMPLEADO ***")
     
     
     elif opcionUsuario == 4:
-        pass
+        print("\n", "*** ELIMINAR EMPLEADO ***")
     
     
     elif opcionUsuario == 5:
-        pass
+        print("\n", "*** LISTAS EMPLEADO ***")
     
     
     elif opcionUsuario == 6:
-        pass
+        print("\n", "*** LISTAR LA NÓMINA DE UN EMPLEADO ***")
     
     
     elif opcionUsuario == 7:
-        pass
+        print("\n", "*** LISTAR NÓMINA DE TODOS LOS EMPLEADOS ***")
     
     
     elif opcionUsuario == 8:
+        print("\n", "*** SALIR ***")
+        
         while True:
             try:
-                confirmacion = input("\n¿Desea salir de la aplicación? (S/N): ").lower()
+                confirmacion = input("¿Desea salir de la aplicación? (S/N): ").lower()
                 
                 if confirmacion != "s" and confirmacion != "n":
                     print("Error: Introduce una opción válida (S para Si o N para No).")
