@@ -86,6 +86,22 @@ def validacionValorHora(valorHora):
             print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
 
 
+def validacionSeleccionUsuario(numero):
+    while True:
+        try:
+            num = int(input(numero))
+            
+            if num < 0:
+                print("Error: introduzca un valor válido (No negativos, sólo números positivos enteros).")
+                continue
+            return num
+                
+        except ValueError:
+            print("Ha ocurrido un error al ingresar el número. Inténtelo de nuevo.")
+        except:
+            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+
+
 def validacionContinuar(msj):
     while True:
         try:
@@ -136,10 +152,10 @@ def listarEmpleadosModificar():
 
 
 def desempaquetarInfoEmpleados(lista):
-    print("\n", "ID\t\t\t", "NOMBRE")
+    print("\n{:<10} {:<20} {:<40}".format("N° Lista", "ID", "Nombre"))
     
     for i in range(len(lista)):
-        print("\n", lista[i][0], "\t", lista[i][1])
+        print("{:<10} {:<20} {:<40}".format(f"{i + 1}", lista[i][0], lista[i][1]))
 
 
 # DEFINIENDO LAS FUNCIONES DE LOS ENUNCIADOS
@@ -181,17 +197,26 @@ def modificarEmpleado(opcionModificar):
             informacionEmpleadoModificar = listarEmpleadosModificar()
             desempaquetarInfoEmpleados(informacionEmpleadoModificar)
             
+            usuarioModificar = validacionSeleccionUsuario("\nIngrese el número de usuario: ")
+            print(informacionEmpleadoModificar, len(informacionEmpleadoModificar))
+            
             modificar = validacionContinuar("\n¿Desea realizar otra modificación? (S/N): ")
             
         elif opcionModificar == 2:
             informacionEmpleadoModificar = listarEmpleadosModificar()
             desempaquetarInfoEmpleados(informacionEmpleadoModificar)
 
+            usuarioModificar = validacionSeleccionUsuario("\nIngrese el número de usuario: ")
+            print(informacionEmpleadoModificar, len(informacionEmpleadoModificar))
+            
             modificar = validacionContinuar("\n¿Desea realizar otra modificación? (S/N): ")
         
         elif opcionModificar == 3:
             informacionEmpleadoModificar = listarEmpleadosModificar()
             desempaquetarInfoEmpleados(informacionEmpleadoModificar)
+            
+            usuarioModificar = validacionSeleccionUsuario("\nIngrese el número de usuario: ")
+            print(informacionEmpleadoModificar, len(informacionEmpleadoModificar))
 
             modificar = validacionContinuar("\n¿Desea realizar otra modificación? (S/N): ")
         
