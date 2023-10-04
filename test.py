@@ -1,8 +1,9 @@
-listas = []
+nombre = input("Ingrese el nombre: ").strip()
+nombreArray = nombre.split(" ")
+    
+for i in range(len(nombreArray)):
+    print(i)
+    if i == " ":
+        nombreArray.pop(i, "")
 
-listas.append([1, 2, 3])
-
-listas.append([id, nombre, horasTrabajadas, valorHora])
-
-
-print(listas)
+print(nombreArray)

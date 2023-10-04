@@ -82,6 +82,4 @@ while isVerdadero:
                 print(f"Ha ocurrido un problema al ingresar el nombre. Error: {e}")
             except:
                 print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
-    
-    
     break
