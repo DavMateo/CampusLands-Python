@@ -8,6 +8,9 @@ empleados = list()
 
 
 # DEFINIENDO LAS FUNCIONES
+def buscarEmpleado():
+    print(empleados, len(empleados))
+
 def menu(msj):
     while True:
         try:
@@ -35,11 +38,28 @@ def menu(msj):
 
 def agregarEmpleado(id, nombre, horasTrabajadas, valorHora):
     empleados.append([id, nombre, horasTrabajadas, valorHora])
+    print(empleados)
     return True
 
 
-def modificarEmpleado():
-    pass
+def modificarEmpleado(opcionModificar):
+    if opcionModificar == 1:
+        while True:
+            try:
+                buscarID = int(input("Introduzca el ID del empleado: "))
+                
+                if id < 0:
+                    print("Error: introduzca un valor de ID válido (No negativos, sólo números positivos enteros).")
+                    continue
+                break
+                
+            except ValueError:
+                print("Ha ocurrido un error al ingresar el ID. Inténtelo de nuevo.")
+            except:
+                print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+    
+    elif opcionModificar == 2:
+        pass
 
 
 def eliminarEmpleado():
@@ -153,17 +173,37 @@ while isVerdadero:
                         
                     elif continuar == "n":
                         isContinuar = False
+                        input("Presione cualquier tecla para regresar al menú...")
                     break
                 
                 except Exception as e:
                     print("Ha ocurrido un error al ingresar su opción. Inténte de nuevo.")
                 except:
                     print("Ha ocurrido un error desconocido. Inténtelo de nuevo o comuníquese con un administrador.")
-
     
     elif opcionUsuario == 2:
         print("\n", "*** MODIFICAR EMPLEADO ***")
-    
+        
+        while True:
+            try:
+                print("\n", "==== OPCIONES MODIFICAR ====")
+                print("1. Modificar con el ID del empleado")
+                print("2. Modificar con el nombre del empleado")
+                opcionModificar = int(input("    >>> "))
+                
+                if opcionModificar < 1 or opcionModificar > 2:
+                    print("Error: Debes ingresar una opción válida (1-2).")
+                    continue
+                break
+            
+            except ValueError:
+                print("Ha ocurrido un error al ingresar la opción. Inténtelo de nuevo.")
+            except:
+                print("Ha ocurrido un error inesperado al ingresar la opción. Inténtelo de nuevo o comuníquese con un administrador.")
+        
+        modificarEmpleado(opcionModificar)
+        buscarEmpleado()
+        
     
     elif opcionUsuario == 3:
         print("\n", "*** BUSCAR EMPLEADO ***")
