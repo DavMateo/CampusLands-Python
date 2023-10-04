@@ -35,6 +35,7 @@ def menu(msj):
 
 def agregarEmpleado(id, nombre, horasTrabajadas, valorHora):
     empleados.append([id, nombre, horasTrabajadas, valorHora])
+    print(empleados, len(empleados))
     return True
 
 
