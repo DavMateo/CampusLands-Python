@@ -5,6 +5,7 @@
 # DEFINIENDO LAS VARIABLES PRINCIPALES
 isVerdadero = True
 empleados = list()
+listaInfoEmpleadoModificar = []
 
 
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN DE DATOS
@@ -155,9 +156,11 @@ def desempaquetarInfoEmpleados(lista):
         
 
 def actualizarLista():
-    for i in empleados:
-        for j in range(1, len(empleados)):
-            print(j)
+    for i in range(len(empleados)):
+        for j in range(1, len(empleados[i])):
+            empleados[i][j] = listaInfoEmpleadoModificar[i][j]
+    
+    return empleados
 
 
 # DEFINIENDO LAS FUNCIONES DE LOS ENUNCIADOS
