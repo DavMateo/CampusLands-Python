@@ -194,8 +194,12 @@ def modificarEmpleado(opcionModificar):
             desempaquetarInfoEmpleados(informacionEmpleadoModificar)
             
             usuarioModificar = validacionSeleccionUsuario("\nIngrese el número de usuario: ")
-            buscarEmpleado(usuarioModificar)
-            print(informacionEmpleadoModificar, len(informacionEmpleadoModificar))
+            listaInfoEmpleadoModificar = buscarEmpleado(usuarioModificar)
+            
+            print(f"Nombre antiguo: {listaInfoEmpleadoModificar[0]}")
+            nombreFinal = validacionNombre("Ingrese el nuevo nombre: ")
+            empleados[usuarioModificar][1] = nombreFinal
+            print(f"Nuevo nombre: {listaInfoEmpleadoModificar[0]}")
             
             modificar = validacionContinuar("\n¿Desea realizar otra modificación? (S/N): ")
             
@@ -204,8 +208,8 @@ def modificarEmpleado(opcionModificar):
             desempaquetarInfoEmpleados(informacionEmpleadoModificar)
 
             usuarioModificar = validacionSeleccionUsuario("\nIngrese el número de usuario: ")
-            buscarEmpleado(usuarioModificar)
-            print(informacionEmpleadoModificar, len(informacionEmpleadoModificar))
+            listaInfoEmpleadoModificar = buscarEmpleado(usuarioModificar)
+            
             
             modificar = validacionContinuar("\n¿Desea realizar otra modificación? (S/N): ")
         
@@ -214,8 +218,8 @@ def modificarEmpleado(opcionModificar):
             desempaquetarInfoEmpleados(informacionEmpleadoModificar)
             
             usuarioModificar = validacionSeleccionUsuario("\nIngrese el número de usuario: ")
-            buscarEmpleado(usuarioModificar)
-            print(informacionEmpleadoModificar, len(informacionEmpleadoModificar))
+            listaInfoEmpleadoModificar = buscarEmpleado(usuarioModificar)
+            
 
             modificar = validacionContinuar("\n¿Desea realizar otra modificación? (S/N): ")
         
