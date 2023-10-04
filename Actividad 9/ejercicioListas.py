@@ -135,6 +135,13 @@ def listarEmpleadosModificar():
     return informacionEmpleadosModificar
 
 
+def desempaquetarInfoEmpleados(lista):
+    print("\n", "ID\t\t\t", "NOMBRE")
+    
+    for i in range(len(lista)):
+        print("\n", lista[i][0], "\t", lista[i][1])
+
+
 # DEFINIENDO LAS FUNCIONES DE LOS ENUNCIADOS
 def menu(msj):
     while True:
@@ -171,20 +178,20 @@ def modificarEmpleado(opcionModificar):
     
     while modificar:
         if opcionModificar == 1:
-            print("Opción 1")
             informacionEmpleadoModificar = listarEmpleadosModificar()
+            desempaquetarInfoEmpleados(informacionEmpleadoModificar)
             
             modificar = validacionContinuar("\n¿Desea realizar otra modificación? (S/N): ")
             
         elif opcionModificar == 2:
-            print("Opción 2")
             informacionEmpleadoModificar = listarEmpleadosModificar()
+            desempaquetarInfoEmpleados(informacionEmpleadoModificar)
 
             modificar = validacionContinuar("\n¿Desea realizar otra modificación? (S/N): ")
         
         elif opcionModificar == 3:
-            print("Opción 3")
             informacionEmpleadoModificar = listarEmpleadosModificar()
+            desempaquetarInfoEmpleados(informacionEmpleadoModificar)
 
             modificar = validacionContinuar("\n¿Desea realizar otra modificación? (S/N): ")
         
