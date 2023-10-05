@@ -4,13 +4,17 @@
 
 # DEFINIENDO LAS VARIABLES PRINCIPALES
 isVerdadero = True
+aprobar = False
+count = 0
 notasEstudiante = []
-infoEstudiante = []
+infoEstudianteLista = [] # Esta lista se destructurará para convertirse en un objeto. Se apoyará con el uso de otra lista.
+infoEstudianteTransitoria = []
 listaNotas = []
+informacionEstudiante = {}
 
 
 # DEFINIENDO LAS FUNCIONES
-def calculoNota(nota, peso):
+def calculoNota(nota, peso, contador):
     while True:
         try:
             calificacion = float(input(nota))
@@ -42,19 +46,27 @@ def calculoNota(nota, peso):
 
     
     if len(listaNotas) == 6:
-        notaDefinitiva(listaNotas)
+        notaDefinitiva(listaNotas, contador)
 
 
-def notaDefinitiva(notas):
-    # notasEstudiante.append(notas[0] * notas[1])
+def notaDefinitiva(notas, contador):
     notaPromedio = ((notas[0] * notas[1]) + (notas[2] * notas[3]) + (notas[4] * notas[5])) / 100
+    infoEstudianteLista.append(notaPromedio)
     
-    print(notaPromedio)
-    infoEstudiante.append(notaPromedio)
+    if notaPromedio >= 3.0:
+        aprobar = True
+    elif notaPromedio <= 2.9:
+        aprobar = False
+    
+    infoEstudianteLista.append(aprobar)
+    datosEstudiante(infoEstudianteLista, contador)
 
 
-def datosEstudiante(informacion):
-    pass
+def datosEstudiante(informacion, contador):
+    for i in range(1, len(informacion)):
+        infoEstudianteTransitoria.append(infoEstudianteLista[i])
+    
+    informacionEstudiante[contador] = infoEstudianteTransitoria
 
 
 
@@ -69,7 +81,7 @@ while isVerdadero:
                 print("Error: El código no puede ser menor que 0.")
                 continue
             
-            infoEstudiante.append(codigo)
+            infoEstudianteLista.append(codigo)
             break
         
         except ValueError:
@@ -88,7 +100,7 @@ while isVerdadero:
                 print("Error: Introduce un nombre válido.")
                 continue
             
-            infoEstudiante.append(nombre)
+            infoEstudianteLista.append(nombre)
             break
         
         except Exception as e:
@@ -103,10 +115,12 @@ while isVerdadero:
             elif i == 2:
                 pesoNota = 40
             
-            calculoNota(f"Ingrese la nota {i+1}: ", pesoNota)
+            calculoNota(f"Ingrese la nota {i+1}: ", pesoNota, count)
         break
+    
+    count += 1
     
     break
 
 print("")
-print(infoEstudiante)
+print(infoEstudianteLista)
