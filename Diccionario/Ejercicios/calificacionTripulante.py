@@ -5,6 +5,7 @@
 # DEFINIENDO LAS VARIABLES PRINCIPALES
 isVerdadero = True
 aprobar = False
+count = 0
 notasEstudiante = []
 infoEstudianteLista = [] # Esta lista se destructurará para convertirse en un objeto. Se apoyará con el uso de otra lista.
 infoEstudianteTransitoria = []
@@ -60,8 +61,6 @@ def calculoNota(nota, peso, id):
 
 
 def notaDefinitiva(notas, id):
-    print(notas)
-    
     notaPromedio = ((notas[0] * notas[1]) + (notas[2] * notas[3]) + (notas[4] * notas[5])) / 100
     infoEstudianteLista.append(notaPromedio)
     
@@ -79,7 +78,6 @@ def datosEstudiante(informacion, id):
         infoEstudianteTransitoria.append(infoEstudianteLista[i])
     
     informacionEstudiante[id] = infoEstudianteTransitoria
-    print(informacionEstudiante)
     vaciarLista()
 
 
@@ -132,13 +130,23 @@ while isVerdadero:
         break
     
     while isVerdadero:
-        # print("\n", "=" * 35)
-        # print("INFORMACIÓN ESTUDIANTE")
-        # print(f"Estudiante: {nombre}")
-        # print(f"Código: {codigo}")
+        claves = informacionEstudiante.keys()
+        
+        print("\n", "=" * 35)
+        print("\tINFORMACIÓN ESTUDIANTE")
+        print(f"Estudiante: {informacionEstudiante[codigo][0]}")
+        print(f"Código: {[*claves][count]}")  
+            # El símbolo de asterísco significa que se desempaqueta en una lista la información contenida en la variable "claves"
+        print(f"La nota promedio del estudiante es de: {informacionEstudiante[codigo][1]}/5.0")
+        
+        if informacionEstudiante[codigo][2]:
+            print(f"¡El estudiante SI aprobó el curso!")
+        else:
+            print(f"El estudiante reprobó el curso.")
         
         
         input("\nPresione cualquier tecla para continuar...")
+        count += 1
         break
     
     while not isVerdadero:
