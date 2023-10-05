@@ -10,6 +10,8 @@ notasEstudiante = []
 infoEstudianteLista = [] # Esta lista se destructurará para convertirse en un objeto. Se apoyará con el uso de otra lista.
 infoEstudianteTransitoria = []
 listaNotas = []
+listanombreFinal = []
+nombreArray = []
 informacionEstudiante = {}
 
 
@@ -18,12 +20,16 @@ def vaciarLista():
     global listaNotas
     global infoEstudianteLista
     global infoEstudianteTransitoria
+    global nombreArray
+    global listanombreFinal
     # Uso la palabra reservada Global para indicarle a Python que deseo modificar una variable que ha 
     # sido declarada por fuera de la función actual.
     
     listaNotas = list()
     infoEstudianteTransitoria = list()
     infoEstudianteLista = list()
+    nombreArray = list()
+    listanombreFinal = list()
 
 def calculoNota(nota, peso, id):
     while True:
@@ -78,6 +84,7 @@ def datosEstudiante(informacion, id):
         infoEstudianteTransitoria.append(infoEstudianteLista[i])
     
     informacionEstudiante[id] = infoEstudianteTransitoria
+    print(informacionEstudiante)
     vaciarLista()
 
 
@@ -104,14 +111,25 @@ while isVerdadero:
     
     # Verificación nombre
     while isVerdadero:
-        try:
-            nombre = input("Ingrese el nombre: ")
+        try: 
+            nombre = input("Ingrese el nombre: ").strip()
+            nombreArray = nombre.split(" ")
             
-            if len(nombre) == 0 or nombre.isalnum():
+            # Algoritmo para filtrar y verificar el ingreso de nombres al programa
+            for i in range(len(nombreArray)):
+                if nombreArray != "":
+                    listanombreFinal.append(nombreArray[i])
+                        
+            nombreFinalVerificacion = "".join(listanombreFinal).lower()
+            nombreFinal = " ".join(listanombreFinal).title()
+            nombreFinalArray = nombreFinal.split(" ")
+            
+            if len(nombreFinalVerificacion) == 0 or not nombreFinalVerificacion.isalnum() or len(nombreFinalArray) < 2:
                 print("Error: Introduce un nombre válido.\n")
+                listanombreFinal = list()
                 continue
             
-            infoEstudianteLista.append(nombre)
+            infoEstudianteLista.append(nombreFinal)
             break
         
         except Exception as e:
@@ -153,7 +171,4 @@ while isVerdadero:
         input("Presione cualquier tecla para salir...")
         break
 
-
-print(infoEstudianteLista, len(infoEstudianteLista))
-print(informacionEstudiante)
 print("\n", "¡Gracias por usar nuestro software!")
