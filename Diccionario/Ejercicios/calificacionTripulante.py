@@ -5,7 +5,6 @@
 # DEFINIENDO LAS VARIABLES PRINCIPALES
 isVerdadero = True
 aprobar = False
-count = 0
 notasEstudiante = []
 infoEstudianteLista = [] # Esta lista se destructurará para convertirse en un objeto. Se apoyará con el uso de otra lista.
 infoEstudianteTransitoria = []
@@ -14,42 +13,55 @@ informacionEstudiante = {}
 
 
 # DEFINIENDO LAS FUNCIONES
-def calculoNota(nota, peso, contador):
+def vaciarLista():
+    global listaNotas
+    global infoEstudianteLista
+    global infoEstudianteTransitoria
+    # Uso la palabra reservada Global para indicarle a Python que deseo modificar una variable que ha 
+    # sido declarada por fuera de la función actual.
+    
+    listaNotas = list()
+    infoEstudianteTransitoria = list()
+    infoEstudianteLista = list()
+
+def calculoNota(nota, peso, id):
     while True:
         try:
             calificacion = float(input(nota))
             
             if calificacion < 0.0 or calificacion > 5.0:
-                print("Error: La nota ingresada es incorrecta. Asegúrese de introducir un valor entre 0.0 a 5.0.")
+                print("Error: La nota ingresada es incorrecta. Asegúrese de introducir un valor entre 0.0 a 5.0.\n")
                 continue
             
             listaNotas.append(calificacion)
             break
         
         except ValueError:
-            print("Ha ocurrido un error al ingresar la(s) nota(s). Inténtelo de nuevo.")
+            print("Ha ocurrido un error al ingresar la(s) nota(s). Inténtelo de nuevo.\n")
         
-    
+        
     while True:
         try:
             pesoPorcentaje = int(peso)
             
             if pesoPorcentaje < 0 or pesoPorcentaje > 100:
-                print("Error: El peso ingresado es incorrecto. Asegúrese de introducir un valor entre 0 a 100.")
+                print("Error: El peso ingresado es incorrecto. Asegúrese de introducir un valor entre 0 a 100.\n")
                 continue
             
             listaNotas.append(pesoPorcentaje)
             break
         
         except ValueError:
-            print("Ha ocurrido un error al ingresar el peso de la nota. Inténtelo de nuevo.")
+            print("Ha ocurrido un error al ingresar el peso de la nota. Inténtelo de nuevo.\n")
 
-    
+
     if len(listaNotas) == 6:
-        notaDefinitiva(listaNotas, contador)
+        notaDefinitiva(listaNotas, id)
 
 
-def notaDefinitiva(notas, contador):
+def notaDefinitiva(notas, id):
+    print(notas)
+    
     notaPromedio = ((notas[0] * notas[1]) + (notas[2] * notas[3]) + (notas[4] * notas[5])) / 100
     infoEstudianteLista.append(notaPromedio)
     
@@ -59,15 +71,16 @@ def notaDefinitiva(notas, contador):
         aprobar = False
     
     infoEstudianteLista.append(aprobar)
-    datosEstudiante(infoEstudianteLista, contador)
+    datosEstudiante(infoEstudianteLista, id)
 
 
-def datosEstudiante(informacion, contador):
+def datosEstudiante(informacion, id):    
     for i in range(1, len(informacion)):
         infoEstudianteTransitoria.append(infoEstudianteLista[i])
     
-    informacionEstudiante[contador] = infoEstudianteTransitoria
-
+    informacionEstudiante[id] = infoEstudianteTransitoria
+    print(informacionEstudiante)
+    vaciarLista()
 
 
 # ESTRUCTURA DEL PROGRAMA
@@ -75,17 +88,17 @@ while isVerdadero:
     # Verificación código
     while True:
         try:
-            codigo = int(input("Ingrese el código: "))
+            codigo = int(input("\nIngrese el código (Escriba 999 para salir): "))
             
             if codigo < 0:
-                print("Error: El código no puede ser menor que 0.")
+                print("Error: El código no puede ser menor que 0.\n")
                 continue
             
             infoEstudianteLista.append(codigo)
             break
         
         except ValueError:
-            print("Ha ocurrido un error al ingresar el código. Inténtelo de nuevo.")
+            print("Ha ocurrido un error al ingresar el código. Inténtelo de nuevo.\n")
     
     if codigo == 999:
         isVerdadero = False
@@ -97,14 +110,14 @@ while isVerdadero:
             nombre = input("Ingrese el nombre: ")
             
             if len(nombre) == 0 or nombre.isalnum():
-                print("Error: Introduce un nombre válido.")
+                print("Error: Introduce un nombre válido.\n")
                 continue
             
             infoEstudianteLista.append(nombre)
             break
         
         except Exception as e:
-            print(f"Ha ocurrido un problema. Error: {e}")
+            print(f"Ha ocurrido un problema. Error: {e}\n")
     
     
     # Verificación nota
@@ -115,12 +128,24 @@ while isVerdadero:
             elif i == 2:
                 pesoNota = 40
             
-            calculoNota(f"Ingrese la nota {i+1}: ", pesoNota, count)
+            calculoNota(f"Ingrese la nota {i+1}: ", pesoNota, codigo)
         break
     
-    count += 1
+    while isVerdadero:
+        # print("\n", "=" * 35)
+        # print("INFORMACIÓN ESTUDIANTE")
+        # print(f"Estudiante: {nombre}")
+        # print(f"Código: {codigo}")
+        
+        
+        input("\nPresione cualquier tecla para continuar...")
+        break
     
-    break
+    while not isVerdadero:
+        input("Presione cualquier tecla para salir...")
+        break
 
-print("")
-print(infoEstudianteLista)
+
+print(infoEstudianteLista, len(infoEstudianteLista))
+print(informacionEstudiante)
+print("\n", "¡Gracias por usar nuestro software!")
