@@ -104,8 +104,9 @@ def validarOpcionUsuario(msj, min, max):
 
 
 # DEFINIENDO LAS FUNCIONES ADICIONALES
-def extraerIdDiccionario(dict):
-    return dict.keys()
+def extraerIdDiccionario(diccionario):
+    print(diccionario)
+    return diccionario.keys()
 
 
 # DEFINIENDO LAS FUNCIONES PERTINENTES
@@ -137,8 +138,12 @@ def agregarProducto():
 
 def modificarProducto(opcionUsuario):    
     test = extraerIdDiccionario(diccionarioProducto)
+    print(test, len(test))
 
-    print()
+    for i in range(len(test)):
+        print(i, test)
+        print("N°\t\t\t", "ID\t\t\t", "Nombre")
+        print(f"{i+1}\t\t\t", f"ID: {diccionarioProducto[test[i]]}\t\t\t", f"Nombre: {diccionarioProducto[test[i][0]]}")
     
 
 def eliminarProducto():
