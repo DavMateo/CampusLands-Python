@@ -46,24 +46,44 @@ def validarNombreProducto(msj):
         except Exception as e:
             print("\nHa ocurrido un problema al ingresar el nombre del producto.")
             print(f"Error: {e}")
+        except:
+            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
 
 def validarPrecio(msj):
     while True:
         try:
-            pass
+            precio = int(input(msj))
+            
+            if precio < 0:
+                print("Error: Has ingresado un precio con números negativos.\n")
+                continue
+            return precio
 
+        except ValueError:
+            print("Ha ocurrido un error al ingresar el precio del producto. Inténtelo de nuevo.\n")
         except:
-            print("")
+            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
 
 def validarCantidad(msj):
     while True:
         try:
-            pass
+            cantidad = int(input(msj))
+            
+            if cantidad < 0:
+                print("Error: No puedes ingresar números negativos.\n")
+                continue
+            
+            elif cantidad > 100000000:
+                print("Error: El máximo permitido en inventario es de 100 millones.\n")
+                continue
+            return cantidad
 
+        except ValueError:
+            print("Ha ocurrido un error al ingresar la cantidad del producto. Inténtelo de nuevo.\n")
         except:
-            print("")
+            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
 
 # DEFINIENDO LAS FUNCIONES PERTINENTES
@@ -99,7 +119,13 @@ def agregarProducto():
     print("\n")
     id = validarID("Ingrese el ID: ")
     nombreProducto = validarNombreProducto("Ingrese el nombre del producto: ")
-    print(nombreProducto)
+    precio = validarPrecio("Ingrese el precio del producto: ")
+    cantidad = validarCantidad("Ingrese la cantidad del producto: ")
+    
+    print(f"\nID: {id}")
+    print(f"NOMBRE: {nombreProducto}")
+    print(f"PRECIO: {precio}")
+    print(f"CANTIDAD: {cantidad}")
 
 def modificarProducto():
     pass
