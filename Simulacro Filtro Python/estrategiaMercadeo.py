@@ -137,13 +137,17 @@ def agregarProducto():
     
 
 def modificarProducto(opcionUsuario):    
-    test = extraerIdDiccionario(diccionarioProducto)
-    print(test, len(test))
+    # test = extraerIdDiccionario(diccionarioProducto)
+    # print(test, len(test))
 
-    for i in range(len(test)):
-        print(i, test)
-        print("N°\t\t\t", "ID\t\t\t", "Nombre")
-        print(f"{i+1}\t\t\t", f"ID: {diccionarioProducto[test[i]]}\t\t\t", f"Nombre: {diccionarioProducto[test[i][0]]}")
+    # for i in test:
+    #     print(i, test)
+    #     print("N°\t\t\t", "ID\t\t\t", "Nombre")
+    #     print(f"{i+1}\t\t\t", f"ID: {diccionarioProducto[i]}\t\t\t", f"Nombre: {diccionarioProducto[i['0']]}")
+    
+    
+    # Error de dict_key a pesar de usar keys() para lista XD
+    pass
     
 
 def eliminarProducto():
@@ -166,15 +170,16 @@ while isVerdadero:
         agregarProducto()
     
     elif opcionUsuario == 2:
-        print("\n", "=" * 35)
-        print("¿Qué deseas modificar?")
+        # print("\n", "=" * 35)
+        # print("¿Qué deseas modificar?")
         
-        print("\n1. Nombre del Producto")
-        print("2. Precio del producto")
-        print("3. Cantidad del producto")
-        optionUser = validarOpcionUsuario("   >> Escoja una opción (1-3): ", 1, 3)
+        # print("\n1. Nombre del Producto")
+        # print("2. Precio del producto")
+        # print("3. Cantidad del producto")
+        # optionUser = validarOpcionUsuario("   >> Escoja una opción (1-3): ", 1, 3)
         
-        modificarProducto(optionUser)
+        # modificarProducto(optionUser)
+        pass
     
     elif opcionUsuario == 3:
         pass
