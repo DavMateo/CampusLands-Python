@@ -8,13 +8,20 @@ listaProductos = []
 
 
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
-def validarID(msj):
+def validarID(msj):    
     while True:
         try:
-            pass
+            id = int(input(msj))
+            
+            if id < 1:
+                print("Error: El ID debe ser superior o igual a 1, no se acepta números negativos.\n")
+                continue
+            return id
 
+        except ValueError:
+            print("Ha ocurrido un error al ingresar el ID del producto. Inténtelo de nuevo.\n")
         except:
-            print("")
+            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
 
 def validarNombre(msj):
@@ -74,7 +81,8 @@ def menu(msj):
 
 
 def agregarProducto():
-    pass
+    print("\n")
+    id = validarID("Ingrese el ID: ")
 
 
 def modificarProducto():
@@ -98,6 +106,6 @@ while isVerdadero:
     opcionUsuario = menu("   >> Escoja una opción (1-6): ")
     
     if opcionUsuario == 1:
-        pass
+        agregarProducto()
     
     isVerdadero = False
