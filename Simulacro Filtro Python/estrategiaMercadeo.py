@@ -4,7 +4,7 @@
 
 # DEFINIENDO LAS VARIABLES PRINCIPALES
 isVerdadero = True
-listaProductos = []
+diccionarioProducto = {}
 
 
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
@@ -121,11 +121,9 @@ def agregarProducto():
     nombreProducto = validarNombreProducto("Ingrese el nombre del producto: ")
     precio = validarPrecio("Ingrese el precio del producto: ")
     cantidad = validarCantidad("Ingrese la cantidad del producto: ")
+
+    diccionarioProducto[id] = [nombreProducto, precio, cantidad]
     
-    print(f"\nID: {id}")
-    print(f"NOMBRE: {nombreProducto}")
-    print(f"PRECIO: {precio}")
-    print(f"CANTIDAD: {cantidad}")
 
 def modificarProducto():
     pass
@@ -149,5 +147,41 @@ while isVerdadero:
     
     if opcionUsuario == 1:
         agregarProducto()
+        print(diccionarioProducto, len(diccionarioProducto))
     
-    isVerdadero = False
+    elif opcionUsuario == 2:
+        pass
+    
+    elif opcionUsuario == 3:
+        pass
+    
+    elif opcionUsuario == 4:
+        pass
+    
+    elif opcionUsuario == 5:
+        pass
+    
+    elif opcionUsuario == 6:
+        pass
+    
+    while True:
+        try:
+            continuar = input("\n¿Desea continuar? (S/N): ")
+            continuar = continuar.lower()
+            
+            if continuar != "s" and continuar != "n":
+                print("\nError: Has ingresado una opción inválida.")
+                continue
+            
+            if continuar == "s":
+                isVerdadero = True
+            elif continuar == "n":
+                isVerdadero = False
+                
+            break
+        
+        except Exception as e:
+            print("\nHa ocurrido un error al ingresar la opción.")
+            print(f"Error: {e}")
+        except:
+            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
