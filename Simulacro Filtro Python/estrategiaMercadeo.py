@@ -86,6 +86,22 @@ def validarCantidad(msj):
             print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
 
+def validarOpcionUsuario(msj, min, max):
+    while True:
+        try:
+            opcionUsuario = int(input(msj))
+            
+            if opcionUsuario < min or opcionUsuario > max:
+                print(f"\nError: Introduce una opción válida ({min}-{max}).")
+                continue
+            return opcionUsuario
+        
+        except ValueError:
+            print("\nHa ocurrido un error al ingresar la opción. Inténtelo de nuevo.")
+        except:
+            print("\nHa ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+
+
 # DEFINIENDO LAS FUNCIONES PERTINENTES
 def menu(msj):
     print("\n")
@@ -100,19 +116,7 @@ def menu(msj):
     print("5. Estrategia de mercadeo")
     print("6. Salir")
     
-    while True:
-        try:
-            opcionUsuario = int(input(msj))
-            
-            if opcionUsuario < 1 or opcionUsuario > 6:
-                print("\nError: Introduce una opción válida (1-6).")
-                continue
-            return opcionUsuario
-        
-        except ValueError:
-            print("\nHa ocurrido un error al ingresar la opción. Inténtelo de nuevo.")
-        except:
-            print("\nHa ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+    return validarOpcionUsuario(msj, 1, 6)
 
 
 def agregarProducto():
@@ -126,7 +130,13 @@ def agregarProducto():
     
 
 def modificarProducto():
-    pass
+    print("\n", "=" * 35)
+    print("¿Qué deseas modificar?")
+    
+    print("\n1. Nombre del Producto")
+    print("2. Precio del producto")
+    print("3. Cantidad del producto")
+    
 
 
 def eliminarProducto():
@@ -147,10 +157,9 @@ while isVerdadero:
     
     if opcionUsuario == 1:
         agregarProducto()
-        print(diccionarioProducto, len(diccionarioProducto))
     
     elif opcionUsuario == 2:
-        pass
+        modificarProducto()
     
     elif opcionUsuario == 3:
         pass
@@ -164,7 +173,7 @@ while isVerdadero:
     elif opcionUsuario == 6:
         pass
     
-    while True:
+    while isVerdadero:
         try:
             continuar = input("\n¿Desea continuar? (S/N): ")
             continuar = continuar.lower()
