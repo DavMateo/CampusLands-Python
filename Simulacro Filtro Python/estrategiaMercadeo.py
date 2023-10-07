@@ -102,6 +102,12 @@ def validarOpcionUsuario(msj, min, max):
             print("\nHa ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
 
 
+
+# DEFINIENDO LAS FUNCIONES ADICIONALES
+def extraerIdDiccionario(dict):
+    return dict.keys()
+
+
 # DEFINIENDO LAS FUNCIONES PERTINENTES
 def menu(msj):
     print("\n")
@@ -129,15 +135,11 @@ def agregarProducto():
     diccionarioProducto[id] = [nombreProducto, precio, cantidad]
     
 
-def modificarProducto():
-    print("\n", "=" * 35)
-    print("¿Qué deseas modificar?")
-    
-    print("\n1. Nombre del Producto")
-    print("2. Precio del producto")
-    print("3. Cantidad del producto")
-    
+def modificarProducto(opcionUsuario):    
+    test = extraerIdDiccionario(diccionarioProducto)
 
+    print()
+    
 
 def eliminarProducto():
     pass
@@ -155,11 +157,19 @@ def estrategiaMercadeo():
 while isVerdadero:
     opcionUsuario = menu("   >> Escoja una opción (1-6): ")
     
-    if opcionUsuario == 1:
+    if opcionUsuario == 1:        
         agregarProducto()
     
     elif opcionUsuario == 2:
-        modificarProducto()
+        print("\n", "=" * 35)
+        print("¿Qué deseas modificar?")
+        
+        print("\n1. Nombre del Producto")
+        print("2. Precio del producto")
+        print("3. Cantidad del producto")
+        optionUser = validarOpcionUsuario("   >> Escoja una opción (1-3): ", 1, 3)
+        
+        modificarProducto(optionUser)
     
     elif opcionUsuario == 3:
         pass
@@ -171,26 +181,4 @@ while isVerdadero:
         pass
     
     elif opcionUsuario == 6:
-        pass
-    
-    while isVerdadero:
-        try:
-            continuar = input("\n¿Desea continuar? (S/N): ")
-            continuar = continuar.lower()
-            
-            if continuar != "s" and continuar != "n":
-                print("\nError: Has ingresado una opción inválida.")
-                continue
-            
-            if continuar == "s":
-                isVerdadero = True
-            elif continuar == "n":
-                isVerdadero = False
-                
-            break
-        
-        except Exception as e:
-            print("\nHa ocurrido un error al ingresar la opción.")
-            print(f"Error: {e}")
-        except:
-            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+        isVerdadero = False
