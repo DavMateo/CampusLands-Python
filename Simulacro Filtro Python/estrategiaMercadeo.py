@@ -24,13 +24,28 @@ def validarID(msj):
             print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
 
-def validarNombre(msj):
+def validarNombreProducto(msj):
     while True:
         try:
-            pass
+            listaNombreProducto = []
+            nombreProducto = input(msj).strip()
+            nombreProductoArray = nombreProducto.split(" ")
+            
+            for i in range(len(nombreProductoArray)):
+                if nombreProductoArray[i] != "":
+                    listaNombreProducto.append(nombreProductoArray[i])
+            
+            nombreProductoValidar = "".join(listaNombreProducto).lower()
+            nombreProductoFinal = " ".join(listaNombreProducto).title()
+            
+            if len(listaNombreProducto) == 0 or not nombreProductoValidar.isalnum() or len(nombreProductoValidar) == 0 or nombreProductoValidar.isdigit():
+                print("\nError: Has ingresado un nombre inválido.")
+                continue
+            return nombreProductoFinal
 
-        except:
-            print("")
+        except Exception as e:
+            print("\nHa ocurrido un problema al ingresar el nombre del producto.")
+            print(f"Error: {e}")
 
 
 def validarPrecio(msj):
@@ -83,7 +98,8 @@ def menu(msj):
 def agregarProducto():
     print("\n")
     id = validarID("Ingrese el ID: ")
-
+    nombreProducto = validarNombreProducto("Ingrese el nombre del producto: ")
+    print(nombreProducto)
 
 def modificarProducto():
     pass
