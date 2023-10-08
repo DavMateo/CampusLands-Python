@@ -5,10 +5,19 @@
 
 # DEFINIENDO LAS VARIABLES PRINCIPALES
 isVerdadero = True
+listaEmpleados = []
 
 
 # DECLARANDO LAS FUNCIONES COMPLEMENTARIAS
-
+def filtrarTexto(text, min):
+    while True:
+        try:
+            pass
+            
+        except Exception as e:
+            print("Ha ocurrido un error al ingresar el nombre. Inténtelo de nuevo.")
+        except:
+            print("Ha ocurrio un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
 
 
 # DECLARANDO LAS FUNCIONES DE VALIDACIÓN
@@ -18,14 +27,14 @@ def validarOpcionUsuario(msj, min, max):
             opcion = int(input(msj))
             
             if opcion < int(min) or opcion > int(max):
-                print(f"Error: Ingresa un valor numérico válido ({min}-{max}).")
+                print(f"Error: Ingresa un valor numérico válido ({min}-{max}).\n")
                 continue
             return opcion
         
         except ValueError:
-            print("Ha ocurrio un error al ingresar su opción. Inténtelo de nuevo.")
+            print("Ha ocurrio un error al ingresar su opción. Inténtelo de nuevo.\n")
         except:
-            print("Ha ocurrio un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+            print("Ha ocurrio un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
 
 def validarId(idEmpl, min):
@@ -34,20 +43,53 @@ def validarId(idEmpl, min):
             id = int(input(idEmpl))
             
             if id < min:
-                print(f"Error: Debes ingresar un número igual o superior a {min}")
+                print(f"Error: Debes ingresar un número igual o superior a {min}\n")
                 continue
             return id
         
         except ValueError:
-            print("Ha ocurrio un error al registrar el ID. Inténtelo de nuevo.")
+            print("Ha ocurrido un error al registrar el ID. Inténtelo de nuevo.\n")
         except:
-            print("Ha ocurrio un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+            print("Ha ocurrio un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
     
     # QUEDÉ AQUÍ
 
 
-def validarNombre():
-    pass
+def validarNombre(msj):
+    while True:
+        try:
+            nombre = input(msj).strip()
+            nombreArray = nombre.split(" ")
+            nombreArrayFiltrado = []
+            
+            for n in nombreArray:
+                if n != "":
+                    nombreArrayFiltrado.append(n)
+            
+            nombreFiltradoValidar = "".join(nombreArrayFiltrado).lower()
+            nombreFinal = " ".join(nombreArrayFiltrado).title()
+            
+            if len(nombreArray) < 2:
+                print(f"Error: Debes ingresar al menos 1 nombre y 1 apellido.\n")
+                continue
+
+            elif len(nombreFiltradoValidar) == 0:
+                print("Error: Has ingresado un nombre vacío.")
+                continue
+                
+            elif not nombreFiltradoValidar.isalnum():
+                print("Error: El nombre no puede tener caracteres especiales.\n")
+                continue
+            
+            elif nombreFiltradoValidar.isdigit():
+                print("Error: El nombre no puede contener solo números.\n")
+                continue
+            return nombreFinal
+        
+        except Exception as e:
+            print("Ha ocurrido un error al ingresar el nombre. Inténtelo de nuevo.\n")
+        except:
+            print("Ha ocurrio un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
 
 def validarHorasTrabajadas():
@@ -76,10 +118,14 @@ def menu(msj):
 
 
 def agregarEmpleado(idEmpl, nombreEmpl, hrsTrabajoEmpl, valorHoraEmpl):
+    print("\n", "*** AGREGAR EMPLEADO ***")
+    
     id = validarId(idEmpl, 1)
     nombre = validarNombre(nombreEmpl)
-    horasTrabajadas = validarHorasTrabajadas(hrsTrabajoEmpl)
-    valorHora = validarValorHora(valorHoraEmpl)
+    # horasTrabajadas = validarHorasTrabajadas(hrsTrabajoEmpl)
+    # valorHora = validarValorHora(valorHoraEmpl)
+    
+    print(id, nombre)
 
 
 def modificarEmpleado():
