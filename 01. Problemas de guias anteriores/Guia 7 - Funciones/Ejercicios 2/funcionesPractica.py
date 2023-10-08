@@ -116,8 +116,13 @@ def textoNumero(msj):
     textoNumeros = "".join(textoFiltrarArray)
     return textoNumeros
 
-def IvaFactura(msj):
-    pass
+def ivaFactura(valor, iva):
+    print("\n", "*** CALCULAR EL IVA DE UNA FACTURA ***")
+    
+    valorProducto = validarNumero(valor, 0, False)
+    valorIva = (valorProducto * iva) / 100
+    
+    return valorProducto + valorIva
 
 
 # CREANDO LA ESTRUCTURA DEL PROGRAMA
@@ -134,10 +139,13 @@ while isVerdadero:
         textoFiltradoNumero = textoNumero("Ingrese el texto a filtrarle los números: ")
         
         print(f"Tu cadena de texto quedó así: {textoFiltradoNumero}")
-        input("Presione cualquier tecla para continuar...")
+        input("\nPresione cualquier tecla para continuar...")
     
     elif opcionUsuario == 3:
-        pass
+        valorTotal = ivaFactura("Introduce el valor del producto: ", 19)
+        
+        print(f"El precio total del producto con IVA es: ${valorTotal:,.0f} COP")
+        input("\nPresione cualquier tecla para continuar...")
     
     elif opcionUsuario == 4:
         print("\nSaliendo...")
