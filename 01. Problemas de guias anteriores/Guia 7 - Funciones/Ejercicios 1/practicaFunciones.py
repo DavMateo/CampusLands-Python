@@ -39,18 +39,19 @@ def validarNumero(num, min, max):
             print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
 
-def validarNumeroMoneda(num, min):
+def validarTexto(text):
     while True:
         try:
-            valor = float(input(num))
+            texto = input(text).strip()
             
-            if valor < float(min):
-                print("Error: El valor no puede ser un número negativo.")
+            if len(texto) == 0:
+                print("Error: La cadena de texto no puede estar vacía.\n")
                 continue
-            return valor
+            return texto        
         
-        except ValueError:
-            print("Ha ocurrido un error al ingresar el valor. Inténtelo de nuevo.\n")
+        except Exception as e:
+            print("Ha ocurrido un problema al ingresar el texto. Inténtelo de nuevo.")
+            print(f"Error: {e}\n")
         except:
             print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
@@ -98,7 +99,28 @@ def salarioEmpleado(msj, valorHora):
 
 
 def palabrasParrafo(msj):
-    pass
+    print("\n", "*** CALCULAR PALABRAS EN UN PÁRRAFO ***")
+    
+    while True:
+        try:
+            texto = validarTexto(msj)
+            textoArray = texto.split(" ")
+            count = 0
+
+            if texto.isdigit():
+                print("Error: La cadena de texto no puede contener solo números.\n")
+                continue
+            
+            for e in textoArray:
+                if e != "":
+                    count += 1
+            return count
+            
+        except Exception as e:
+            print("Ha ocurrido un problema al ingresar el texto. Inténtelo de nuevo.")
+            print(f"Error: {e}\n")
+        except:
+            print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
 
 
@@ -119,7 +141,10 @@ while isVerdadero:
         input("\nPresione cualquier tecla para continuar...")
     
     elif opcionUsuario == 3:
-        pass
+        cantidadPalabras = palabrasParrafo("Ingrese un texto o párrafo: ")
+        print(f"La cantidad de palabras que tiene el texto ingresado es de: {cantidadPalabras} palabras")
+        input("\nPresione cualquier tecla para continuar...")
     
     elif opcionUsuario == 4:
+        print("Saliendo...")
         isVerdadero = False
