@@ -92,12 +92,36 @@ def validarNombre(msj):
             print("Ha ocurrio un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
 
-def validarHorasTrabajadas():
-    pass
+def validarHorasTrabajadas(hrs, min, max):
+    while True:
+        try:
+            horas = int(input(hrs))
+            
+            if horas < min or horas > max:
+                print(f"Error: Ingrese un valor numérico positivo dentro del rango permitido ({min}-{max})\n")
+                continue
+            return horas
+        
+        except ValueError:
+            print("Ha ocurrido un error al ingresar las horas laboradas. Inténtelo de nuevo.\n")
+        except:
+            print("Ha ocurrio un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
 
-def validarValorHora():
-    pass
+def validarValorHora(valHr, min, max):
+    while True:
+        try:
+            valorHora = float(input(valHr))
+            
+            if valorHora < min or valorHora > max:
+                print(f"Error: Ingrese un valor válido dentro del rango permitido (${min} - ${max}).\n")
+                continue
+            return valorHora
+        
+        except ValueError:
+            print("Ha ocurrido un error al ingresar el valor de la hora laboral. Inténtelo de nuevo.\n")
+        except:
+            print("Ha ocurrio un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
 
 # DECLARANDO LAS FUNCIONES NECESARIAS
@@ -122,10 +146,12 @@ def agregarEmpleado(idEmpl, nombreEmpl, hrsTrabajoEmpl, valorHoraEmpl):
     
     id = validarId(idEmpl, 1)
     nombre = validarNombre(nombreEmpl)
-    # horasTrabajadas = validarHorasTrabajadas(hrsTrabajoEmpl)
-    # valorHora = validarValorHora(valorHoraEmpl)
+    horasTrabajadas = validarHorasTrabajadas(hrsTrabajoEmpl, 1, 160)
+    valorHora = validarValorHora(valorHoraEmpl, 8000, 150000)
     
-    print(id, nombre)
+    listaEmpleados.append([id, nombre, horasTrabajadas, valorHora])
+    print("\n", id, nombre, horasTrabajadas, valorHora)
+    print(listaEmpleados)
 
 
 def modificarEmpleado():
@@ -179,4 +205,5 @@ while isVerdadero:
         pass
     
     elif opcionUsuario == 8:
+        print("¡Gracias por usar nuestro software! Saliendo...")
         isVerdadero = False
