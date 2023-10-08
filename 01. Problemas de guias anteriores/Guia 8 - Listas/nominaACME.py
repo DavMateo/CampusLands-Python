@@ -154,27 +154,39 @@ def agregarEmpleado(idEmpl, nombreEmpl, hrsTrabajoEmpl, valorHoraEmpl):
     print(listaEmpleados)
 
 
-def modificarEmpleado():
+def modificarEmpleado(msj):
+    print("\n", "*** MODIFICAR EMPLEADO ***")
+    
+    print("¿Qué información del empleado desea modificar?")
+    print("1. Modificar el nombre")
+    print("2. Modificar las horas trabajadas")
+    print("3. Modificar el valor de la hora")
+    opcionUsuario = validarOpcionUsuario(msj, 1, 3)
+    
+    # Listar los empleados a modificar
+    print("\n{:<14} {:<30}".format("ID", "Nombre"))
+    
+    for e in range(len(listaEmpleados)):
+        print("{:<14} {:<30}".format(listaEmpleados[e][0], listaEmpleados[e][1]))
+
+
+def buscarEmpleado(msj):
     pass
 
 
-def buscarEmpleado():
+def eliminarEmpleado(msj):
     pass
 
 
-def eliminarEmpleado():
+def listarEmpleados(msj):
     pass
 
 
-def listarEmpleados():
+def listarNominaEmpleado(msj):
     pass
 
 
-def listarNominaEmpleado():
-    pass
-
-
-def listarNominas():
+def listarNominas(msj):
     pass
 
 
@@ -187,7 +199,7 @@ while isVerdadero:
         agregarEmpleado("ID: ", "Nombre: ", "Horas Trabajadas: ", "Valor de la Hora: ")
     
     elif opcionUsuario == 2:
-        pass
+        modificarEmpleado("   >> Elija una opción (1-3): ")
     
     elif opcionUsuario == 3:
         pass
