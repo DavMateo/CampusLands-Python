@@ -16,6 +16,17 @@ def factorial(num):
     
     return multiplicar
 
+def filtrarTexto(text):
+    textoArray = text.split(" ")
+    textoArrayFiltrada = []
+    
+    for i in range(len(textoArray)):
+        if textoArray[i] != "":
+            textoArrayFiltrada.append(textoArray[i])
+    
+    textoFinal = "".join(textoArrayFiltrada)
+    return textoFinal
+
 
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
 def validarOpcionUsuario(num, min, max):
@@ -60,10 +71,10 @@ def validarTexto(text, min):
         try:
             texto = input(text).strip()
             
-            if len(texto) == min or not texto.isalnum() or texto.isdigit():
-                print("Error: El texto NO puede estar vacía, tener caracteres especiales o solo números.")
+            if len(texto) == min or texto.isdigit():
+                print("Error: El texto NO puede estar vacía o tener solo números.\n")
                 continue
-            return texto
+            return filtrarTexto(texto)
         
         except Exception as e:
             print("Ha ocurrido un problema al momento de ingresar la cadena de texto.\n")
@@ -93,16 +104,17 @@ def calculoCombinatoria(num1, num2):
     return (factorial(n)) / (factorial(k) * (factorial(n-k)))
 
 def textoNumero(msj):
+    print("\n", "*** CONVERTIR TEXTO A NÚMERO ***")
+    
     texto = validarTexto(msj, 0)
-    textoArray = texto.split(" ")
-    textoArrayFiltrada = []
+    textoFiltrarArray = list()
     
-    for i in range(len(textoArray)):
-        if textoArray[i] != "":
-            textoArrayFiltrada.append(textoArray[i])
+    for n in texto:
+        if n.isdigit():
+            textoFiltrarArray.append(n)
     
-    textoValidar = "".join(textoArrayFiltrada)
-    textoFinal = " ".join()
+    textoNumeros = "".join(textoFiltrarArray)
+    return textoNumeros
 
 def IvaFactura(msj):
     pass
@@ -119,7 +131,10 @@ while isVerdadero:
         input("Presione cualquier tecla para continuar...")
     
     elif opcionUsuario == 2:
-        pass
+        textoFiltradoNumero = textoNumero("Ingrese el texto a filtrarle los números: ")
+        
+        print(f"Tu cadena de texto quedó así: {textoFiltradoNumero}")
+        input("Presione cualquier tecla para continuar...")
     
     elif opcionUsuario == 3:
         pass
