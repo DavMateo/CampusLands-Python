@@ -33,7 +33,18 @@ def encontrarEmpleado(msj, min):
                 posicion2 = j
                 checked = True
     
+    print(posicion1, posicion2, checked)
+    
     return [idBuscar, posicion1, posicion2, checked]
+
+
+def existenEmpleados():
+    cantidadEmpleados = len(listaEmpleados)
+    
+    if cantidadEmpleados == 0:
+        return False
+    elif cantidadEmpleados >= 1:
+        return True
 
 
 # DECLARANDO LAS FUNCIONES DE VALIDACIÓN
@@ -173,7 +184,15 @@ def agregarEmpleado(idEmpl, nombreEmpl, hrsTrabajoEmpl, valorHoraEmpl):
 
 def modificarEmpleado(msj):
     continuar = True
+    cantidadEmpleados = existenEmpleados()
     print("\n\n", "*** MODIFICAR EMPLEADO ***")
+    
+    # Validar si existe algún empleado añadido a la lista de empleados.
+    if not cantidadEmpleados:
+        print("\nError: Imposible acceder a este sub-programa.")
+        print("Motivo: No hay usuarios añadidos al sistema.")
+        input()
+        return
         
     while continuar:
         print("\n¿Qué información del empleado desea modificar?")
@@ -208,14 +227,14 @@ def modificarEmpleado(msj):
         
         # Modificar las horas trabajadas de un empleado
         elif opcionUsuario == 2:
-            print(f"Horas trabajadas anterior: {listaEmpleados[elegirEmpleado-1][2]}")
+            print(f"\nHoras trabajadas anterior: {listaEmpleados[elegirEmpleado-1][2]}")
             nuevasHorasTrabajadas = validarHorasTrabajadas("Nueva cantidad de horas trabajadas: ", 1, 160)
             
             listaEmpleados[elegirEmpleado-1][2] = nuevasHorasTrabajadas
             
         # Modificar el valor de la hora de un empleado
         elif opcionUsuario == 3:
-            print(f"Horas trabajadas anterior: {listaEmpleados[elegirEmpleado-1][3]}")
+            print(f"\nValor de la Hora anterior: {listaEmpleados[elegirEmpleado-1][3]}")
             nuevoValorHora = validarHorasTrabajadas("Nuevo valor de la hora para el empleado: ", 8000, 150000)
             
             listaEmpleados[elegirEmpleado-1][3] = nuevoValorHora
@@ -231,12 +250,20 @@ def modificarEmpleado(msj):
 
 def buscarEmpleado(msj, validar):
     continuar = True
+    cantidadEmpleados = existenEmpleados()
     
     # Condicional if-else para que muestre o no el mensaje del sub-programa al iniciarse
     if validar:
         pass
     else:
         print("\n\n", "*** BUSCAR EMPLEADO ***")
+        
+    # Validar si existe algún empleado añadido a la lista de empleados.
+    if not cantidadEmpleados:
+        print("Error: Imposible acceder a esta parte del programa.")
+        print("Motivo: No hay usuarios añadidos al sistema.")
+        input()
+        return
     
     while continuar:
         eliminarEmpleado = validar
