@@ -20,6 +20,22 @@ def filtrarTexto(text, min):
             print("Ha ocurrio un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
 
 
+def encontrarEmpleado(msj, min):
+    idBuscar = validarId(msj, min)
+    
+    if idBuscar == 0:
+        return [idBuscar, None, None, False]
+    
+    for i in range(len(listaEmpleados)):
+        for j in range(len(listaEmpleados[i])):
+            if listaEmpleados[i][j] == idBuscar:
+                posicion1 = i
+                posicion2 = j
+                checked = True
+    
+    return [idBuscar, posicion1, posicion2, checked]
+
+
 # DECLARANDO LAS FUNCIONES DE VALIDACIÓN
 def validarOpcionUsuario(msj, min, max):
     while True:
@@ -218,20 +234,12 @@ def buscarEmpleado(msj):
     print("\n\n", "*** BUSCAR EMPLEADO ***")
     
     while continuar:
-        checked = False
-        eliminarEmpleado = False
-        idBuscar = validarId(msj, 0)
+        # eliminarEmpleado = False
+        idBuscar, posicion1, posicion2, checked = encontrarEmpleado(msj, 0)
         
         if idBuscar == 0:
             continuar = False
             break
-        
-        for i in range(len(listaEmpleados)):
-            for j in range(len(listaEmpleados[i])):
-                if listaEmpleados[i][j] == idBuscar:
-                    posicion1 = i
-                    # posicion2 = j
-                    checked = True
                 
         if not checked:
             print(f"\nEl empleado con el ID '{idBuscar}' no ha sido ingresado.")
@@ -270,7 +278,7 @@ def buscarEmpleado(msj):
             continuar = False
 
 
-def eliminarEmpleado(msj):
+def eliminarEmpleado(msj, validar):
     empleadoEliminado = buscarEmpleado(msj)
 
 
@@ -297,10 +305,10 @@ while isVerdadero:
         modificarEmpleado("  >> Elija una opción (1-3) o elija 0 para salir al menú: ")
     
     elif opcionUsuario == 3:
-        buscarEmpleado("Ingrese el ID del empleado a buscar (Escriba 0 para volver al menú): ")
+        buscarEmpleado("Ingrese el ID del empleado a buscar (Escriba 0 para volver al menú): ", False)
     
     elif opcionUsuario == 4:
-        eliminarEmpleado("Ingrese el ID del empleado que desea eliminar (Escriba 0 para volver al menú): ")
+        eliminarEmpleado("Ingrese el ID del empleado que desea eliminar (Escriba 0 para volver al menú): ", True)
     
     elif opcionUsuario == 5:
         pass
