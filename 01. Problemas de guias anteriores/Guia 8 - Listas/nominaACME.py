@@ -9,15 +9,19 @@ listaEmpleados = []
 
 
 # DECLARANDO LAS FUNCIONES COMPLEMENTARIAS
-def filtrarTexto(text, min):
-    while True:
-        try:
-            pass
-            
-        except Exception as e:
-            print("Ha ocurrido un error al ingresar el nombre. Inténtelo de nuevo.")
-        except:
-            print("Ha ocurrio un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.")
+def filtrarTexto(text):
+    nombre = input(text).strip()
+    nombreArray = nombre.split(" ")
+    nombreArrayFiltrado = []
+    
+    for n in nombreArray:
+        if n != "":
+            nombreArrayFiltrado.append(n)
+    
+    nombreFiltradoValidar = "".join(nombreArrayFiltrado).lower()
+    nombreFinal = " ".join(nombreArrayFiltrado).title()
+    
+    return [nombreArray, nombreArrayFiltrado, nombreFiltradoValidar, nombreFinal]
 
 
 def encontrarEmpleado(msj, min):
@@ -85,16 +89,7 @@ def validarId(idEmpl, min):
 def validarNombre(msj):
     while True:
         try:
-            nombre = input(msj).strip()
-            nombreArray = nombre.split(" ")
-            nombreArrayFiltrado = []
-            
-            for n in nombreArray:
-                if n != "":
-                    nombreArrayFiltrado.append(n)
-            
-            nombreFiltradoValidar = "".join(nombreArrayFiltrado).lower()
-            nombreFinal = " ".join(nombreArrayFiltrado).title()
+            nombreArray, nombreArrayFiltrado, nombreFiltradoValidar, nombreFinal = filtrarTexto(msj)
             
             if len(nombreArray) < 2:
                 print(f"Error: Debes ingresar al menos 1 nombre y 1 apellido.\n")
@@ -234,8 +229,8 @@ def modificarEmpleado(msj):
             
         # Modificar el valor de la hora de un empleado
         elif opcionUsuario == 3:
-            print(f"\nValor de la Hora anterior: {listaEmpleados[elegirEmpleado-1][3]}")
-            nuevoValorHora = validarHorasTrabajadas("Nuevo valor de la hora para el empleado: ", 8000, 150000)
+            print(f"\nValor de la Hora anterior: ${listaEmpleados[elegirEmpleado-1][3]:,.0f} COP")
+            nuevoValorHora = validarHorasTrabajadas("Nuevo valor de la hora para el empleado: $", 8000, 150000)
             
             listaEmpleados[elegirEmpleado-1][3] = nuevoValorHora
         
@@ -351,7 +346,7 @@ def eliminarEmpleado(msj, validar):
 
 
 def listarEmpleados(msj):
-    pass
+    print("\n", "*** LISTAR EMPLEADOS ***")
 
 
 def listarNominaEmpleado(msj):
