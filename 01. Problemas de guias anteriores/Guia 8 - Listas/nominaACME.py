@@ -53,18 +53,28 @@ def existenEmpleados():
 
 def listarEmpleadosPaginacion(list, cant):
     continuar = True
+    iterado = 0
     count = 1
+    cantidadEmpleadosLista = len(list)
     
     while continuar:
         while count < cant:
             for i in range(count-1, len(list)):
                 id, nombre, hrsLab, valHrs = list[i]
                 print("{:<14} {:<30} {:<18} {:<15}".format(id, nombre, f"{hrsLab} hrs", f"${valHrs:,.0f} COP"))
-                # checked = True
                 count += 1
                 
                 if count == 6:
+                    iterado += 1
                     break
+            
+            
+            if iterado > 2:
+                # Determinar si ya no quedan más elementos por mostrar en consola.
+                if count == (cant - (count - len(listaEmpleados))) + 1:
+                    checked = True
+                    input()
+                    return
         
         
             # Verificar si el usuario desea continuar con la paginación de más información.
