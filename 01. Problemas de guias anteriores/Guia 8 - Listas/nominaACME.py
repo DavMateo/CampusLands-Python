@@ -51,6 +51,33 @@ def existenEmpleados():
         return True
 
 
+def listarEmpleadosPaginacion(list, cant):
+    continuar = True
+    count = 1
+    
+    while continuar:
+        while count < cant:
+            for i in range(count-1, len(list)):
+                id, nombre, hrsLab, valHrs = list[i]
+                print("{:<14} {:<30} {:<18} {:<15}".format(id, nombre, f"{hrsLab} hrs", f"${valHrs:,.0f} COP"))
+                # checked = True
+                count += 1
+                
+                if count == 6:
+                    break
+        
+        
+            # Verificar si el usuario desea continuar con la paginación de más información.
+            continuarMostrarInfo = validarOpcionUsuario("\n¿Desea ver más información? (1 SI / 0 NO): ", 0, 1)
+            if continuarMostrarInfo == 1:
+                cant += cant
+                continue
+            
+            elif continuarMostrarInfo == 0:
+                return False
+                
+
+
 # DECLARANDO LAS FUNCIONES DE VALIDACIÓN
 def validarOpcionUsuario(msj, min, max):
     while True:
@@ -350,7 +377,6 @@ def listarEmpleados():
     continuar = True
     checked = False
     cantidadEmpleados = existenEmpleados()
-    listarInfoEmpleado = []
     print("\n\n", "*** LISTAR EMPLEADOS ***")
     
     # Validar si existe algún empleado añadido a la lista de empleados.
@@ -365,7 +391,11 @@ def listarEmpleados():
         print("\n{:<14} {:<30} {:<18} {:<15}".format("ID", "Nombre", "Horas laboradas", "Valor hora"))
         
         if len(listaEmpleados) > 5:
-            pass
+            valorRetorno = listarEmpleadosPaginacion(listaEmpleados, 5)
+            
+            if not valorRetorno:
+                continuar = False
+                return
         
         elif len(listaEmpleados) <= 5:
             for i in range(len(listaEmpleados)):
