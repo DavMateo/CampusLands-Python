@@ -219,6 +219,7 @@ def buscarEmpleado(msj):
     
     while continuar:
         checked = False
+        eliminarEmpleado = False
         idBuscar = validarId(msj, 0)
         
         if idBuscar == 0:
@@ -245,6 +246,22 @@ def buscarEmpleado(msj):
             print(f"Valor de la hora: ${valorHoraInfo:,.0f} COP")
             input()
         
+        
+        # Pequeña validación para enviar a la función "eliminarEmpleado()" y continuar con el punto 4.
+        if eliminarEmpleado:
+            while True:
+                try:
+                    elementoEliminado = listaEmpleados.pop(posicion1)
+                    
+                    if len(elementoEliminado) == 0 or not elementoEliminado:
+                        print("El usuario no se ha eliminado correctamente. Inténtelo de nuevo.")
+                        return [elementoEliminado, False]
+                    return [elementoEliminado, True]
+                
+                except Exception as e:
+                    print("Mensaje de Error:", {e})
+        
+        
         continuarBuscar = validarOpcionUsuario("¿Desea buscar otro empleado? (1 SI / 0 NO): ", 0, 1)
         
         if continuarBuscar == 1:
@@ -254,7 +271,7 @@ def buscarEmpleado(msj):
 
 
 def eliminarEmpleado(msj):
-    pass
+    empleadoEliminado = buscarEmpleado(msj)
 
 
 def listarEmpleados(msj):
@@ -283,7 +300,7 @@ while isVerdadero:
         buscarEmpleado("Ingrese el ID del empleado a buscar (Escriba 0 para volver al menú): ")
     
     elif opcionUsuario == 4:
-        pass
+        eliminarEmpleado("Ingrese el ID del empleado que desea eliminar (Escriba 0 para volver al menú): ")
     
     elif opcionUsuario == 5:
         pass
