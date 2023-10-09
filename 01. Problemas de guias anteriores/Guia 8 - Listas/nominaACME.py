@@ -42,7 +42,7 @@ def validarId(idEmpl, min):
         try:
             id = int(input(idEmpl))
             
-            if id < min:
+            if id < int(min):
                 print(f"Error: Debes ingresar un número igual o superior a {min}\n")
                 continue
             return id
@@ -97,7 +97,7 @@ def validarHorasTrabajadas(hrs, min, max):
         try:
             horas = int(input(hrs))
             
-            if horas < min or horas > max:
+            if horas < int(min) or horas > int(max):
                 print(f"Error: Ingrese un valor numérico positivo dentro del rango permitido ({min}-{max})\n")
                 continue
             return horas
@@ -113,7 +113,7 @@ def validarValorHora(valHr, min, max):
         try:
             valorHora = float(input(valHr))
             
-            if valorHora < min or valorHora > max:
+            if valorHora < int(min) or valorHora > int(max):
                 print(f"Error: Ingrese un valor válido dentro del rango permitido (${min} - ${max}).\n")
                 continue
             return valorHora
@@ -126,7 +126,7 @@ def validarValorHora(valHr, min, max):
 
 # DECLARANDO LAS FUNCIONES NECESARIAS
 def menu(msj):
-    print("\n", "*** NOMINA ACME ***")
+    print("\n\n", "*** NOMINA ACME ***")
     print(" " * 8, "MENÚ")
     
     print("\n1. Agregar empleado")
@@ -143,6 +143,7 @@ def menu(msj):
 
 def agregarEmpleado(idEmpl, nombreEmpl, hrsTrabajoEmpl, valorHoraEmpl):
     print("\n", "*** AGREGAR EMPLEADO ***")
+    print("Ingrese la siguiente información sobre el nuevo empleado:")
     
     id = validarId(idEmpl, 1)
     nombre = validarNombre(nombreEmpl)
@@ -155,23 +156,101 @@ def agregarEmpleado(idEmpl, nombreEmpl, hrsTrabajoEmpl, valorHoraEmpl):
 
 
 def modificarEmpleado(msj):
-    print("\n", "*** MODIFICAR EMPLEADO ***")
-    
-    print("¿Qué información del empleado desea modificar?")
-    print("1. Modificar el nombre")
-    print("2. Modificar las horas trabajadas")
-    print("3. Modificar el valor de la hora")
-    opcionUsuario = validarOpcionUsuario(msj, 1, 3)
-    
-    # Listar los empleados a modificar
-    print("\n{:<14} {:<30}".format("ID", "Nombre"))
-    
-    for e in range(len(listaEmpleados)):
-        print("{:<14} {:<30}".format(listaEmpleados[e][0], listaEmpleados[e][1]))
+    continuar = True
+    print("\n\n", "*** MODIFICAR EMPLEADO ***")
+        
+    while continuar:
+        print("\n¿Qué información del empleado desea modificar?")
+        print("1. Modificar el nombre")
+        print("2. Modificar las horas trabajadas")
+        print("3. Modificar el valor de la hora")
+        opcionUsuario = validarOpcionUsuario(msj, 0, 3)
+        
+        if opcionUsuario == 0:
+            break
+        
+        # Listar los empleados a modificar
+        print("\n{:<7} {:<14} {:<30}".format("N°", "ID", "Nombre"))
+        
+        for i in range(len(listaEmpleados)):
+            print("{:<7} {:<14} {:<30}".format(f"{i+1}", listaEmpleados[i][0], listaEmpleados[i][1]))
+            
+        elegirEmpleado = validarOpcionUsuario("\n  >> ¿Cuál es el número (N°) del empleado a modificar? Escriba 0 para salir al submenú: ", 0, i+1)
+        
+        
+        # Verificar que el usuario no haya desistido
+        if elegirEmpleado == 0:
+            continue
+        
+        
+        # Modificar el nombre de un empleado        
+        if opcionUsuario == 1:
+            print(f"\nNombre anterior: {listaEmpleados[elegirEmpleado-1][1]}")
+            nuevoNombre = validarNombre("Nuevo nombre: ")
+            
+            listaEmpleados[elegirEmpleado-1][1] = nuevoNombre
+        
+        # Modificar las horas trabajadas de un empleado
+        elif opcionUsuario == 2:
+            print(f"Horas trabajadas anterior: {listaEmpleados[elegirEmpleado-1][2]}")
+            nuevasHorasTrabajadas = validarHorasTrabajadas("Nueva cantidad de horas trabajadas: ", 1, 160)
+            
+            listaEmpleados[elegirEmpleado-1][2] = nuevasHorasTrabajadas
+            
+        # Modificar el valor de la hora de un empleado
+        elif opcionUsuario == 3:
+            print(f"Horas trabajadas anterior: {listaEmpleados[elegirEmpleado-1][3]}")
+            nuevoValorHora = validarHorasTrabajadas("Nuevo valor de la hora para el empleado: ", 8000, 150000)
+            
+            listaEmpleados[elegirEmpleado-1][3] = nuevoValorHora
+        
+        # Validar si el usuario desea modificar otro usuario
+        continuarModificar = validarOpcionUsuario("¿Deseas modificar algún otro usuario? (1 SI / 0 NO): ", 0, 1)
+        
+        if continuarModificar == 1:
+            continuar = True
+        elif continuarModificar == 0:
+            continuar = False
 
 
 def buscarEmpleado(msj):
-    pass
+    continuar = True
+    print("\n\n", "*** BUSCAR EMPLEADO ***")
+    
+    while continuar:
+        checked = False
+        idBuscar = validarId(msj, 0)
+        
+        if idBuscar == 0:
+            continuar = False
+            break
+        
+        for i in range(len(listaEmpleados)):
+            for j in range(len(listaEmpleados[i])):
+                if listaEmpleados[i][j] == idBuscar:
+                    posicion1 = i
+                    # posicion2 = j
+                    checked = True
+                
+        if not checked:
+            print(f"\nEl empleado con el ID '{idBuscar}' no ha sido ingresado.")
+            continue
+        
+        else:
+            idInfo, nombreInfo, horasTrabajadasInfo, valorHoraInfo = listaEmpleados[posicion1]
+            
+            print(f"\n=== ID {idInfo} ===")
+            print("Nombre:", nombreInfo)
+            print(f"Horas trabajadas: {horasTrabajadasInfo} hrs")
+            print(f"Valor de la hora: ${valorHoraInfo:,.0f} COP")
+            input()
+        
+        continuarBuscar = validarOpcionUsuario("¿Desea buscar otro empleado? (1 SI / 0 NO): ", 0, 1)
+        
+        if continuarBuscar == 1:
+            continuar = True
+        elif continuarBuscar == 0:
+            continuar = False
 
 
 def eliminarEmpleado(msj):
@@ -195,14 +274,13 @@ while isVerdadero:
     opcionUsuario = menu("   >> Ingrese una opción (1-8): ")
     
     if opcionUsuario == 1:
-        print("Ingrese la siguiente información sobre el nuevo empleado:")
         agregarEmpleado("ID: ", "Nombre: ", "Horas Trabajadas: ", "Valor de la Hora: ")
     
     elif opcionUsuario == 2:
-        modificarEmpleado("   >> Elija una opción (1-3): ")
+        modificarEmpleado("  >> Elija una opción (1-3) o elija 0 para salir al menú: ")
     
     elif opcionUsuario == 3:
-        pass
+        buscarEmpleado("Ingrese el ID del empleado a buscar (Escriba 0 para volver al menú): ")
     
     elif opcionUsuario == 4:
         pass
@@ -217,5 +295,5 @@ while isVerdadero:
         pass
     
     elif opcionUsuario == 8:
-        print("¡Gracias por usar nuestro software! Saliendo...")
+        print("\n¡Gracias por usar nuestro software! Saliendo...")
         isVerdadero = False
