@@ -189,6 +189,7 @@ def modificarEmpleado(msj):
         input()
         return
         
+        
     while continuar:
         print("\n¿Qué información del empleado desea modificar?")
         print("1. Modificar el nombre")
@@ -345,8 +346,38 @@ def eliminarEmpleado(msj, validar):
     return elementoEliminado
 
 
-def listarEmpleados(msj):
-    print("\n", "*** LISTAR EMPLEADOS ***")
+def listarEmpleados():
+    continuar = True
+    checked = False
+    cantidadEmpleados = existenEmpleados()
+    listarInfoEmpleado = []
+    print("\n\n", "*** LISTAR EMPLEADOS ***")
+    
+    # Validar si existe algún empleado añadido a la lista de empleados.
+    if not cantidadEmpleados:
+        print("\nError: Imposible acceder a este sub-programa.")
+        print("Motivo: No hay usuarios añadidos al sistema.")
+        input()
+        return
+
+    
+    while continuar:
+        print("\n{:<14} {:<30} {:<18} {:<15}".format("ID", "Nombre", "Horas laboradas", "Valor hora"))
+        
+        if len(listaEmpleados) > 5:
+            pass
+        
+        elif len(listaEmpleados) <= 5:
+            for i in range(len(listaEmpleados)):
+                id, nombre, hrsLab, valHrs = listaEmpleados[i]
+                print("{:<14} {:<30} {:<18} {:<15}".format(id, nombre, f"{hrsLab} hrs", f"${valHrs:,.0f} COP"))
+                checked = True
+
+        if checked:
+            input()
+            continuar = False
+            return
+            
 
 
 def listarNominaEmpleado(msj):
@@ -374,7 +405,7 @@ while isVerdadero:
         empleadoBorrado = eliminarEmpleado("Ingrese el ID del empleado que desea eliminar (Escriba 0 para volver al menú): ", True)
     
     elif opcionUsuario == 5:
-        pass
+        listarEmpleados()
     
     elif opcionUsuario == 6:
         pass
