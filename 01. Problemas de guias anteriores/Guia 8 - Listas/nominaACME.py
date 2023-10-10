@@ -51,40 +51,32 @@ def existenEmpleados():
         return True
 
 
-def listarEmpleadosPaginacion(list, cant):
+def listarEmpleadosPaginacion(list, cant, count, iterado):
     continuar = True
-    iterado = 0
-    count = 1
     cantidadEmpleadosLista = len(list)
     
     while continuar:
         while count < cant:
-            for i in range(count-1, len(list)):
+            for i in range(count, len(list)):
                 id, nombre, hrsLab, valHrs = list[i]
                 print("{:<14} {:<30} {:<18} {:<15}".format(id, nombre, f"{hrsLab} hrs", f"${valHrs:,.0f} COP"))
                 count += 1
                 
-                if count == 6:
-                    iterado += 1
-                    break
-            
-            
-            if iterado > 2:
-                # Determinar si ya no quedan más elementos por mostrar en consola.
-                if count == (cant - (count - len(listaEmpleados))) + 1:
-                    checked = True
-                    input()
-                    return
+                if count == 5 * iterado:
+                    return count
+                
+                if count == cantidadEmpleadosLista:
+                    return True
         
         
             # Verificar si el usuario desea continuar con la paginación de más información.
-            continuarMostrarInfo = validarOpcionUsuario("\n¿Desea ver más información? (1 SI / 0 NO): ", 0, 1)
-            if continuarMostrarInfo == 1:
-                cant += cant
-                continue
+            # continuarMostrarInfo = validarOpcionUsuario("\n¿Desea ver más información? (1 SI / 0 NO): ", 0, 1)
+            # if continuarMostrarInfo == 1:
+            #     cant += cant
+            #     continue
             
-            elif continuarMostrarInfo == 0:
-                return False
+            # elif continuarMostrarInfo == 0:
+            #     return False
                 
 
 
@@ -399,13 +391,32 @@ def listarEmpleados():
     
     while continuar:
         print("\n{:<14} {:<30} {:<18} {:<15}".format("ID", "Nombre", "Horas laboradas", "Valor hora"))
+        count = 0
+        iterado = 1
         
         if len(listaEmpleados) > 5:
-            valorRetorno = listarEmpleadosPaginacion(listaEmpleados, 5)
-            
-            if not valorRetorno:
-                continuar = False
-                return
+            while True:
+                # La variable contador almacenará el retorno de la función (Número o booleano)
+                # Si es número, significa que aún queda elementos por mostrar y se prepara una nueva paginación
+                # Pero si recibe un booleano (True), entonces significa que se han mostrado todos los empleados, regresando al menú.
+                contador = listarEmpleadosPaginacion(listaEmpleados, len(listaEmpleados), count, iterado)
+                
+                # Este if permite que se salga del sub-programa cuando ya no hayan más elementos por mostrar
+                if contador == True:
+                    input()
+                    return
+                
+                else:
+                    # Verificar si el usuario desea continuar con la paginación de más información.
+                    continuarMostrarInfo = validarOpcionUsuario("\n¿Desea ver más información? (1 SI / 0 NO): ", 0, 1)
+                    if continuarMostrarInfo == 1:
+                        iterado += 1
+                        count += contador
+                        continue
+                
+                    # Sale de la función si el usuario desiste en ver más empleados
+                    elif continuarMostrarInfo == 0:
+                        return False
         
         elif len(listaEmpleados) <= 5:
             for i in range(len(listaEmpleados)):
@@ -413,6 +424,7 @@ def listarEmpleados():
                 print("{:<14} {:<30} {:<18} {:<15}".format(id, nombre, f"{hrsLab} hrs", f"${valHrs:,.0f} COP"))
                 checked = True
 
+        # Se ejecuta este if solo si el for anterior se ha completado exitosamente
         if checked:
             input()
             continuar = False
