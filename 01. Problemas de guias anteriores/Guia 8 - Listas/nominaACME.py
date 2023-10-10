@@ -431,7 +431,6 @@ def listarEmpleados():
             return
             
 
-
 def listarNominaEmpleado(msj):
     pass
 
