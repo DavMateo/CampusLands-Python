@@ -77,7 +77,10 @@ def listarEmpleadosPaginacion(list, cant, count, iterado):
             
             # elif continuarMostrarInfo == 0:
             #     return False
-                
+
+
+def calcularNomina():
+    pass
 
 
 # DECLARANDO LAS FUNCIONES DE VALIDACIÓN
@@ -288,10 +291,10 @@ def buscarEmpleado(msj, validar):
         print("Error: Imposible acceder a esta parte del programa.")
         print("Motivo: No hay usuarios añadidos al sistema.")
         input()
-        return
+        return False
     
     while continuar:
-        eliminarEmpleado = validar
+        retornarIdEmpleado = validar
         valorRetornado = encontrarEmpleado(msj, 0)
         
         if len(valorRetornado) == 1:
@@ -313,7 +316,7 @@ def buscarEmpleado(msj, validar):
             continue
         
         else:
-            if eliminarEmpleado:
+            if retornarIdEmpleado:
                 return [idBuscar, posicion1, posicion2]
             
             # En caso de que no se quiera eliminar un usuario entonces buscará el usuario.
@@ -431,7 +434,21 @@ def listarEmpleados():
             return
             
 
-def listarNominaEmpleado(msj):
+def listarNominaEmpleado(msj, validar):
+    # continuar = True
+    # print("\n", "*** LISTAR LA NÓMINA DE UN EMPLEADO ***")
+    
+    # while continuar:
+    #     valorRetorno = buscarEmpleado(msj, validar)
+        
+    #     if not valorRetorno:
+    #         return False
+        
+    #     else:
+    #         idEmpleado, posicion1, posicion2 = valorRetorno
+            
+    #         print(idEmpleado, posicion1, posicion2)
+    #         nominaResultado = calcularNomina()
     pass
 
 
@@ -459,7 +476,7 @@ while isVerdadero:
         listarEmpleados()
     
     elif opcionUsuario == 6:
-        pass
+        listarNominaEmpleado("Ingrese el ID del empleado al que desea conocer la nómina: (Escriba 0 para volver al menú): ", True)
     
     elif opcionUsuario == 7:
         pass
