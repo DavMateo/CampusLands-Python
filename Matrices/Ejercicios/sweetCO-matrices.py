@@ -10,13 +10,7 @@ matrizVentas = [
     [45, 50, 56, 65, 47, 57, 68],
     [18, 25, 33, 21, 22, 28, 32]
 ]
-
-
-# FUNCIONES COMPLEMENTARIAS
-
-
-# FUNCIONES DE VALIDACIÓN
-
+diaSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
 
 
 # FUNCIONES PRINCIPALES
@@ -27,7 +21,6 @@ def calcularProductoMaxIngresoSemana(matrizVentas, matrizPrecios):
     for f in range(filas):
         listaTotalVentas[f] = sum(matrizVentas[f]) * matrizPrecios[f]
     
-    print(listaTotalVentas)
     maxVentas = max(listaTotalVentas)
     productoMaxVentas = listaTotalVentas.index(maxVentas) + 1
     
@@ -37,22 +30,31 @@ def calcularProductoMaxIngresoSemana(matrizVentas, matrizPrecios):
 def calcularDiaSemanaMaxIngresos(matrizVentas, matrizPrecios):
     columnas = len(matrizVentas[0])
     listaTotalIngresos = [0] * columnas
-    countRow = 0
+    count = 0
     countCol = 0
     
-    for f in range(len(matrizVentas)):
-        for c in range(countCol, countCol+1):
-            listaTotalIngresos[c] = [matrizVentas[f][c]]
-            countCol += 1
-        
-        # countRow += 1
-    # Terminar el algoritmo
+    
+    while count < columnas:
+        for f in range(len(matrizVentas)):
+            for c in range(countCol, countCol+1):
+                listaTotalIngresos[c] += matrizVentas[f][c]
+                
+        countCol += 1 
+        count += 1
+    
+    maxIngresos = max(listaTotalIngresos)
+    diaMaxIngresos = listaTotalIngresos.index(maxIngresos) + 1
+    
+    return diaMaxIngresos
 
 
 # ESTRUCTURA DEL PROGRAMA
+print("")
 productoMaxIngresoSemana = calcularProductoMaxIngresoSemana(matrizVentas, matrizPrecios)
 print(f"El producto que más genera ingresos en la semana es: {productoMaxIngresoSemana}")
 
-print("\n\n")
 diaMaxIngresoSemana = calcularDiaSemanaMaxIngresos(matrizVentas, matrizPrecios)
-print(f"El día que más se genera ingresos es el: {diaMaxIngresoSemana}")
+
+for i in range(diaMaxIngresoSemana):
+    if i == diaMaxIngresoSemana - 1:
+        print(f"El día que más se genera ingresos es el: {diaSemana[i]}")
