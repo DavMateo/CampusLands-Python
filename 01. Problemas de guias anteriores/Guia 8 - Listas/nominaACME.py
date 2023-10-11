@@ -474,12 +474,14 @@ def listarNominaEmpleado(msj, validar):
             nominaResultado = calcularNomina(posicion1)
             listaEmpleados[posicion1].append(nominaResultado)
             
-            print("\n", f"=== {idEmpleado} ===")
+            print("\n", f"==== {idEmpleado} ====")
+            # print(nominaResultado)
             
             print(f"\nID: {id}")
             print(f"Nombre: {nombre}")
             print(f"Horas Trabajadas: {horasTrabajadas} hrs")
-            print(f"Valor Hora: ${valorHora:,.0f} COP\n")
+            print(f"Valor Hora: ${valorHora:,.0f} COP")
+            print(f"Valor nómina: ${nominaResultado:,.0f} COP\n")
     pass
 
 
