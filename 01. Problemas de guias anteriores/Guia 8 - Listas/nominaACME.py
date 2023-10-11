@@ -6,6 +6,8 @@
 # DEFINIENDO LAS VARIABLES PRINCIPALES
 isVerdadero = True
 listaEmpleados = []
+smmlv = 1160000
+subsidioTransporte = 140606
 
 
 # DECLARANDO LAS FUNCIONES COMPLEMENTARIAS
@@ -79,8 +81,29 @@ def listarEmpleadosPaginacion(list, cant, count, iterado):
             #     return False
 
 
-def calcularNomina():
-    pass
+def calcularNomina(posicion1):
+    descuentoEPS = 4
+    descuentoPension = 4
+    
+    
+    #Salario Bruto
+    hrsLaboradas = listaEmpleados[posicion1][2]
+    valorhrs = listaEmpleados[posicion1][3]
+    salarioBruto = valorhrs * hrsLaboradas
+    
+    
+    #Salario Neto
+    salarioBruto -= (salarioBruto * descuentoEPS) / 100
+    salarioBruto -= (salarioBruto * descuentoPension) / 100
+    
+    #Verificar si el empleado aplica para el subsidio de transporte
+    if salarioBruto < smmlv:
+        salarioNeto = salarioBruto + subsidioTransporte
+        return salarioNeto
+    
+    elif salarioBruto > smmlv:
+        salarioNeto = salarioBruto
+        return salarioNeto
 
 
 # DECLARANDO LAS FUNCIONES DE VALIDACIÓN
@@ -435,20 +458,25 @@ def listarEmpleados():
             
 
 def listarNominaEmpleado(msj, validar):
-    # continuar = True
-    # print("\n", "*** LISTAR LA NÓMINA DE UN EMPLEADO ***")
+    continuar = True
+    print("\n", "*** LISTAR LA NÓMINA DE UN EMPLEADO ***")
     
-    # while continuar:
-    #     valorRetorno = buscarEmpleado(msj, validar)
+    while continuar:
+        valorRetorno = buscarEmpleado(msj, validar)
         
-    #     if not valorRetorno:
-    #         return False
+        if not valorRetorno:
+            return False
         
-    #     else:
-    #         idEmpleado, posicion1, posicion2 = valorRetorno
+        else:
+            idEmpleado, posicion1, posicion2 = valorRetorno
             
-    #         print(idEmpleado, posicion1, posicion2)
-    #         nominaResultado = calcularNomina()
+            print("\nTest:", listaEmpleados[posicion1], idEmpleado)
+            print(idEmpleado, posicion1, posicion2)
+            
+            nominaResultado = calcularNomina(posicion1)
+            listaEmpleados[posicion1].append(nominaResultado)
+            
+            print(listaEmpleados)
     pass
 
 
@@ -477,6 +505,7 @@ while isVerdadero:
     
     elif opcionUsuario == 6:
         listarNominaEmpleado("Ingrese el ID del empleado al que desea conocer la nómina: (Escriba 0 para volver al menú): ", True)
+        print(listaEmpleados)
     
     elif opcionUsuario == 7:
         pass

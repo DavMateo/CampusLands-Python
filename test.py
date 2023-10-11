@@ -1,8 +1,4 @@
-for i in range(50):
-    print("Number:", i)
-    
-    if i == 25:
-        break
+miLista = []
 
-
-print(f"¡Estoy por fuera del For. El número de ruptura es de: {i}")
+miLista.append(range(2))
+print(miLista)
