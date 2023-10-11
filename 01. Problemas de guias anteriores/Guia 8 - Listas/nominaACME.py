@@ -85,7 +85,6 @@ def calcularNomina(posicion1):
     descuentoEPS = 4
     descuentoPension = 4
     
-    
     #Salario Bruto
     hrsLaboradas = listaEmpleados[posicion1][2]
     valorhrs = listaEmpleados[posicion1][3]
@@ -469,14 +468,18 @@ def listarNominaEmpleado(msj, validar):
         
         else:
             idEmpleado, posicion1, posicion2 = valorRetorno
+            id, nombre, horasTrabajadas, valorHora = listaEmpleados[posicion1]
             
-            print("\nTest:", listaEmpleados[posicion1], idEmpleado)
-            print(idEmpleado, posicion1, posicion2)
             
             nominaResultado = calcularNomina(posicion1)
             listaEmpleados[posicion1].append(nominaResultado)
             
-            print(listaEmpleados)
+            print("\n", f"=== {idEmpleado} ===")
+            
+            print(f"\nID: {id}")
+            print(f"Nombre: {nombre}")
+            print(f"Horas Trabajadas: {horasTrabajadas} hrs")
+            print(f"Valor Hora: ${valorHora:,.0f} COP\n")
     pass
 
 
@@ -498,14 +501,13 @@ while isVerdadero:
         buscarEmpleado("Ingrese el ID del empleado a buscar (Escriba 0 para volver al menú): ", False)
     
     elif opcionUsuario == 4:
-        empleadoBorrado = eliminarEmpleado("Ingrese el ID del empleado que desea eliminar (Escriba 0 para volver al menú): ", True)
+        eliminarEmpleado("Ingrese el ID del empleado que desea eliminar (Escriba 0 para volver al menú): ", True)
     
     elif opcionUsuario == 5:
         listarEmpleados()
     
     elif opcionUsuario == 6:
         listarNominaEmpleado("Ingrese el ID del empleado al que desea conocer la nómina: (Escriba 0 para volver al menú): ", True)
-        print(listaEmpleados)
     
     elif opcionUsuario == 7:
         pass
