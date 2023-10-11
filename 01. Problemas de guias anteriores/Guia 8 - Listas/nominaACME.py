@@ -468,11 +468,18 @@ def listarNominaEmpleado(msj, validar):
         
         else:
             idEmpleado, posicion1, posicion2 = valorRetorno
-            id, nombre, horasTrabajadas, valorHora = listaEmpleados[posicion1]
-            
-            
             nominaResultado = calcularNomina(posicion1)
-            listaEmpleados[posicion1].append(nominaResultado)
+            
+            
+            for i in range(0, 5):
+                try:
+                    listaEmpleados[posicion1]
+                    listaEmpleados[posicion1][4] = nominaResultado
+                
+                except IndexError:
+                    listaEmpleados[posicion1].append(nominaResultado)
+            
+            id, nombre, horasTrabajadas, valorHora, valorNomina = listaEmpleados[posicion1]
             
             print("\n", f"==== {idEmpleado} ====")
             # print(nominaResultado)
@@ -481,8 +488,7 @@ def listarNominaEmpleado(msj, validar):
             print(f"Nombre: {nombre}")
             print(f"Horas Trabajadas: {horasTrabajadas} hrs")
             print(f"Valor Hora: ${valorHora:,.0f} COP")
-            print(f"Valor nómina: ${nominaResultado:,.0f} COP\n")
-    pass
+            print(f"Valor nómina: ${valorNomina:,.0f} COP\n")
 
 
 def listarNominas(msj):
