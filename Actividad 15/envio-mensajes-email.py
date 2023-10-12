@@ -28,7 +28,7 @@ def enviarEmail(email, emailEnvio):
     return listaLogEmails
 
 def escribirArchivo(listaEmails):
-    escribirInfoEnvioEmail = open("Actividad 15\mensajes-consola.txt", "w")
+    escribirInfoEnvioEmail = open("Actividad 15\\mensajes-consola.txt", "w")
     
     for i in range(len(listaEmails)):
         escribirInfoEnvioEmail.write(listaEmails[i])
@@ -37,7 +37,7 @@ def escribirArchivo(listaEmails):
 
 
 # CREANDO LA ESTRUCTURA DEL PROGRAMA
-fd = open("Actividad 15\mbox-short.txt", "r")
+fd = open("Actividad 15\\mbox-short.txt", "r")
 
 for line in fd:
     if line.startswith("From:"):
@@ -45,7 +45,7 @@ for line in fd:
 fd.close()
 
 
-direccionEmail = open("Actividad 15\mbox-short.txt", "r")
+direccionEmail = open("Actividad 15\\mbox-short.txt", "r")
 
 for linea in direccionEmail:
     if linea.startswith("To:"):
