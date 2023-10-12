@@ -14,21 +14,11 @@ def crearMatrices(fil, col):
     matrizDatos = []
     
     for i in range(fil):
-        fila = [""] * col
+        fila = [0] * col
         matrizDatos.append(fila)
     
     return matrizDatos
-
-
-def llenarMatriz(matriz):
-    for f in range(len(matriz)):
-        print(f"\nFila n°{f+1}")
-        
-        for c in range(len(matriz[f])):
-            matriz[f][c] = encabezado[f], listaInfoEmpleados[f][c]
-    
-    return matriz
-    
+            
 
 # CREANDO LA ESTRUCTURA DEL PROGRAMA
 infoEmpleados = open("Persistencia de Datos\Ejercicios\datos-de-empleados-programa\datos-empleados.dat", "r")
@@ -40,14 +30,16 @@ for i in range(len(convertirToLista)):
     listaInfoEmpleados.append(convertirToLista[i].split(","))
 infoEmpleados.close()
 
+    
+#Mostrar Info Empleado
+print("\n")
+id, nombre, edad, sexo, telefono = encabezado[0].split(",")
 
+print("{:<13} {:<30} {:<4} {:<3} {:<12}".format(id, nombre, edad, sexo, telefono), end="-" * 61)
+print("")
 
+for f in range(len(listaInfoEmpleados)):
+    idUser, nombreUser, edadUser, sexoUser, telefonoUser = listaInfoEmpleados[f]
+    print("{:<13} {:<30} {:<4} {:<3} {:<12}".format(idUser, nombreUser, edadUser, sexoUser, telefonoUser), end="")
 
-for i in range(len(listaInfoEmpleados)):
-    for j in range(count, count+1):
-        matriz = crearMatrices(len(listaInfoEmpleados), 2)
-        llenarMatriz(matriz)
-        
-
-print(encabezado)
-print(matriz)
+print("")
