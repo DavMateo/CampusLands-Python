@@ -69,16 +69,6 @@ def listarEmpleadosPaginacion(list, cant, count, iterado):
                 
                 if count == cantidadEmpleadosLista:
                     return True
-        
-        
-            # Verificar si el usuario desea continuar con la paginación de más información.
-            # continuarMostrarInfo = validarOpcionUsuario("\n¿Desea ver más información? (1 SI / 0 NO): ", 0, 1)
-            # if continuarMostrarInfo == 1:
-            #     cant += cant
-            #     continue
-            
-            # elif continuarMostrarInfo == 0:
-            #     return False
 
 
 def calcularNomina(posicion1):
@@ -492,7 +482,46 @@ def listarNominaEmpleado(msj, validar):
 
 
 def listarNominas(msj):
-    pass
+    continuar = True
+    descuentoEPS = 4
+    descuentoPension = 4
+    cantidadEmpleados = existenEmpleados()
+    
+    if not cantidadEmpleados:
+        print("Error: Imposible acceder a esta parte del programa.")
+        print("Motivo: No hay usuarios añadidos al sistema.")
+        input()
+        return None
+    
+    
+    print("\n", "*** LISTAR NÓMINA DE TODOS LOS EMPLEADOS ***")
+    
+    for i in range(len(listaEmpleados)):
+        #Salario Bruto
+        hrsLaboradas = listaEmpleados[i][2]
+        valorhrs = listaEmpleados[i][3]
+        salarioBruto = valorhrs * hrsLaboradas
+        
+        #Salario Neto
+        salarioBruto -= (salarioBruto * descuentoEPS) / 100
+        salarioBruto -= (salarioBruto * descuentoPension) / 100
+        
+        #Verificar si el empleado aplica para el subsidio de transporte
+        if salarioBruto < smmlv:
+            salarioNeto = salarioBruto + subsidioTransporte
+            
+            for j in range(0, 5):
+                try:
+                    listaEmpleados[i]
+                    listaEmpleados[i][4] = salarioNeto
+                
+                except IndexError:
+                    listaEmpleados[i].append(salarioNeto)
+        
+        elif salarioBruto > smmlv:
+            salarioNeto = salarioBruto
+    
+    print(listaEmpleados)
 
 
 # CREANDO LA ESTRUCTURA DEL PROGRAMA
@@ -518,7 +547,7 @@ while isVerdadero:
         listarNominaEmpleado("Ingrese el ID del empleado al que desea conocer la nómina: (Escriba 0 para volver al menú): ", True)
     
     elif opcionUsuario == 7:
-        pass
+        listarNominas("")
     
     elif opcionUsuario == 8:
         print("\n¡Gracias por usar nuestro software! Saliendo...")
