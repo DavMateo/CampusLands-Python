@@ -238,7 +238,7 @@ def modificarEmpleado(msj):
     
     # Validar si existe algún empleado añadido a la lista de empleados.
     if not cantidadEmpleados:
-        print("\nError: Imposible acceder a este sub-programa.")
+        print("Error: Imposible acceder a este sub-programa.")
         print("Motivo: No hay usuarios añadidos al sistema.")
         input()
         return
@@ -313,7 +313,7 @@ def buscarEmpleado(msj, validar):
         print("Error: Imposible acceder a esta parte del programa.")
         print("Motivo: No hay usuarios añadidos al sistema.")
         input()
-        return False
+        return None
     
     while continuar:
         retornarIdEmpleado = validar
