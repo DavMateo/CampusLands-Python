@@ -27,21 +27,27 @@ def filtrarTexto(text):
 
 
 def encontrarEmpleado(msj, min):
-    idBuscar = validarId(msj, min)
+    try:
+        idBuscar = validarId(msj, min)
+        
+        if idBuscar == 0:
+            return [idBuscar]
+        
+        for i in range(len(listaEmpleados)):
+            for j in range(len(listaEmpleados[i])):
+                if listaEmpleados[i][j] == idBuscar:
+                    posicion1 = i
+                    posicion2 = j
+                    checked = True
+        
+        return [idBuscar, posicion1, posicion2, checked]
     
-    if idBuscar == 0:
-        return [idBuscar]
-    
-    for i in range(len(listaEmpleados)):
-        for j in range(len(listaEmpleados[i])):
-            if listaEmpleados[i][j] == idBuscar:
-                posicion1 = i
-                posicion2 = j
-                checked = True
-    
-    print(posicion1, posicion2, checked)
-    
-    return [idBuscar, posicion1, posicion2, checked]
+    except Exception as e:
+        print("\nHa ocurrido un error durante la ejecución del programa. Inténtelo de nuevo.")
+        print(f"Error: {e}")
+        
+        input("\nPresione cualquier tecla para salir al menú...")
+        return False
 
 
 def existenEmpleados():
@@ -309,37 +315,42 @@ def buscarEmpleado(msj, validar):
         retornarIdEmpleado = validar
         valorRetornado = encontrarEmpleado(msj, 0)
         
-        if len(valorRetornado) == 1:
-            idBuscar, = valorRetornado
+        if not valorRetornado:
+            return
         
         else:
-            idBuscar, posicion1, posicion2, checked = valorRetornado
         
-        
-        # Verifica si el usuario desea salir o no del sub-programa
-        if idBuscar == 0:
-            continuar = False
-            return None
-                
-        
-        # Comprueba si el ID ingresado existe en el sistema      
-        if not checked:
-            print(f"\nEl empleado con el ID '{idBuscar}' no ha sido ingresado.")
-            continue
-        
-        else:
-            if retornarIdEmpleado:
-                return [idBuscar, posicion1, posicion2]
+            if len(valorRetornado) == 1:
+                idBuscar, = valorRetornado
             
-            # En caso de que no se quiera eliminar un usuario entonces buscará el usuario.
             else:
-                idInfo, nombreInfo, horasTrabajadasInfo, valorHoraInfo = listaEmpleados[posicion1]
+                idBuscar, posicion1, posicion2, checked = valorRetornado
+            
+            
+            # Verifica si el usuario desea salir o no del sub-programa
+            if idBuscar == 0:
+                continuar = False
+                return None
+                    
+            
+            # Comprueba si el ID ingresado existe en el sistema      
+            if not checked:
+                print(f"\nEl empleado con el ID '{idBuscar}' no ha sido ingresado.")
+                continue
+            
+            else:
+                if retornarIdEmpleado:
+                    return [idBuscar, posicion1, posicion2]
                 
-                print(f"\n=== ID {idInfo} ===")
-                print("Nombre:", nombreInfo)
-                print(f"Horas trabajadas: {horasTrabajadasInfo} hrs")
-                print(f"Valor de la hora: ${valorHoraInfo:,.0f} COP")
-                input()
+                # En caso de que no se quiera eliminar un usuario entonces buscará el usuario.
+                else:
+                    idInfo, nombreInfo, horasTrabajadasInfo, valorHoraInfo = listaEmpleados[posicion1]
+                    
+                    print(f"\n=== ID {idInfo} ===")
+                    print("Nombre:", nombreInfo)
+                    print(f"Horas trabajadas: {horasTrabajadasInfo} hrs")
+                    print(f"Valor de la hora: ${valorHoraInfo:,.0f} COP")
+                    input()
         
         
         continuarBuscar = validarOpcionUsuario("¿Desea buscar otro empleado? (1 SI / 0 NO): ", 0, 1)
@@ -481,8 +492,9 @@ def listarNominaEmpleado(msj, validar):
             print(f"Valor nómina: ${valorNomina:,.0f} COP\n")
 
 
-def listarNominas(msj):
-    continuar = True
+def listarNominas():
+    valorNominaTotal = 0
+    empleadosCantidad = 0
     descuentoEPS = 4
     descuentoPension = 4
     cantidadEmpleados = existenEmpleados()
@@ -509,19 +521,34 @@ def listarNominas(msj):
         #Verificar si el empleado aplica para el subsidio de transporte
         if salarioBruto < smmlv:
             salarioNeto = salarioBruto + subsidioTransporte
-            
-            for j in range(0, 5):
-                try:
-                    listaEmpleados[i]
-                    listaEmpleados[i][4] = salarioNeto
-                
-                except IndexError:
-                    listaEmpleados[i].append(salarioNeto)
         
         elif salarioBruto > smmlv:
             salarioNeto = salarioBruto
+        
+        for j in range(0, 5):
+            try:
+                listaEmpleados[i]
+                listaEmpleados[i][4] = salarioNeto
+            
+            except IndexError:
+                listaEmpleados[i].append(salarioNeto)
+                
     
-    print(listaEmpleados)
+        id, nombre, horasTrabajadas, valorHora, valorNomina = listaEmpleados[i]
+        print("\n", f"==== {id} ====")
+        
+        print(f"\nID: {id}")
+        print(f"Nombre: {nombre}")
+        print(f"Horas Trabajadas: {horasTrabajadas} hrs")
+        print(f"Valor Hora: ${valorHora:,.0f} COP")
+        print(f"Valor nómina: ${valorNomina:,.0f} COP\n")
+        print("-" * 35)
+        
+        valorNominaTotal += valorNomina
+        empleadosCantidad += 1
+    
+    print(f"Valor total de las nóminas de los empleados: ${valorNominaTotal:,.0f} COP")
+    print(f"La cantidad de empleados contados fue de: {empleadosCantidad:.0f} empleados")
 
 
 # CREANDO LA ESTRUCTURA DEL PROGRAMA
@@ -547,8 +574,14 @@ while isVerdadero:
         listarNominaEmpleado("Ingrese el ID del empleado al que desea conocer la nómina: (Escriba 0 para volver al menú): ", True)
     
     elif opcionUsuario == 7:
-        listarNominas("")
+        listarNominas()
     
     elif opcionUsuario == 8:
-        print("\n¡Gracias por usar nuestro software! Saliendo...")
-        isVerdadero = False
+        salirOpcion = validarOpcionUsuario("\n  >> ¿Está seguro que desea salir del programa? (1 SI / 0 NO): ", 0, 1)
+        
+        if salirOpcion == 1:
+            print("\n¡Gracias por usar nuestro software! Saliendo...")
+            isVerdadero = False
+        
+        elif salirOpcion == 0:
+            isVerdadero = True
