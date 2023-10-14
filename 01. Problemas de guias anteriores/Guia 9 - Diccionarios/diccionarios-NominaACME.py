@@ -166,40 +166,73 @@ def agregarEmpleado():
 
 
 def modificarEmpleado():
-    print("\n\n", "=== MODIFICAR EMPLEADO ===".center(10), "\n")
+    entrarSubMenu = True
     
-    print("¿Qué desea modificar?")
-    print("1. Nombre del empleado")
-    print("2. Horas trabajadas del empleado")
-    print("3. Valor de la hora laboral del empleado")
-    opcionUsuario = validarOpcionUsuario("   >> Escoja una opción (Ingrese 0 para regresar al menú): ", 0, 3)
-    
-    
-    if opcionUsuario == 0:
-        input("Presione cualquier tecla para regresar al menú principal...")
-        return
-    
-    else:
-        keysEmpleados = list(dictEmpleados.keys())
-        print(keysEmpleados) #EliminarLuego
-        
-        #Listar los empleados en pantalla
-        print("\n")
-        print("{:<7} {:<14} {:<35}".format("N°", "ID", "NOMBRE"))
-        
-        for i in range(len(keysEmpleados)):
-            print("{:<7} {:<14} {:<35}".format(i+1, keysEmpleados[i], dictEmpleados[keysEmpleados[i]]["nombre"]))
+    # El objetivo de este while es que permita ejecutar tantas veces como quiera el usuario el submenú sin tener que salirse y volver a digitar la opción de modificar empleado.
+    while entrarSubMenu:
+        print("\n\n", "=== MODIFICAR EMPLEADO ===".center(10), "\n")
+        print("¿Qué desea modificar?")
+        print("1. Nombre del empleado")
+        print("2. Horas trabajadas del empleado")
+        print("3. Valor de la hora laboral del empleado")
+        opcionUsuario = validarOpcionUsuario("   >> Escoja una opción (Ingrese 0 para regresar al menú): ", 0, 3)
+        continuar = True
         
         
-        if opcionUsuario == 1:
-            pass
-        
-        elif opcionUsuario == 2:
-            pass
-        
-        elif opcionUsuario == 3:
-            pass
-    
+        #Iniciar el sub-programa que se encarga de editar un empleado según las opciones permitidas.
+        while continuar:
+            if opcionUsuario == 0:
+                input("\nPresione cualquier tecla para regresar al menú principal...")
+                return False
+            
+            else:
+                keysEmpleados = list(dictEmpleados.keys())
+                print(keysEmpleados) #EliminarLuego
+                
+                #Listar los empleados en pantalla
+                print("\n")
+                print("{:<7} {:<14} {:<35}".format("N°", "ID", "NOMBRE"))
+                
+                for i in range(len(keysEmpleados)):
+                    print("{:<7} {:<14} {:<35}".format(i+1, keysEmpleados[i], dictEmpleados[keysEmpleados[i]]["nombre"]))
+                
+                empleadoEditar = validarOpcionUsuario(">> Ingrese el n° del empleado en la lista a modificar (Digite 0 para regresar al sub-menu): ", 0, len(keysEmpleados))
+                
+                
+                #Validar si el usuario ya no desea editar ningún empleado
+                if empleadoEditar == 0:
+                    input("\nPresione cualquier tecla para regresar al sub-menú...")
+                    break
+                
+                else:
+                    if opcionUsuario == 1:
+                        print(f"\nAnterior nombre: {dictEmpleados.get(keysEmpleados[empleadoEditar-1])['nombre']}")
+                        nuevoNombre = validarNombre("Nuevo nombre: ", 2)
+                        # Modificar el valor existente por el nuevo dato ingresado
+                        dictEmpleados.get(keysEmpleados[empleadoEditar-1])["nombre"] = nuevoNombre
+                        
+                    elif opcionUsuario == 2:
+                        print(f"\nAnterior cantidad de horas trabajadas: {dictEmpleados.get(keysEmpleados[empleadoEditar-1])['horasTrabajadas']} hrs")
+                        nuevoHorasTrabajadas = validarHorasTrabajadas("Nueva cantidad de horas trabajadas: ", 1, 160)
+                        # Modificar el valor existente por el nuevo dato ingresado
+                        dictEmpleados.get(keysEmpleados[empleadoEditar-1])['horasTrabajadas'] = nuevoHorasTrabajadas
+                    
+                    elif opcionUsuario == 3:
+                        print(f"\nAnterior valor de hora laboral: ${dictEmpleados.get(keysEmpleados[empleadoEditar-1])['valorHora']:,.0f} COP")
+                        nuevoValorHora = validarValorHora("Nuevo valor de la hora laboral: ", 8000, 150000)
+                        # Modificar el valor existente por el nuevo dato ingresado
+                        dictEmpleados.get(keysEmpleados[empleadoEditar-1])['valorHora'] = nuevoValorHora
+            
+            # Verificar si el usuario desea seguir modificando información en el sistema, validando si antes el usuario  ha decidido regresar al submenú.
+            continuarModificar = validarOpcionUsuario("¿Desea seguir modificando información? (1 SI / 0 NO): ", 0, 1)
+
+            if continuarModificar == 1:
+                continuar = False
+                entrarSubMenu = True
+            elif continuarModificar == 0:
+                entrarSubMenu = False
+                input("\nRegresando al menú principal...")
+                break
 
 def buscarEmpleado():
     pass
