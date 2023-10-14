@@ -22,6 +22,17 @@ def filtrarTexto(texto):
     return textoFiltradoArray
 
 
+def existeId(id):
+    validarExisteId = dictEmpleados.get(id)
+    
+    if validarExisteId == None:
+        return False
+    else:
+        return True
+
+
+#
+
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
 def validarOpcionUsuario(msj, min, max):
     while True:
@@ -38,20 +49,28 @@ def validarOpcionUsuario(msj, min, max):
         except:
             print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
+
 def validarId(msj, min):
     while True:
         try:
             id = int(input(msj))
+            existeIdEmpleado = existeId(id)
             
-            if id < min:
-                print(f"Error: El ID no puede ser menor que {min}.\n")
+            if existeIdEmpleado:
+                print(f"Error: El id '{id}' ya existe.\n")
                 continue
+            
+            else:
+                if id < min:
+                    print(f"Error: El ID no puede ser menor que {min}.\n")
+                    continue
             return id
         
         except ValueError:
             print("Ha ocurrido un error al ingresar el ID del empleado. Inténtelo de nuevo.\n")
         except:
             print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
+
 
 def validarNombre(msj, min):
     while True:
@@ -78,6 +97,7 @@ def validarNombre(msj, min):
         except:
             print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
+
 def validarHorasTrabajadas(msj, min, max):
     while True:
         try:
@@ -93,13 +113,14 @@ def validarHorasTrabajadas(msj, min, max):
         except:
             print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
+
 def validarValorHora(msj, min, max):
     while True:
         try:
             valorHora = int(input(msj))
             
             if valorHora < min or valorHora > max:
-                print(f"Error: Debes ingresar un valor dentro del rango permitido (${min} COP - ${max} COP).")
+                print(f"Error: Debes ingresar un valor dentro del rango permitido (${min} COP - ${max} COP).\n")
                 continue
             return valorHora
         
@@ -111,8 +132,7 @@ def validarValorHora(msj, min, max):
 
 # DEFINIENDO LAS FUNCIONES PRINCIPALES
 def menu(msj):
-    print("")
-    print("*** NOMINA ACME ***".center(30))
+    print("\n", "*** NOMINA ACME ***".center(27))
     print("MENU".center(30))
     
     print("\n1. Agregar empleado")
@@ -125,6 +145,7 @@ def menu(msj):
     print("8. Salir")
     return validarOpcionUsuario(msj, 1, 8)
 
+
 def agregarEmpleado():
     print("\n\n", "=== AGREGAR EMPLEADO ===".center(10), "\n")
     print("Para crear el nuevo empleado, se necesita de la siguiente información:")
@@ -133,21 +154,68 @@ def agregarEmpleado():
     nombre = validarNombre(">> Nombre: ", 2)
     horasTrabajadas = validarHorasTrabajadas(">> Horas trabajas: ", 1, 160)
     valorHora = validarValorHora(">> Valor de la hora: ", 8000, 150000)
+    
+    # Agregar la información recolectada al diccionario.
+    dictEmpleados[id] = {
+        "nombre": nombre, 
+        "horasTrabajadas": horasTrabajadas, 
+        "valorHora": valorHora
+    }
+    
+    print(dictEmpleados) #EliminarLuego
+
 
 def modificarEmpleado():
-    pass
+    print("\n\n", "=== MODIFICAR EMPLEADO ===".center(10), "\n")
+    
+    print("¿Qué desea modificar?")
+    print("1. Nombre del empleado")
+    print("2. Horas trabajadas del empleado")
+    print("3. Valor de la hora laboral del empleado")
+    opcionUsuario = validarOpcionUsuario("   >> Escoja una opción (Ingrese 0 para regresar al menú): ", 0, 3)
+    
+    
+    if opcionUsuario == 0:
+        input("Presione cualquier tecla para regresar al menú principal...")
+        return
+    
+    else:
+        keysEmpleados = list(dictEmpleados.keys())
+        print(keysEmpleados) #EliminarLuego
+        
+        #Listar los empleados en pantalla
+        print("\n")
+        print("{:<7} {:<14} {:<35}".format("N°", "ID", "NOMBRE"))
+        
+        for i in range(len(keysEmpleados)):
+            print("{:<7} {:<14} {:<35}".format(i+1, keysEmpleados[i], dictEmpleados[keysEmpleados[i]]["nombre"]))
+        
+        
+        if opcionUsuario == 1:
+            pass
+        
+        elif opcionUsuario == 2:
+            pass
+        
+        elif opcionUsuario == 3:
+            pass
+    
 
 def buscarEmpleado():
     pass
 
+
 def eliminarEmpleado():
     pass
+
 
 def listarEmpleados():
     pass
 
+
 def listarNominaEmpleado():
     pass
+
 
 def listarNominasTotalEmpleados():
     pass
@@ -161,7 +229,7 @@ while isVerdadero:
         agregarEmpleado()
     
     elif opcionUsuario == 2:
-        pass
+        modificarEmpleado()
     
     elif opcionUsuario == 3:
         pass

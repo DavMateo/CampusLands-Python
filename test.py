@@ -1,4 +1,3 @@
-miLista = []
+miDiccionario = {1099737474: ["David Mateo", 45, 45500]}
 
-miLista.append(range(2))
-print(miLista)
+print(miDiccionario.get(1234))
