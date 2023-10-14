@@ -7,7 +7,37 @@ formatosPermitidos = ["txt", "csv", "dat"]
 
 
 # DEFINIENDO LAS FUNCIONES COMPLEMENTARIAS
+def abrirArchivo(param, rutaArchivo):
+    lstPromedio = []
+    
+    try:
+        fd = open(rutaArchivo, "r")
 
+    except Exception as e:
+        return [0, False]
+    
+
+    for linea in fd:
+        if linea.startswith(param):
+            lstPromedio.append(linea.split()[1])
+    fd.close()
+
+    for promedio in lstPromedio:
+        print(promedio)
+    print(len(lstPromedio))
+
+    return promedioMath(lstPromedio)
+
+
+def promedioMath(lstPromedio):
+    sumaPromedios = 0
+
+    for i in range(len(lstPromedio)):
+        sumaPromedios += float(lstPromedio[i])
+    
+    promedioResultado = sumaPromedios / len(lstPromedio)
+    
+    return [promedioResultado, True]
 
 
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
@@ -17,10 +47,7 @@ def validarNombreArchivo(msj):
             nombreArchivo = input(msj).strip()
             nombreArchivoValidacionArray = nombreArchivo.split(" ")
             nombreArchivoArray = nombreArchivo.split(".")
-
-            print(nombreArchivoArray)
-            print(nombreArchivoValidacionArray)
-
+            
 
             # Validar que el nombre del archivo introducido no contenga espacios
             if len(nombreArchivoValidacionArray) > 1:
@@ -72,19 +99,12 @@ def validarOpcionUsuario(msj, min, max):
 # DEFINIENDO LAS FUNCIONES PRINCIPALES
 def nombreArchivoLeer(msj):
     nombreArchivo = validarNombreArchivo(msj)
-    rutaArchivo = f"Simulacro Filtro Python/{nombreArchivo}"
+    rutaArchivo = f"Simulacro Filtro Python/Test 2/{nombreArchivo}"
     return rutaArchivo
 
 
 def promedioSpamCorreo(param, rutaArchivo):
-    try:
-        logCorreo = open(rutaArchivo, "r")
-        
-        
-    
-    except Exception as e:
-        print(f"Error: {e}") #Cambiar mensaje
-
+    return abrirArchivo(param, rutaArchivo)
 
 
 # CREANDO LA ESTRUCTURA DEL ARCHIVO
@@ -95,17 +115,33 @@ print("=" * 35, "\n")
 
 
 while isVerdadero:
-    rutaArchivo = nombreArchivoLeer("Introduzca el nombre del archivo que se va leer (Ejemplo: archivo.txt): ")
-    promedioSpam = promedioSpamCorreo("X-DSPAM-Confidence.", rutaArchivo)
+    rutaArchivo = nombreArchivoLeer("\nIntroduzca el nombre del archivo que se va leer (Ejemplo: archivo.txt): ")
+    promedioSpam, estadoPromedioSpam = promedioSpamCorreo("X-DSPAM-Confidence:", rutaArchivo)
 
-    if not promedioSpam:
+    if not estadoPromedioSpam:
         continuar = validarOpcionUsuario("Algo ha ido mal al manipular el archivo. ¿Deseas volver a iniciar el programa? (1 SI / 0 NO): ", 0, 1)
-
+        
         if continuar == 0:
-            isVerdadero = False
+            print("\n¡Gracias por usar nuestro software!")
+            break
 
         elif continuar == 1:
             isVerdadero = True
+            continue
     
+    print("\n\n=== RESULTADOS ===")
+    print(f"El promedio del Spam de correo electrónico es de: {promedioSpam}")
 
-    isVerdadero = False
+    if isVerdadero:
+        continuarPrograma = validarOpcionUsuario("¿Desea continuar en el programa?: (1 SI / 0 NO): ", 0, 1)
+
+        if continuarPrograma == 0:
+            print("\n¡Gracias por usar nuestro software!")
+            isVerdadero = False
+        
+        elif continuarPrograma == 1:
+            isVerdadero = True
+    
+    else:
+        print("\n¡Gracias por usar nuestro software!")
+        break
