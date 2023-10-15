@@ -86,20 +86,24 @@ def validarOpcionUsuario(msj, min, max):
             print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
 
-def validarId(msj, min):
+def validarId(msj, min, checked=False):
     while True:
         try:
             id = int(input(msj))
             existeIdEmpleado = existeId(id)
             
-            if existeIdEmpleado:
-                print(f"Error: El id '{id}' ya existe.\n")
-                continue
-            
+            if checked:
+                pass
+                # El pass es con el fin de evitar la validación de si existe un ID específico, pues se quiere que valide que el ID ingresado sea válido pero que no valide si ya existe o no.
             else:
-                if id < min:
-                    print(f"Error: El ID no puede ser menor que {min}.\n")
+                if existeIdEmpleado:
+                    print(f"Error: El id '{id}' ya existe.\n")
                     continue
+                
+                else:
+                    if id < min:
+                        print(f"Error: El ID no puede ser menor que {min}.\n")
+                        continue
             return id
         
         except ValueError:
@@ -203,10 +207,10 @@ def agregarEmpleado():
 
 def modificarEmpleado():
     entrarSubMenu = True
+    print("\n\n", "=== MODIFICAR EMPLEADO ===".center(10), "\n")
     
     # El objetivo de este while es que permita ejecutar tantas veces como quiera el usuario el submenú sin tener que salirse y volver a digitar la opción de modificar empleado.
     while entrarSubMenu:
-        print("\n\n", "=== MODIFICAR EMPLEADO ===".center(10), "\n")
         print("¿Qué desea modificar?")
         print("1. Nombre del empleado")
         print("2. Horas trabajadas del empleado")
@@ -301,7 +305,28 @@ def buscarEmpleado():
 
 
 def eliminarEmpleado():
-    pass
+    print("\n\n", "=== ELIMINAR EMPLEADO ===".center(10), "\n")
+    
+    while True:
+        idEmpleadoEliminar = validarId(">> Ingrese el ID del empleado a eliminar (Digite 0 para regresar al menú principal): ", 0, True)
+        existeIdEmpleadoEliminar = existeId(idEmpleadoEliminar)
+        
+        
+        if idEmpleadoEliminar == 0:
+                input("Presione cualquier tecla para volver al menú principal...")
+                break
+        
+        if not existeIdEmpleadoEliminar:
+            print("Error: El empleado ingresado no ha sido registrado.\n")
+            continue
+        else:
+            usuarioEliminado = dictEmpleados.pop(idEmpleadoEliminar)
+            print(f"¡El empleado '{usuarioEliminado['nombre']}' bajo el ID '{idEmpleadoEliminar}' ha sido eliminado con éxito!")
+            
+            input()
+            break
+    
+    print(dictEmpleados)
 
 
 def listarEmpleados():
@@ -330,7 +355,7 @@ while isVerdadero:
         buscarEmpleado()
     
     elif opcionUsuario == 4:
-        pass
+        eliminarEmpleado()
     
     elif opcionUsuario == 5:
         pass
