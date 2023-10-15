@@ -209,6 +209,12 @@ def modificarEmpleado():
     entrarSubMenu = True
     print("\n\n", "=== MODIFICAR EMPLEADO ===".center(10), "\n")
     
+    if len(dictEmpleados) == 0:
+        print("Error: Este módulo no puede iniciarse si no tiene empleados registrados.")
+        input("Agregue empleados y vuelva a intentarlo. Presione cualquier tecla para salir al menú principal...")
+        entrarSubMenu = False
+        return
+    
     # El objetivo de este while es que permita ejecutar tantas veces como quiera el usuario el submenú sin tener que salirse y volver a digitar la opción de modificar empleado.
     while entrarSubMenu:
         print("¿Qué desea modificar?")
@@ -278,6 +284,11 @@ def modificarEmpleado():
 def buscarEmpleado():
     print("\n\n", "=== BUSCAR EMPLEADO ===".center(10), "\n")
     
+    if len(dictEmpleados) == 0:
+        print("Error: Este módulo no puede iniciarse si no tiene empleados registrados.")
+        input("Agregue empleados y vuelva a intentarlo. Presione cualquier tecla para salir al menú principal...")
+        return
+    
     while True:
         idBuscarInfo = recuperarInfoId(">> Ingrese el ID del empleado a buscar (Digite 0 para volver al menú): ", 0)
         
@@ -307,6 +318,11 @@ def buscarEmpleado():
 def eliminarEmpleado():
     print("\n\n", "=== ELIMINAR EMPLEADO ===".center(10), "\n")
     
+    if len(dictEmpleados) == 0:
+        print("Error: Este módulo no puede iniciarse si no tiene empleados registrados.")
+        input("Agregue empleados y vuelva a intentarlo. Presione cualquier tecla para salir al menú principal...")
+        return
+    
     while True:
         idEmpleadoEliminar = validarId(">> Ingrese el ID del empleado a eliminar (Digite 0 para regresar al menú principal): ", 0, True)
         existeIdEmpleadoEliminar = existeId(idEmpleadoEliminar)
@@ -329,16 +345,31 @@ def eliminarEmpleado():
     print(dictEmpleados)
 
 
-def listarEmpleados():
-    pass
+def listarEmpleados(paginacion):
+    print("\n\n", "=== LISTAR EMPLEADOS ===".center(10), "\n")
+    
+    if len(dictEmpleados) == 0:
+        print("Error: Este módulo no puede iniciarse si no tiene empleados registrados.")
+        input("Agregue empleados y vuelva a intentarlo. Presione cualquier tecla para salir al menú principal...")
+        return
 
 
 def listarNominaEmpleado():
-    pass
+    print("\n\n", "=== LISTAR NÓMINA DE UN EMPLEADO ===".center(10), "\n")
+    
+    if len(dictEmpleados) == 0:
+        print("Error: Este módulo no puede iniciarse si no tiene empleados registrados.")
+        input("Agregue empleados y vuelva a intentarlo. Presione cualquier tecla para salir al menú principal...")
+        return
 
 
 def listarNominasTotalEmpleados():
-    pass
+    print("\n\n", "=== LISTAR LAS NÓMINAS DE LOS EMPLEADOS ===".center(10), "\n")
+    
+    if len(dictEmpleados) == 0:
+        print("Error: Este módulo no puede iniciarse si no tiene empleados registrados.")
+        input("Agregue empleados y vuelva a intentarlo. Presione cualquier tecla para salir al menú principal...")
+        return
 
 
 # CREANDO LA ESTRUCTURA DEL PROGRAMA
@@ -358,13 +389,13 @@ while isVerdadero:
         eliminarEmpleado()
     
     elif opcionUsuario == 5:
-        pass
+        listarEmpleados(5)
     
     elif opcionUsuario == 6:
-        pass
+        listarNominaEmpleado()
     
     elif opcionUsuario == 7:
-        pass
+        listarNominasTotalEmpleados()
     
     elif opcionUsuario == 8:
         isVerdadero = False
