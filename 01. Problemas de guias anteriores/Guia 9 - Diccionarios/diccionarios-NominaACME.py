@@ -31,7 +31,42 @@ def existeId(id):
         return True
 
 
-#
+def recuperarInfoId(msj, min):
+    # En caso de ingresarse un ID no registrado, se volverá a repetir este bucle a no ser que encuentre un ID o el usuario decida salir de la función.
+    
+    while True:    
+        # Validación similar a la función "validarId()" adaptada a solo recolectar información según el ID dado.
+        while True:
+            try:
+                buscarInfoEmpleado = int(input(msj))
+                
+                if buscarInfoEmpleado < min:
+                    print("Error: El ID ingresado tiene un formato inválido. Inténtelo de nuevo.\n")
+                    continue
+                break
+            
+            except ValueError:
+                print("Ha ocurrido un error al ingresar el ID del empleado. Inténtelo de nuevo.\n")
+            except:
+                print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
+
+        
+        # Si "buscarInfoEmpleado" es igual a 0, entonces el usuario ha optado por regresar al menú principal aún estando dentro del sub-programa de "buscarEmpleado()"
+        if buscarInfoEmpleado == 0:
+            input("Regresando al menú principal. Presione cualquier tecla para continuar...")
+            return False
+        
+        # En caso de que "buscarInfoEmpleado" sea mayor a 0, entonces queda verificar si existe el ID
+        else:
+            # Recuperar información del empleado
+            validarExisteId = existeId(buscarInfoEmpleado)
+            
+            if validarExisteId:
+                return [buscarInfoEmpleado, dictEmpleados.get(buscarInfoEmpleado)]
+            else:
+                print("Error: El ID ingresado no existe en el sistema. Ingrese un ID que esté registrado.\n")
+                continue
+        
 
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
 def validarOpcionUsuario(msj, min, max):
@@ -234,8 +269,18 @@ def modificarEmpleado():
                 input("\nRegresando al menú principal...")
                 break
 
+
 def buscarEmpleado():
-    pass
+    print("\n\n", "=== BUSCAR EMPLEADO ===".center(10), "\n")
+    idBuscarInfo = recuperarInfoId(">> Ingrese el ID del empleado a buscar (Digite 0 para volver al menú): ", 0)
+    
+    # Verificando si "idBuscarInfo" es 0 (False) o no (True):
+    if not idBuscarInfo:
+        return  # No hay necesidad de que retorne valor alguno.
+    
+    else:
+        idEmpleado, infoEmpleado = idBuscarInfo
+        print(idEmpleado, infoEmpleado)
 
 
 def eliminarEmpleado():
@@ -265,7 +310,7 @@ while isVerdadero:
         modificarEmpleado()
     
     elif opcionUsuario == 3:
-        pass
+        buscarEmpleado()
     
     elif opcionUsuario == 4:
         pass
