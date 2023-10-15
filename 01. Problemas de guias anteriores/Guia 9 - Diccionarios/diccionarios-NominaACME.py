@@ -62,7 +62,8 @@ def recuperarInfoId(msj, min):
             validarExisteId = existeId(buscarInfoEmpleado)
             
             if validarExisteId:
-                return [buscarInfoEmpleado, dictEmpleados.get(buscarInfoEmpleado)]
+                obtenerValoresInfo = dictEmpleados.get(buscarInfoEmpleado)
+                return [buscarInfoEmpleado, list(obtenerValoresInfo.values())]
             else:
                 print("Error: El ID ingresado no existe en el sistema. Ingrese un ID que esté registrado.\n")
                 continue
@@ -272,15 +273,31 @@ def modificarEmpleado():
 
 def buscarEmpleado():
     print("\n\n", "=== BUSCAR EMPLEADO ===".center(10), "\n")
-    idBuscarInfo = recuperarInfoId(">> Ingrese el ID del empleado a buscar (Digite 0 para volver al menú): ", 0)
     
-    # Verificando si "idBuscarInfo" es 0 (False) o no (True):
-    if not idBuscarInfo:
-        return  # No hay necesidad de que retorne valor alguno.
-    
-    else:
-        idEmpleado, infoEmpleado = idBuscarInfo
-        print(idEmpleado, infoEmpleado)
+    while True:
+        idBuscarInfo = recuperarInfoId(">> Ingrese el ID del empleado a buscar (Digite 0 para volver al menú): ", 0)
+        
+        # Verificando si "idBuscarInfo" es 0 (False) o no (True):
+        if not idBuscarInfo:
+            return  # No hay necesidad de que retorne valor alguno.
+        
+        else:
+            idEmpleado, infoEmpleado = idBuscarInfo
+            nombre, cantidadHrs, valorHrs = infoEmpleado
+            
+            
+            print("\n", f"=== ID: {idEmpleado} ===")
+            print(f"Nombre: {nombre}")
+            print(f"Cantidad horas: {cantidadHrs} hrs")
+            print(f"Valor hora: ${valorHrs:,.0f} COP")
+            input()
+        
+        continuar = validarOpcionUsuario("¿Desea buscar a otro empleado? (1 SI / 0 NO): ", 0, 1)
+        if continuar == 1:
+            continue
+        elif continuar == 0:
+            input("Presione cualquier tecla para regresar al menú principal...")
+            break
 
 
 def eliminarEmpleado():

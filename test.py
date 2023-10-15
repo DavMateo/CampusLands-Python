@@ -1,3 +1,5 @@
-miDiccionario = {1099737474: ["David Mateo", 45, 45500]}
+miDiccionario = {1099737474: {"nombre": "David Mateo", "hrsLaboradas": 160, "valorhrs": 150000}}
 
-print(miDiccionario.get(1234))
+test = miDiccionario.get(1099737474)
+
+print(list(test.values()))
