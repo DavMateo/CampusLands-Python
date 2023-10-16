@@ -412,6 +412,41 @@ def listarNominaEmpleado():
         print("Error: Este módulo no puede iniciarse si no tiene empleados registrados.")
         input("Agregue empleados y vuelva a intentarlo. Presione cualquier tecla para salir al menú principal...")
         return
+    
+    
+    #Preguntando al usuario por el ID del empleado
+    descuentoEPS = 4
+    descuentoPension = 4
+    idEmpleadoNomina = validarId(">> Ingrese el ID del empleado para calcular su nómina (Digite 0 para regresar al menú principal): ", 0, True)
+    
+    
+    #Verificar si el usuario ha decidido regresar al menú principal o quedarse en el sub-programa
+    if idEmpleadoNomina == 0:
+        input("Presione cualquier tecla para regresar al menú principal...")
+        return
+    
+    else:
+        #Calculando el salario neto (Primero calcular el salario bruto y luego el salario neto).
+        salarioBruto = dictEmpleados[idEmpleadoNomina]['valorHora'] * dictEmpleados[idEmpleadoNomina]['horasTrabajadas']
+        
+        valorDescuentoEPS = (salarioBruto * descuentoEPS) / 100
+        valorDescuentoPension = (salarioBruto * descuentoPension) / 100
+        valorDescuentos = valorDescuentoEPS + valorDescuentoPension
+        salarioNeto = salarioBruto - valorDescuentos
+        
+        if salarioBruto < smmlv:
+            salarioNeto += subsidioTransporte
+        
+        
+        #Imprimiendo los resultados
+        nombre, horasTrabajadas, valorHora = list(dictEmpleados[idEmpleadoNomina].values())
+        
+        print("\n", f"=== ID: {idEmpleadoNomina} ===")
+        print(f"Nombre: {nombre}")
+        print(f"Horas Trabajadas: {horasTrabajadas} hrs")
+        print(f"Valor de la hora laboral: ${valorHora:,.0f} COP")
+        print(f"Valor de la nómina del empleado: ${salarioNeto:,.0f} COP")
+        input()
 
 
 def listarNominasTotalEmpleados():

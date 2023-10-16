@@ -6,4 +6,5 @@ miDiccionario = {1099737474: {"nombre": "David Mateo", "hrsLaboradas": 160, "val
 # print(1099737474 in miDiccionario)
 
 print(len(miDiccionario))
-print(list(miDiccionario[1099737474].values()))
+print(miDiccionario[1099737474]["hrsLaboradas"])
+print(type(miDiccionario[1099737474]["hrsLaboradas"]))
