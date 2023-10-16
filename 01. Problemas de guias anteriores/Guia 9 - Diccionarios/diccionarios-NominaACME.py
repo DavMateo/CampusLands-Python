@@ -207,7 +207,7 @@ def agregarEmpleado():
 
 def modificarEmpleado():
     entrarSubMenu = True
-    print("\n\n", "=== MODIFICAR EMPLEADO ===".center(10), "\n")
+    print("\n\n", "=== MODIFICAR EMPLEADO ===".center(10))
     
     if len(dictEmpleados) == 0:
         print("Error: Este módulo no puede iniciarse si no tiene empleados registrados.")
@@ -217,7 +217,7 @@ def modificarEmpleado():
     
     # El objetivo de este while es que permita ejecutar tantas veces como quiera el usuario el submenú sin tener que salirse y volver a digitar la opción de modificar empleado.
     while entrarSubMenu:
-        print("¿Qué desea modificar?")
+        print("\n¿Qué desea modificar?")
         print("1. Nombre del empleado")
         print("2. Horas trabajadas del empleado")
         print("3. Valor de la hora laboral del empleado")
@@ -363,22 +363,22 @@ def listarEmpleados(paginacion):
     
     
     if longitudEmpleados <= paginacion:
-        print("\n{:<7} {:<14} {:<25} {:<14} {:<13}".format("N°", "ID", "NOMBRE", "CANTIDAD HRS", "VALOR HRS"))
+        print("\n{:<7} {:<14} {:<40} {:<14} {:<13}".format("N°", "ID", "NOMBRE", "CANTIDAD HRS", "VALOR HRS"))
         for i in range(paginacion):
             try:
                 nombre, cantidadHrs, valorHrs = list(dictEmpleados[keysDictEmpleados[i]].values())
-                print("{:<7} {:<14} {:<25} {:<14} {:<13}".format(i+1, keysDictEmpleados[i], nombre, f"{cantidadHrs} hrs", f"${valorHrs:,.0f} COP"))
+                print("{:<7} {:<14} {:<40} {:<14} {:<13}".format(i+1, keysDictEmpleados[i], nombre, f"{cantidadHrs} hrs", f"${valorHrs:,.0f} COP"))
             
             except IndexError:
                 break
     
     else:
         while True:
-            print("\n{:<7} {:<14} {:<25} {:<14} {:<13}".format("N°", "ID", "NOMBRE", "CANTIDAD HRS", "VALOR HRS"))
+            print("\n{:<7} {:<14} {:<40} {:<14} {:<13}".format("N°", "ID", "NOMBRE", "CANTIDAD HRS", "VALOR HRS"))
             for i in range(inicioBucle, numberPaginacion):
                 try:
                     nombre, cantidadHrs, valorHrs = list(dictEmpleados[keysDictEmpleados[i]].values())
-                    print("{:<7} {:<14} {:<25} {:<14} {:<13}".format(i+1, keysDictEmpleados[i], nombre, f"{cantidadHrs} hrs", f"${valorHrs:,.0f} COP"))
+                    print("{:<7} {:<14} {:<40} {:<14} {:<13}".format(i+1, keysDictEmpleados[i], nombre, f"{cantidadHrs} hrs", f"${valorHrs:,.0f} COP"))
                     
                     #En caso de que hayan varios empleados, validar que llegue hasta 5 y pregunte al usuario si continua o no
                     if i+1 == paginacion:
@@ -402,11 +402,14 @@ def listarEmpleados(paginacion):
                     numberPaginacion += paginacion
                     continue
     
-    input()
+    input("\nPresione cualquier tecla para continuar...")
 
 
-def listarNominaEmpleado():
-    print("\n\n", "=== LISTAR NÓMINA DE UN EMPLEADO ===".center(10), "\n")
+def listarNominaEmpleado(id, min = 1, checked = False):    
+    if checked:
+        pass
+    else:
+        print("\n\n", "=== LISTAR NÓMINA DE UN EMPLEADO ===".center(10), "\n")
     
     if len(dictEmpleados) == 0:
         print("Error: Este módulo no puede iniciarse si no tiene empleados registrados.")
@@ -417,7 +420,13 @@ def listarNominaEmpleado():
     #Preguntando al usuario por el ID del empleado
     descuentoEPS = 4
     descuentoPension = 4
-    idEmpleadoNomina = validarId(">> Ingrese el ID del empleado para calcular su nómina (Digite 0 para regresar al menú principal): ", 0, True)
+    
+    
+    # Verificar si el llamado de la función proviene del menú principal o de otra función que no requiere la validación del ID.
+    if checked:
+        idEmpleadoNomina = id
+    else:
+        idEmpleadoNomina = validarId(id, min, True)
     
     
     #Verificar si el usuario ha decidido regresar al menú principal o quedarse en el sub-programa
@@ -438,29 +447,83 @@ def listarNominaEmpleado():
             salarioNeto += subsidioTransporte
         
         
-        #Imprimiendo los resultados
-        nombre, horasTrabajadas, valorHora = list(dictEmpleados[idEmpleadoNomina].values())
+        if checked:
+            #Imprimiendo los resultados si la función ha sido llamada desde otra función
+            nombre, horasTrabajadas, valorHora = list(dictEmpleados[idEmpleadoNomina].values())
+            return [idEmpleadoNomina, nombre, horasTrabajadas, valorHora, salarioNeto]
         
-        print("\n", f"=== ID: {idEmpleadoNomina} ===")
-        print(f"Nombre: {nombre}")
-        print(f"Horas Trabajadas: {horasTrabajadas} hrs")
-        print(f"Valor de la hora laboral: ${valorHora:,.0f} COP")
-        print(f"Valor de la nómina del empleado: ${salarioNeto:,.0f} COP")
-        input()
+        else:
+            #Imprimiendo los resultados si la función NO fue llamada por otra función
+            nombre, horasTrabajadas, valorHora = list(dictEmpleados[idEmpleadoNomina].values())
+            
+            print("\n", f"=== ID: {idEmpleadoNomina} ===")
+            print(f"Nombre: {nombre}")
+            print(f"Horas Trabajadas: {horasTrabajadas} hrs")
+            print(f"Valor de la hora laboral: ${valorHora:,.0f} COP")
+            print(f"Valor de la nómina del empleado: ${salarioNeto:,.0f} COP")
+            input()
 
 
-def listarNominasTotalEmpleados():
+def listarNominasTotalEmpleados(paginacion):
     print("\n\n", "=== LISTAR LAS NÓMINAS DE LOS EMPLEADOS ===".center(10), "\n")
     
     if len(dictEmpleados) == 0:
         print("Error: Este módulo no puede iniciarse si no tiene empleados registrados.")
         input("Agregue empleados y vuelva a intentarlo. Presione cualquier tecla para salir al menú principal...")
         return
+    
+    
+    # Imprimir los resultados en pantalla mediante una paginación de 5 empleados
+    keysDictEmpleados = list(dictEmpleados.keys())
+    longitudEmpleados = len(keysDictEmpleados)
+    inicioBucle = 0
+    paginacionContador = paginacion
+    checked = False
+    
+    if longitudEmpleados <= paginacion:
+        print("\n{:<7} {:<14} {:<40} {:<14} {:<13} {:<16}".format("N°", "ID", "NOMBRE", "CANTIDAD HRS", "VALOR HRS", "VALOR NÓMINA"))
+        
+        for i in range(longitudEmpleados):
+            id, nombre, horasTrabajadas, valorHora, nomina = listarNominaEmpleado(keysDictEmpleados[i], 1, True)
+            print("{:<7} {:<14} {:<40} {:<14} {:<13} {:<16}".format(i+1, id, nombre, f"{horasTrabajadas} hrs", f"${valorHora:,.0f} COP", f"${nomina:,.0f} COP"))
+    
+    else:
+        while True:
+            print("\n{:<7} {:<14} {:<40} {:<14} {:<13} {:<16}".format("N°", "ID", "NOMBRE", "CANTIDAD HRS", "VALOR HRS", "VALOR NÓMINA"))
+            
+            for i in range(inicioBucle, paginacionContador):
+                try:
+                    id, nombre, horasTrabajadas, valorHora, nomina = listarNominaEmpleado(keysDictEmpleados[i], 1, True)
+                    print("{:<7} {:<14} {:<40} {:<14} {:<13} {:<16}".format(i+1, id, nombre, f"{horasTrabajadas} hrs", f"${valorHora:,.0f} COP", f"${nomina:,.0f} COP"))
+                    
+                    #En caso de que hayan varios empleados, validar que llegue hasta 5 y pregunte al usuario si continua o no
+                    if i+1 == paginacionContador:
+                        break
+                
+                except IndexError as e:
+                    checked = True
+                    break
+            
+            if checked:
+                break
+            else:
+                continuarListarNomina = validarOpcionUsuario("\n¿Deseas listar más empleados? (1 SI / 0 NO): ", 0, 1)
+                
+                if continuarListarNomina == 0:
+                    break
+                elif continuarListarNomina == 1:
+                    #Estas variables establecen el inicio y fin del rango en el bucle
+                    inicioBucle = paginacionContador
+                    paginacionContador += paginacion
+                    continue
+    
+    input("\nFinalizando cálculo de nómina. Presione cualquier tecla para continuar...")
 
 
 # CREANDO LA ESTRUCTURA DEL PROGRAMA
 while isVerdadero:
     opcionUsuario = menu("   >> Escoja una opción (1-8)?: ")
+    paginacion = 5
     
     if opcionUsuario == 1:
         agregarEmpleado()
@@ -475,13 +538,13 @@ while isVerdadero:
         eliminarEmpleado()
     
     elif opcionUsuario == 5:
-        listarEmpleados(5)
+        listarEmpleados(paginacion)
     
     elif opcionUsuario == 6:
-        listarNominaEmpleado()
+        listarNominaEmpleado(">> Ingrese el ID del empleado para calcular su nómina (Digite 0 para regresar al menú principal): ", 0, False)
     
     elif opcionUsuario == 7:
-        listarNominasTotalEmpleados()
+        listarNominasTotalEmpleados(paginacion)
     
     elif opcionUsuario == 8:
         isVerdadero = False
