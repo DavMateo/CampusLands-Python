@@ -67,6 +67,15 @@ def recuperarInfoId(msj, min):
             else:
                 print("Error: El ID ingresado no existe en el sistema. Ingrese un ID que esté registrado.\n")
                 continue
+
+
+#Función sin funcionamiento alguno en la primera versión. Futuro funcionamiento.
+def sumarValorNominas(nomina):
+    sumarNominas = 0
+    for i in range(len(nomina)):
+        sumarNominas += nomina[i]
+    
+    return sumarNominas
         
 
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
@@ -201,8 +210,6 @@ def agregarEmpleado():
         "horasTrabajadas": horasTrabajadas, 
         "valorHora": valorHora
     }
-    
-    print(dictEmpleados) #EliminarLuego
 
 
 def modificarEmpleado():
@@ -233,7 +240,6 @@ def modificarEmpleado():
             
             else:
                 keysEmpleados = list(dictEmpleados.keys())
-                print(keysEmpleados) #EliminarLuego
                 
                 #Listar los empleados en pantalla
                 print("\n")
@@ -474,19 +480,23 @@ def listarNominasTotalEmpleados(paginacion):
     
     
     # Imprimir los resultados en pantalla mediante una paginación de 5 empleados
+    inicioBucle = 0
     keysDictEmpleados = list(dictEmpleados.keys())
     longitudEmpleados = len(keysDictEmpleados)
-    inicioBucle = 0
     paginacionContador = paginacion
     checked = False
+    sumaNomina = 0
+    valorTotalNominas = []
     
     if longitudEmpleados <= paginacion:
         print("\n{:<7} {:<14} {:<40} {:<14} {:<13} {:<16}".format("N°", "ID", "NOMBRE", "CANTIDAD HRS", "VALOR HRS", "VALOR NÓMINA"))
         
         for i in range(longitudEmpleados):
+            # valorTotalNominas.append(nomina)
             id, nombre, horasTrabajadas, valorHora, nomina = listarNominaEmpleado(keysDictEmpleados[i], 1, True)
             print("{:<7} {:<14} {:<40} {:<14} {:<13} {:<16}".format(i+1, id, nombre, f"{horasTrabajadas} hrs", f"${valorHora:,.0f} COP", f"${nomina:,.0f} COP"))
-    
+            sumaNomina += nomina
+            
     else:
         while True:
             print("\n{:<7} {:<14} {:<40} {:<14} {:<13} {:<16}".format("N°", "ID", "NOMBRE", "CANTIDAD HRS", "VALOR HRS", "VALOR NÓMINA"))
@@ -495,12 +505,14 @@ def listarNominasTotalEmpleados(paginacion):
                 try:
                     id, nombre, horasTrabajadas, valorHora, nomina = listarNominaEmpleado(keysDictEmpleados[i], 1, True)
                     print("{:<7} {:<14} {:<40} {:<14} {:<13} {:<16}".format(i+1, id, nombre, f"{horasTrabajadas} hrs", f"${valorHora:,.0f} COP", f"${nomina:,.0f} COP"))
+                    # valorTotalNominas.append(nomina)
+                    sumaNomina += nomina
                     
                     #En caso de que hayan varios empleados, validar que llegue hasta 5 y pregunte al usuario si continua o no
                     if i+1 == paginacionContador:
                         break
                 
-                except IndexError as e:
+                except IndexError:
                     checked = True
                     break
             
@@ -517,6 +529,9 @@ def listarNominasTotalEmpleados(paginacion):
                     paginacionContador += paginacion
                     continue
     
+    
+    # Calcular el recuento del valor total de nóminas
+    print(f"VALOR TOTAL NÓMINAS: ${sumaNomina:,.0f} COP")
     input("\nFinalizando cálculo de nómina. Presione cualquier tecla para continuar...")
 
 
@@ -547,5 +562,13 @@ while isVerdadero:
         listarNominasTotalEmpleados(paginacion)
     
     elif opcionUsuario == 8:
-        isVerdadero = False
-        print("Saliendo...")
+        confirmarSalida = validarOpcionUsuario("\n¿Está seguro que quiere cerrar el programa? (1 SI / 0 NO): ", 0, 1)
+        
+        #Confirmar si el usuario desea salir del programa o no
+        if confirmarSalida == 0:
+            input("Regresando al menú principal. Presione cualquier tecla para continuar...")
+            isVerdadero = True
+            
+        elif confirmarSalida == 1:
+            isVerdadero = False
+            input("¡Gracias por usar nuestro software!")
