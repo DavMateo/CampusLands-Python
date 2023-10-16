@@ -118,8 +118,8 @@ def validarNombre(msj, min):
             nombre = input(msj).strip()
             nombreFiltradoArray = filtrarTexto(nombre)
             
-            nombreValidar = "".join(nombreFiltradoArray)
-            nombreFinal = " ".join(nombreFiltradoArray)
+            nombreValidar = "".join(nombreFiltradoArray).lower()
+            nombreFinal = " ".join(nombreFiltradoArray).title()
             
             if len(nombreFiltradoArray) < min:
                 print("Error: Debes ingresar al menos un nombre y un apellido.\n")
@@ -346,12 +346,63 @@ def eliminarEmpleado():
 
 
 def listarEmpleados(paginacion):
-    print("\n\n", "=== LISTAR EMPLEADOS ===".center(10), "\n")
+    numberPaginacion = paginacion
+    checked = False
+    print("\n\n", "=== LISTAR EMPLEADOS ===".center(10))
     
     if len(dictEmpleados) == 0:
         print("Error: Este módulo no puede iniciarse si no tiene empleados registrados.")
         input("Agregue empleados y vuelva a intentarlo. Presione cualquier tecla para salir al menú principal...")
         return
+    
+    
+    #El siguiente código corresponde el funcionamiento para mostrar mediante paginación el listado de los empleados con su información.
+    keysDictEmpleados = list(dictEmpleados.keys())
+    longitudEmpleados = len(keysDictEmpleados)
+    inicioBucle = 0
+    
+    
+    if longitudEmpleados <= paginacion:
+        print("\n{:<7} {:<14} {:<25} {:<14} {:<13}".format("N°", "ID", "NOMBRE", "CANTIDAD HRS", "VALOR HRS"))
+        for i in range(paginacion):
+            try:
+                nombre, cantidadHrs, valorHrs = list(dictEmpleados[keysDictEmpleados[i]].values())
+                print("{:<7} {:<14} {:<25} {:<14} {:<13}".format(i+1, keysDictEmpleados[i], nombre, f"{cantidadHrs} hrs", f"${valorHrs:,.0f} COP"))
+            
+            except IndexError:
+                break
+    
+    else:
+        while True:
+            print("\n{:<7} {:<14} {:<25} {:<14} {:<13}".format("N°", "ID", "NOMBRE", "CANTIDAD HRS", "VALOR HRS"))
+            for i in range(inicioBucle, numberPaginacion):
+                try:
+                    nombre, cantidadHrs, valorHrs = list(dictEmpleados[keysDictEmpleados[i]].values())
+                    print("{:<7} {:<14} {:<25} {:<14} {:<13}".format(i+1, keysDictEmpleados[i], nombre, f"{cantidadHrs} hrs", f"${valorHrs:,.0f} COP"))
+                    
+                    #En caso de que hayan varios empleados, validar que llegue hasta 5 y pregunte al usuario si continua o no
+                    if i+1 == paginacion:
+                        break
+                
+                except IndexError:
+                    checked = True
+                    break
+                
+                
+            if checked:
+                break
+            else:
+                continuarListarEmpleados = validarOpcionUsuario("\n¿Deseas listar más empleados? (1 SI / 0 NO): ", 0, 1)
+                
+                if continuarListarEmpleados == 0:
+                    break
+                elif continuarListarEmpleados == 1:
+                    #Estas variables establecen el inicio y fin del rango en el bucle
+                    inicioBucle = paginacion
+                    numberPaginacion += paginacion
+                    continue
+    
+    input()
 
 
 def listarNominaEmpleado():
