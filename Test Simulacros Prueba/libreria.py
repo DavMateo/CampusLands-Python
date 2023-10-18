@@ -53,6 +53,7 @@ def existeCodigo(codigo, listaLibros):
         return True
     
     return False
+    #Corregir error de que no encuentra elementos duplicados
 
 
 def cargarInformacion(listaLibros, rutaFile):
