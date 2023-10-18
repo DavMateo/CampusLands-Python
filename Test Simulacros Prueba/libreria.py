@@ -171,6 +171,7 @@ def menu(msj):
 
 
 def insertarLibro(codigo, titulo, autor, precio, rutaFile):
+    print("\n\n", "=== AGREGAR LIBRO ===", "\n")
     print("Ingrese la siguiente información:")
     codigoLibro = validarTexto(codigo, 1, 1)
     
@@ -211,7 +212,27 @@ def borrarLibro():
 
 
 def listarLibros():
-    pass
+    print("\n\n", "=== LISTAR LIBROS ===", "\n")
+    
+    print("¿Cómo desea listar los libros?")
+    print("1. Listar libros por orden de nombre")
+    print("2. Listar libros por orden de autor")
+    print("3. Listar libros por orden de precio")
+    opcionUsuarioListar = validarOpcionUsuario("  >> Ingrese una opción (Digite 0 para regresar): ", 0, 3)
+    
+    
+    if opcionUsuarioListar == 0:
+        input("Regresando al menú principal...")
+        return False
+    
+    elif opcionUsuarioListar == 1:
+        pass
+    
+    elif opcionUsuarioListar == 2:
+        pass
+    
+    elif opcionUsuarioListar == 3:
+        pass
 
 
 # CREANDO LA ESTRUCTURA DEL PROGRAMA
