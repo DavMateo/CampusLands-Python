@@ -16,6 +16,8 @@ rutaFile = "Actividad 18 - Proyecto Ciclo 1/datos.json"
 lstJugadores = []
 dictJugadores = {}
 count = 0
+idUsers = 1
+
 
 # DEFINIENDO LAS FUNCIONES COMPLEMENTARIAMENTE NECESARIAS
 def filtrarTexto(texto):
@@ -29,10 +31,6 @@ def filtrarTexto(texto):
     return textoFiltradoArray
 
 
-def mostrarTablero():
-    pass
-
-
 def crearMatrices(escala):
     matrizJuego = []
     
@@ -43,15 +41,25 @@ def crearMatrices(escala):
     return matrizJuego
 
 
-def mostrarMatriz(matrizJuego):
+def llenarTableroInicial(matrizJuego):
+    num = 1
     for f in range(len(matrizJuego)):
         for c in range(len(matrizJuego[f])):
-            print(matrizJuego[f][c], end="")
+            matrizJuego[f][c] = num
+            num += 1
+
+
+def mostrarTablero(matrizJuego):
+    for f in range(len(matrizJuego)):
+        for c in range(len(matrizJuego[f])):
+            print(matrizJuego[f][c], end=" ")
         print("")
+
 
 
 def actualizarTableroMatriz(matrizJuego):
     pass
+
 
 
 def cargarInformacion(rutaFile):
@@ -62,7 +70,7 @@ def cargarInformacion(rutaFile):
             fd = open(rutaFile, "w")
         except Exception as d:
             print("Error al intentar abrir el archivo\n", d)
-            return None
+            return False
     try:
         linea = fd.readline()
         if linea.strip() != "":
@@ -72,14 +80,14 @@ def cargarInformacion(rutaFile):
             lstPersonal = []
     except Exception as e:
         print("Error al cargar la información\n", e)
-        return None
+        return False
     
     print(lstPersonal)
     fd.close()
     return lstPersonal
 
 
-def jugadoresNombre(msj1, msj2, lstJugadores):
+def jugadoresNombre(msj1, msj2, lstJugadores, idUsers):
     #Validación n°1 - Verificar si el jugador 1 ya existe
     while True:
         try:
@@ -89,7 +97,8 @@ def jugadoresNombre(msj1, msj2, lstJugadores):
             if existeJugador1:
                 print("Error: El jugador ya existe. Ingrese otro apodo.\n")
                 continue
-            lstJugadores.append([1, jugador1])
+            lstJugadores.append([idUsers, jugador1])
+            idUsers += 1
             break
         
         except Exception as e:
@@ -105,7 +114,8 @@ def jugadoresNombre(msj1, msj2, lstJugadores):
             if existeJugador2:
                 print("Error: El jugador ya existe. Ingrese otro apodo.\n")
                 continue
-            lstJugadores.append([2, jugador2])
+            lstJugadores.append([idUsers, jugador2])
+            idUsers += 1
             break
         
         except Exception as e:
@@ -119,24 +129,29 @@ def eleccionFicha(lstJugadores, count):
     opcionUsuario = validarOpcionUsuario(">> Escribe 1 para X o 2 para O: ", 1, 2)
     
     if opcionUsuario == 1:
-        jugador1Ficha = lstJugadores[count].append("X")
-        jugador2Ficha = lstJugadores[count+1].append("O")
+        jugador1Ficha = "X"
+        jugador2Ficha = "O"
     
     elif opcionUsuario == 2:
-        jugador1Ficha = lstJugadores[count].append("O")
-        jugador2Ficha = lstJugadores[count+1].append("X")
+        jugador1Ficha = "O"
+        jugador2Ficha = "X"
+
     
-    inicioJugador(jugador1Ficha, jugador2Ficha)
-    return [jugador1Ficha, jugador2Ficha]
+    lstJugadores[count].append(jugador1Ficha)
+    lstJugadores[count+1].append(jugador2Ficha)
+    
+    iniciaJugador = inicioJugador(jugador1Ficha, jugador2Ficha, count, "X")
+    print(iniciaJugador)
+    return [jugador1Ficha, jugador2Ficha, iniciaJugador]
 
 
 #Define cuál es el jugador que inicia (Por default será X)
-def inicioJugador(jugador1Ficha, jugador2Ficha, inicioFicha="X"):
+def inicioJugador(jugador1Ficha, jugador2Ficha, count, inicioFicha="X"):
     if inicioFicha == jugador1Ficha:
-        return jugador1Ficha
+        return lstJugadores[count][0]
     
     elif inicioFicha == jugador2Ficha:
-        return jugador2Ficha
+        return lstJugadores[count+1][0]
 
 
 #Manda a los jugadores a una descripción del juego mientras deciden si jugar o no
@@ -261,14 +276,12 @@ def menu(msj):
 
 # Esta función contendrá múltiples llamados a otras funciones que inicializarán todos los aspectos
 # necesarios para que el juego inicie correctamente.
-def inicializarJuego(lstJugadores, count):
+def inicializarJuego(lstJugadores, count, idUsers):
     ejecutar = True
     
     validarArchivoApertura(lstJugadores, rutaFile)
-    test = jugadoresNombre(">> Nombre del jugador n°1: ", ">> Nombre del jugador n°2: ", lstJugadores)
-    jugadorFicha1, jugadorFicha2 = eleccionFicha(lstJugadores, count)
-    print(test)
-    print(jugadorFicha1, jugadorFicha2)
+    test = jugadoresNombre("\n>> Nombre del jugador n°1: ", ">> Nombre del jugador n°2: ", lstJugadores, idUsers)
+    jugadorFicha1, jugadorFicha2, iniciaJuego = eleccionFicha(lstJugadores, count)
     
     
     #Iniciar juego solo si el usuario lo permite
@@ -277,16 +290,27 @@ def inicializarJuego(lstJugadores, count):
         
         #Si los jugadores están listos para jugar, se ejecuta el siguiente código:
         if iniciarJuego == 1:
+            #Creando el tablero del juego y mostrándolo en pantalla
+            matrizJuego = crearMatrices(3)
+            llenarTableroInicial(matrizJuego)
+            mostrarTablero(matrizJuego)
+            
+            input()
             ejecutar = False
         
         #Si los jugadores aún no están listos, se ejecuta lo siguiente:
         elif iniciarJuego == 0:
             opcionUsuarioLobby = lobbyEspera()
+            
             if opcionUsuarioLobby == 1:
                 ejecutar = False
-                
             elif opcionUsuarioLobby == 0:
                 ejecutar = True
+    
+    
+    print(test)  #eliminarLuego
+    print(jugadorFicha1, jugadorFicha2)  #eliminarLuego
+    print(f"Inicia juego: {iniciaJuego}")  #eliminarLuego
 
 
 # CREANDO LA ESTRUCTURA DEL PROGRAMA
@@ -294,7 +318,7 @@ while isVerdadero:
     opcionUsuario = menu("   >> Escoja una opción: ")
     
     if opcionUsuario == 1:
-        inicializarJuego(lstJugadores, count)
+        inicializarJuego(lstJugadores, count, idUsers)
         #Esta variable contador permite que el primer usuario sea el que ingrese siempre la opción, 
         #a pesar de existir más de dos jugadores registrados. Se suma de dos en dos.
         count += 2

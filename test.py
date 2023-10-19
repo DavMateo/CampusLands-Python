@@ -1,3 +1,6 @@
-lstTest = [1, 2, 3, 4]
+dicTest = {1: ["David"], 2: ["Mateo"]}
 
-print(20 in lstTest)
+dicTest[1].append(15255)
+print(dicTest)
+
+print(list(dicTest.keys())[1])
