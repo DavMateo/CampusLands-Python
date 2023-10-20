@@ -6,7 +6,6 @@
 # IMPORTAR BIBLIOTECAS NECESARIAS
 import time
 import json
-import os
 
 
 # DECLARANDO LAS VARIABLES PRINCIPALES
