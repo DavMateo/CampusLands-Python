@@ -52,7 +52,6 @@ def mostrarTablero(matrizJuego):
         print("")
 
 
-
 def actualizarTableroMatriz(matrizJuego, indice):
     fila, columna = obtenerMovimientoJugador(lstJugadores[indice][1], matrizJuego)
     
@@ -150,12 +149,23 @@ def cambiarTurno(turnoActual):
         return 0
 
 
-def reiniciarTablero():
-    pass
+def reiniciarTablero(escala):
+    matrizJuego = []
+    
+    for i in range(escala):
+        fila = [''] * escala
+        matrizJuego.append(fila)
+    
+    return matrizJuego
 
 
 def jugarOtraPartida():
-    pass
+    opcionUsuarioJugar = validarOpcionUsuario(">> ¿Desean seguir jugando? (1 SI / 0 NO): ", 0, 1)
+    
+    if opcionUsuarioJugar == 1:
+        return True
+    elif opcionUsuarioJugar == 0:
+        return False
 
 
 def mensajeVictoria(jugador):
@@ -198,7 +208,6 @@ def obtenerMovimientoJugador(jugador, matrizJuego):
         else:
             print("Error: La posición elegida ya está ocupada. Inténtelo de nuevo.")
             isValido = True
-
     
     return [fila, columna]
 
@@ -399,13 +408,25 @@ def jugar(lstJugadores, indiceJugador):
         
         #Validar si ha ocurrido una victoria
         if validarVictoria(matrizJuego, lstJugadores[turnoActual][2]):
-            mensajeVictoria(lstJugadores[turnoActual][1])
-            jugando = False
+            checked = jugarOtraPartida()
+            
+            if checked:
+                matrizJuego = reiniciarTablero(3)
+                continue
+            else:
+                mensajeVictoria(lstJugadores[turnoActual][1])
+                jugando = False
         
         #Validar si ha ocurrido un empate
         if validarEmpate(matrizJuego):
-            mensajeEmpate()
-            jugando = False
+            checked = jugarOtraPartida()
+            
+            if checked:
+                matrizJuego = reiniciarTablero(3)
+                continue
+            else:
+                mensajeEmpate()
+                jugando = False
         
         turnoActual = cambiarTurno(turnoActual)
 
@@ -423,7 +444,6 @@ def inicializarJuego(lstJugadores, count):
     #Iniciar juego solo si el usuario lo permite
     while ejecutar:
         iniciarJuego = validarOpcionUsuario(">> ¿Desean iniciar el juego? (1 SI / 0 NO): ", 0, 1)
-        
         
         for i in range(len(lstJugadores)):
             if iniciaJuego in lstJugadores[i]:
