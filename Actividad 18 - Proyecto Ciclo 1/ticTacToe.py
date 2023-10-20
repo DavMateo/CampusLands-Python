@@ -134,7 +134,7 @@ def eleccionFicha(lstJugadores, count):
     lstJugadores[count+1].append(jugador2Ficha)
     
     iniciaJugador = inicioJugador(jugador1Ficha, jugador2Ficha, count, "X")
-    print(iniciaJugador)
+    # print(iniciaJugador)
     return [jugador1Ficha, jugador2Ficha, iniciaJugador]
 
 
@@ -184,9 +184,6 @@ def obtenerMovimientoJugador(jugador, matrizJuego):
     while isValido:
         fila = validarOpcionUsuario(f"{jugador}, ingresa el número de fila (1, 2, o 3): ", 1, 3)
         columna = validarOpcionUsuario(f"{jugador}, ingresa el número de columna (1, 2, o 3): ", 1, 3)
-        print(fila)
-        print(columna)
-        print("")
         checked = validarMovimiento(matrizJuego, fila, columna)
         
         if checked:
@@ -579,7 +576,6 @@ while isVerdadero:
         #Esta variable contador permite que el primer usuario sea el que ingrese siempre la opción, 
         #a pesar de existir más de dos jugadores registrados. Se suma de dos en dos.
         count += 2
-        print(lstJugadores)
     
     elif opcionUsuario == 2:
         tablaDePosicion(lstJugadores)
