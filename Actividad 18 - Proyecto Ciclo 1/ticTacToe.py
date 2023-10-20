@@ -78,7 +78,6 @@ def cargarInformacion(rutaFile):
         print("Error al cargar la información\n", e)
         return False
     
-    # print(lstPersonal)  #eliminarLuego
     fd.close()
     return lstPersonal
 
@@ -213,6 +212,24 @@ def guardarInfoJugador(lstJugadores, rutaFile):
     return True
 
 
+def listarJugadoresPaginacion(list, cant, count, iterado):
+    continuar = True
+    cantidadEmpleadosLista = len(list)
+    
+    while continuar:
+        while count < cant:
+            for i in range(count, len(list)):
+                id, nombre, ficha, movimientos, tiempo = lstJugadores[i]
+                print("{:<5} {:<20} {:<7} {:<18} {:<30}".format(id, nombre, ficha, f"{movimientos} mov.", f"{time.strftime('%H:%M:%S', time.gmtime(tiempo))} (HH:MM:SS)"))
+                count += 1
+                
+                if count == 5 * iterado:
+                    return count
+                
+                if count == cantidadEmpleadosLista:
+                    return True
+
+
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
 def validarOpcionUsuario(msj, min, max):
     while True:
@@ -302,16 +319,13 @@ def validarArchivoApertura(lstJugadores, rutaFile):
         print(f"Error: {e}.\n")
         return False
     
-    # print(lstJugadores)  #eliminarLuego
     abrirArchivo.close()
     return lstJugadores
 
 
 def validarExisteJugador(jugador, lstJugadores):
-    print(lstJugadores)  #eliminarLuego
     for i in range(len(lstJugadores)):
         if jugador == lstJugadores[i][1]:
-            print(lstJugadores[i][1])  #eliminarLuego
             return True
     return False
 
@@ -410,8 +424,6 @@ def jugar(lstJugadores, indiceJugador):
     
     
     while jugando:
-        # print(turnoActual)  #eliminarLuego
-        # print(len(lstJugadores))  #eliminarLuego
         tiempoInicio = time.time()
         
         print(f"¡Turno de {lstJugadores[turnoActual][1]}! Elije el movimiento de tu ficha a continuación:")
@@ -424,7 +436,6 @@ def jugar(lstJugadores, indiceJugador):
             
             if checked:
                 matrizJuego = crearMatrices(3)
-                print(matrizJuego)  #eliminarLuego
                 continue
             else:
                 mensajeVictoria(lstJugadores[turnoActual][1])
@@ -436,7 +447,6 @@ def jugar(lstJugadores, indiceJugador):
             
             if checked:
                 matrizJuego = crearMatrices(3)
-                print(matrizJuego)  #eliminarLuego
                 continue
             else:
                 mensajeEmpate()
@@ -466,15 +476,10 @@ def jugar(lstJugadores, indiceJugador):
                 lstJugadores[turnoActual].append(contadorMovimientos2)
         
         
-        
         try:
             lstJugadores[turnoActual][4] = tiempoJugadorTotal
         except IndexError:
             lstJugadores[turnoActual].append(tiempoJugadorTotal)
-        
-        
-        print(time.strftime("%H:%M:%S", time.gmtime(tiempoFin)), time.strftime("%H:%M:%S", time.gmtime(tiempoJugadorTotal)), time.strftime("%H:%M:%S", time.gmtime(tiempoGlobalTotal)))  #eliminarLuego
-        print(lstJugadores)  #eliminarLuego
 
 
 # Esta función contendrá múltiples llamados a otras funciones que inicializarán todos los aspectos
@@ -495,7 +500,6 @@ def inicializarJuego(lstJugadores, count):
             if iniciaJuego in lstJugadores[i]:
                 # jugadorInicial = lstJugadores[i][1]
                 indiceJugador = i
-                print(f"Indice jugador i: {indiceJugador}")  #eliminarLuego
         
         
         #Si los jugadores están listos para jugar, se ejecuta el siguiente código:
@@ -512,11 +516,54 @@ def inicializarJuego(lstJugadores, count):
                 ejecutar = False
             elif opcionUsuarioLobby == 0:
                 ejecutar = True
+
+
+def tablaDePosicion(lstJugadores):
+    continuar = True
+    checked = False
+    print("\n\n", "*** TABLA DE POSICIONES ***")
     
     
-    print(test)  #eliminarLuego
-    print(jugadorFicha1, jugadorFicha2)  #eliminarLuego
-    print(f"Inicia juego: {iniciaJuego}")  #eliminarLuego
+    while continuar:
+        print("\n{:<5} {:<20} {:<7} {:<18} {:<15}".format("N°", "NOMBRE JUGADOR", "FICHA", "MOVIMIENTOS", "TIEMPO"))
+        count = 0
+        iterado = 1
+        
+        if len(lstJugadores) > 5:
+            while True:
+                # La variable contador almacenará el retorno de la función (Número o booleano)
+                # Si es número, significa que aún queda elementos por mostrar y se prepara una nueva paginación
+                # Pero si recibe un booleano (True), entonces significa que se han mostrado todos los empleados, regresando al menú.
+                contador = listarJugadoresPaginacion(lstJugadores, len(lstJugadores), count, iterado)
+                
+                # Este if permite que se salga del sub-programa cuando ya no hayan más elementos por mostrar
+                if contador == True:
+                    input()
+                    return
+                
+                else:
+                    # Verificar si el usuario desea continuar con la paginación de más información.
+                    continuarMostrarInfo = validarOpcionUsuario("\n¿Desea ver más información? (1 SI / 0 NO): ", 0, 1)
+                    if continuarMostrarInfo == 1:
+                        iterado += 1
+                        count += contador
+                        continue
+                
+                    # Sale de la función si el usuario desiste en ver más empleados
+                    elif continuarMostrarInfo == 0:
+                        return False
+        
+        elif len(lstJugadores) <= 5:
+            for i in range(len(lstJugadores)):
+                id, nombre, ficha, movimientos, tiempo = lstJugadores[i]
+                print("{:<5} {:<20} {:<7} {:<18} {:<30}".format(id, nombre, ficha, f"{movimientos} mov.", f"{time.strftime('%H:%M:%S', time.gmtime(tiempo))} (HH:MM:SS)"))
+                checked = True
+
+        # Se ejecuta este if solo si el for anterior se ha completado exitosamente
+        if checked:
+            input()
+            continuar = False
+            return
 
 
 # CREANDO LA ESTRUCTURA DEL PROGRAMA
@@ -525,7 +572,6 @@ count = len(lstJugadores)
 
 while isVerdadero:
     opcionUsuario = menu("   >> Escoja una opción: ")
-    print(lstJugadores, len(lstJugadores))  #eliminarLuego
     
     
     if opcionUsuario == 1:
@@ -536,11 +582,9 @@ while isVerdadero:
         print(lstJugadores)
     
     elif opcionUsuario == 2:
-        pass
+        tablaDePosicion(lstJugadores)
     
     elif opcionUsuario == 3:
         isVerdadero = False
-        print(lstJugadores)  #eliminarLuego
         guardarInfoJugador(lstJugadores, rutaFile)
-        print(lstJugadores)  #eliminarLuego
         input("Saliendo...")
