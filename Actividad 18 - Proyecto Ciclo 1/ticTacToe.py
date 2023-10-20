@@ -314,13 +314,12 @@ def validarMovimiento(matrizJugador, fila, columna):
 
 
 def validarVictoria(matrizJuego, ficha):
-    contador = 0
-    
     #Verificando una posible victoria en las filas del tablero
+    contador = 0
     for f in range(len(matrizJuego)):
-        if ficha in matrizJuego[f]:
+        if ficha == matrizJuego[f]:
             contador += 1
-        
+            
         if contador == 3:
             print("Ganó por tres en línea en una fila")
             return True
@@ -330,35 +329,23 @@ def validarVictoria(matrizJuego, ficha):
     for f in range(len(matrizJuego)):
         contador = 0
         for c in range(len(matrizJuego[f])):
-            if ficha in matrizJuego[f][c]:
+            if ficha == matrizJuego[f][c]:
                 contador += 1
 
-            if contador == 3:
-                print("Ganó por tres en línea en una columna")
-                return True
-    
-    
-    contador = 0
-    #Verificando una posible victoria en diagonal de esquina 
-    #superior izquierda a esquina inferior derecha
-    for i in range(3):
-        if ficha in matrizJuego[i][i]:
-            contador += 1
-        
         if contador == 3:
-            print("Ganó por una diagonal principal")
+            print("Ganó por tres en línea en una columna")
             return True
     
     
-    contador = 0
-    #Lo mismo que arriba pero al revés
-    for i in range(3):
-        if ficha in matrizJuego[i][2 - i]:
-            contador += 1
-        
-        if contador == 3:
-            print("Ganó por una diagonal secundaria.")
-            return True
+    #Verificando una posible victoria en diagonal de esquina
+    if ficha == matrizJuego[0][0] and ficha == matrizJuego[1][1] and ficha == matrizJuego[2][2]:
+        print("Ganó por una diagonal principal")
+        return True
+    
+    #Verificando una posible victoria en diagonal de esquina invertida
+    if ficha == matrizJuego[0][2] and ficha == matrizJuego[1][1] and ficha == matrizJuego[2][0]:
+        print("Ganó por una diagonal secundaria.")
+        return True
 
 
 #Si esta función se ejecuta, significa que la validación de ganador fue falsa
@@ -474,6 +461,7 @@ while isVerdadero:
         #Esta variable contador permite que el primer usuario sea el que ingrese siempre la opción, 
         #a pesar de existir más de dos jugadores registrados. Se suma de dos en dos.
         count += 2
+        print(lstJugadores)
     
     elif opcionUsuario == 2:
         pass
