@@ -11,9 +11,7 @@ import json
 # DECLARANDO LAS VARIABLES PRINCIPALES
 isVerdadero = True
 rutaFile = "Actividad 18 - Proyecto Ciclo 1/datos.json"
-lstJugadores = []
 dictJugadores = {}
-count = 0
 
 
 # DEFINIENDO LAS FUNCIONES COMPLEMENTARIAMENTE NECESARIAS
@@ -95,7 +93,7 @@ def jugadoresNombre(msj1, msj2, lstJugadores):
             if existeJugador1:
                 print("Error: El jugador ya existe. Ingrese otro apodo.\n")
                 continue
-            lstJugadores.append([1, jugador1])
+            lstJugadores.append([len(lstJugadores) + 1, jugador1])
             break
         
         except Exception as e:
@@ -111,7 +109,7 @@ def jugadoresNombre(msj1, msj2, lstJugadores):
             if existeJugador2:
                 print("Error: El jugador ya existe. Ingrese otro apodo.\n")
                 continue
-            lstJugadores.append([2, jugador2])
+            lstJugadores.append([len(lstJugadores) + 1, jugador2])
             break
         
         except Exception as e:
@@ -141,11 +139,11 @@ def eleccionFicha(lstJugadores, count):
     return [jugador1Ficha, jugador2Ficha, iniciaJugador]
 
 
-def cambiarTurno(turnoActual):
-    if turnoActual == 0:
-        return 1
+def cambiarTurno(turnoActual, lstJugadores):
+    if turnoActual == len(lstJugadores) - 1:
+        return len(lstJugadores) - 2
     else:
-        return 0
+        return len(lstJugadores) - 1
 
 
 def jugarOtraPartida():
@@ -199,6 +197,20 @@ def obtenerMovimientoJugador(jugador, matrizJuego):
             isValido = True
     
     return [fila, columna]
+
+
+def guardarInfoJugador(lstJugadores, rutaFile):
+    try:
+        guardarInfo = open(rutaFile, "w")
+        json.dump(lstJugadores, guardarInfo)
+    
+    except Exception as e:
+        print("Ha ocurrido un problema al guardar la información en el sistema.")
+        print(f"Error: {e}.\n")
+        return False
+        
+    guardarInfo.close()
+    return True
 
 
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
@@ -296,10 +308,10 @@ def validarArchivoApertura(lstJugadores, rutaFile):
 
 
 def validarExisteJugador(jugador, lstJugadores):
-    print(lstJugadores)
+    print(lstJugadores)  #eliminarLuego
     for i in range(len(lstJugadores)):
-        if jugador in lstJugadores[i][1]:
-            print(lstJugadores[i][1])
+        if jugador == lstJugadores[i][1]:
+            print(lstJugadores[i][1])  #eliminarLuego
             return True
     return False
 
@@ -421,7 +433,7 @@ def jugar(lstJugadores, indiceJugador):
                 mensajeEmpate()
                 jugando = False
         
-        turnoActual = cambiarTurno(turnoActual)
+        turnoActual = cambiarTurno(turnoActual, lstJugadores)
         print(lstJugadores)  #eliminarLuego
 
 
@@ -443,6 +455,7 @@ def inicializarJuego(lstJugadores, count):
             if iniciaJuego in lstJugadores[i]:
                 # jugadorInicial = lstJugadores[i][1]
                 indiceJugador = i
+                print(f"Indice jugador i: {indiceJugador}")  #eliminarLuego
         
         
         #Si los jugadores están listos para jugar, se ejecuta el siguiente código:
@@ -461,14 +474,19 @@ def inicializarJuego(lstJugadores, count):
                 ejecutar = True
     
     
-    # print(test)  #eliminarLuego
-    # print(jugadorFicha1, jugadorFicha2)  #eliminarLuego
-    # print(f"Inicia juego: {iniciaJuego}")  #eliminarLuego
+    print(test)  #eliminarLuego
+    print(jugadorFicha1, jugadorFicha2)  #eliminarLuego
+    print(f"Inicia juego: {iniciaJuego}")  #eliminarLuego
 
 
 # CREANDO LA ESTRUCTURA DEL PROGRAMA
+lstJugadores = cargarInformacion(rutaFile)
+count = len(lstJugadores)
+
 while isVerdadero:
     opcionUsuario = menu("   >> Escoja una opción: ")
+    print(lstJugadores, len(lstJugadores))  #eliminarLuego
+    
     
     if opcionUsuario == 1:
         inicializarJuego(lstJugadores, count)
@@ -482,4 +500,7 @@ while isVerdadero:
     
     elif opcionUsuario == 3:
         isVerdadero = False
-        print("Saliendo...")
+        print(lstJugadores)  #eliminarLuego
+        guardarInfoJugador(lstJugadores, rutaFile)
+        print(lstJugadores)  #eliminarLuego
+        input("Saliendo...")
