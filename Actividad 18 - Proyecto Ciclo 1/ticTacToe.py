@@ -394,6 +394,8 @@ def menu(msj):
 def jugar(lstJugadores, indiceJugador):
     jugando = True
     turnoActual = indiceJugador
+    contadorMovimientos1 = 0
+    contadorMovimientos2 = 0
     
     #Creando el tablero del juego y mostrándolo en pantalla
     matrizJuego = crearMatrices(3)
@@ -445,6 +447,31 @@ def jugar(lstJugadores, indiceJugador):
         tiempoFin = time.time()
         tiempoJugadorTotal += (tiempoFin - tiempoInicio)
         tiempoGlobalTotal += tiempoJugadorTotal
+        
+        
+        if turnoActual == len(lstJugadores) - 1:
+            try:
+                contadorMovimientos1 += 1
+                lstJugadores[turnoActual][3] = contadorMovimientos1
+            
+            except IndexError:
+                lstJugadores[turnoActual].append(contadorMovimientos1)
+                
+        else:
+            try:
+                contadorMovimientos2 += 1
+                lstJugadores[turnoActual][3] = contadorMovimientos2
+            
+            except IndexError:
+                lstJugadores[turnoActual].append(contadorMovimientos2)
+        
+        
+        
+        try:
+            lstJugadores[turnoActual][4] = tiempoJugadorTotal
+        except IndexError:
+            lstJugadores[turnoActual].append(tiempoJugadorTotal)
+        
         
         print(time.strftime("%H:%M:%S", time.gmtime(tiempoFin)), time.strftime("%H:%M:%S", time.gmtime(tiempoJugadorTotal)), time.strftime("%H:%M:%S", time.gmtime(tiempoGlobalTotal)))  #eliminarLuego
         print(lstJugadores)  #eliminarLuego

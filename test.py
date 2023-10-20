@@ -1,3 +1,5 @@
-lstTest = []
+lstTest = ["45Lamda"]
+print(lstTest)
 
-print(len(lstTest))
+lstTest[0] = "LamdaCopia"
+print(lstTest)
