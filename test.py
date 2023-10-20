@@ -1,6 +1,10 @@
-dicTest = {1: ["David"], 2: ["Mateo"]}
+import time
 
-dicTest[1].append(15255)
-print(dicTest)
+test = time.time()
 
-print(list(dicTest.keys())[1])
+for i in range(1000000):
+    random = i
+
+test2 = time.time()
+
+print(test - test2)

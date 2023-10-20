@@ -149,16 +149,6 @@ def cambiarTurno(turnoActual):
         return 0
 
 
-def reiniciarTablero(escala):
-    matrizJuego = []
-    
-    for i in range(escala):
-        fila = [''] * escala
-        matrizJuego.append(fila)
-    
-    return matrizJuego
-
-
 def jugarOtraPartida():
     opcionUsuarioJugar = validarOpcionUsuario(">> ¿Desean seguir jugando? (1 SI / 0 NO): ", 0, 1)
     
@@ -324,10 +314,11 @@ def validarMovimiento(matrizJugador, fila, columna):
 
 def validarVictoria(matrizJuego, ficha):
     #Verificando una posible victoria en las filas del tablero
-    contador = 0
     for f in range(len(matrizJuego)):
-        if ficha == matrizJuego[f]:
-            contador += 1
+        contador = 0
+        for c in range(len(matrizJuego[f])):
+            if ficha == matrizJuego[f][c]:
+                contador += 1
             
         if contador == 3:
             print("Ganó por tres en línea en una fila")
@@ -335,11 +326,12 @@ def validarVictoria(matrizJuego, ficha):
     
     
     #Verificando una posible victoria en las columnas del tablero
+    contador = 0
     for f in range(len(matrizJuego)):
-        contador = 0
         for c in range(len(matrizJuego[f])):
             if ficha == matrizJuego[f][c]:
                 contador += 1
+                break
 
         if contador == 3:
             print("Ganó por tres en línea en una columna")
@@ -402,7 +394,7 @@ def jugar(lstJugadores, indiceJugador):
         # print(turnoActual)  #eliminarLuego
         # print(len(lstJugadores))  #eliminarLuego
         
-        print(f"¡Turno de {lstJugadores[turnoActual][1]} ! Elije el movimiento de tu ficha a continuación:")
+        print(f"¡Turno de {lstJugadores[turnoActual][1]}! Elije el movimiento de tu ficha a continuación:")
         matrizJuego = actualizarTableroMatriz(matrizJuego, turnoActual)
         
         
@@ -411,7 +403,8 @@ def jugar(lstJugadores, indiceJugador):
             checked = jugarOtraPartida()
             
             if checked:
-                matrizJuego = reiniciarTablero(3)
+                matrizJuego = crearMatrices(3)
+                print(matrizJuego)  #eliminarLuego
                 continue
             else:
                 mensajeVictoria(lstJugadores[turnoActual][1])
@@ -422,13 +415,15 @@ def jugar(lstJugadores, indiceJugador):
             checked = jugarOtraPartida()
             
             if checked:
-                matrizJuego = reiniciarTablero(3)
+                matrizJuego = crearMatrices(3)
+                print(matrizJuego)  #eliminarLuego
                 continue
             else:
                 mensajeEmpate()
                 jugando = False
         
         turnoActual = cambiarTurno(turnoActual)
+        print(lstJugadores)  #eliminarLuego
 
 
 # Esta función contendrá múltiples llamados a otras funciones que inicializarán todos los aspectos
