@@ -7,7 +7,6 @@
 import time
 import json
 import os
-import random #Dejarlo ahí por si se llegase a necesitar xd
 
 
 # DECLARANDO LAS VARIABLES PRINCIPALES
@@ -16,7 +15,6 @@ rutaFile = "Actividad 18 - Proyecto Ciclo 1/datos.json"
 lstJugadores = []
 dictJugadores = {}
 count = 0
-idUsers = 1
 
 
 # DEFINIENDO LAS FUNCIONES COMPLEMENTARIAMENTE NECESARIAS
@@ -35,18 +33,16 @@ def crearMatrices(escala):
     matrizJuego = []
     
     for i in range(escala):
-        fila = [0] * escala
+        fila = [''] * escala
         matrizJuego.append(fila)
     
     return matrizJuego
 
 
 def llenarTableroInicial(matrizJuego):
-    num = 1
     for f in range(len(matrizJuego)):
         for c in range(len(matrizJuego[f])):
-            matrizJuego[f][c] = num
-            num += 1
+            matrizJuego[f][c] 
 
 
 def mostrarTablero(matrizJuego):
@@ -57,9 +53,13 @@ def mostrarTablero(matrizJuego):
 
 
 
-def actualizarTableroMatriz(matrizJuego):
-    pass
-
+def actualizarTableroMatriz(matrizJuego, indice):
+    fila, columna = obtenerMovimientoJugador(lstJugadores[indice][1], matrizJuego)
+    
+    matrizJuego[fila - 1][columna - 1] = lstJugadores[indice][2]
+    mostrarTablero(matrizJuego)
+    
+    return matrizJuego
 
 
 def cargarInformacion(rutaFile):
@@ -82,12 +82,12 @@ def cargarInformacion(rutaFile):
         print("Error al cargar la información\n", e)
         return False
     
-    print(lstPersonal)
+    # print(lstPersonal)  #eliminarLuego
     fd.close()
     return lstPersonal
 
 
-def jugadoresNombre(msj1, msj2, lstJugadores, idUsers):
+def jugadoresNombre(msj1, msj2, lstJugadores):
     #Validación n°1 - Verificar si el jugador 1 ya existe
     while True:
         try:
@@ -97,8 +97,7 @@ def jugadoresNombre(msj1, msj2, lstJugadores, idUsers):
             if existeJugador1:
                 print("Error: El jugador ya existe. Ingrese otro apodo.\n")
                 continue
-            lstJugadores.append([idUsers, jugador1])
-            idUsers += 1
+            lstJugadores.append([1, jugador1])
             break
         
         except Exception as e:
@@ -114,8 +113,7 @@ def jugadoresNombre(msj1, msj2, lstJugadores, idUsers):
             if existeJugador2:
                 print("Error: El jugador ya existe. Ingrese otro apodo.\n")
                 continue
-            lstJugadores.append([idUsers, jugador2])
-            idUsers += 1
+            lstJugadores.append([2, jugador2])
             break
         
         except Exception as e:
@@ -145,6 +143,29 @@ def eleccionFicha(lstJugadores, count):
     return [jugador1Ficha, jugador2Ficha, iniciaJugador]
 
 
+def cambiarTurno(turnoActual):
+    if turnoActual == 0:
+        return 1
+    else:
+        return 0
+
+
+def reiniciarTablero():
+    pass
+
+
+def jugarOtraPartida():
+    pass
+
+
+def mensajeVictoria(jugador):
+    print(f"¡Felicidades {jugador}! Has ganado.")
+
+
+def mensajeEmpate():
+    print("¡Nadie ganó esta vez! Mejor suerte para la próxima.")
+
+
 #Define cuál es el jugador que inicia (Por default será X)
 def inicioJugador(jugador1Ficha, jugador2Ficha, count, inicioFicha="X"):
     if inicioFicha == jugador1Ficha:
@@ -158,6 +179,28 @@ def inicioJugador(jugador1Ficha, jugador2Ficha, count, inicioFicha="X"):
 def lobbyEspera():
     print("En construcción 🚧")
     return input("¿Estas listo? (1 SI / 0 NO): ")
+
+
+def obtenerMovimientoJugador(jugador, matrizJuego):
+    isValido = True
+    
+    #Validar si alguna posición en la fila está ocupada.
+    while isValido:
+        fila = validarOpcionUsuario(f"{jugador}, ingresa el número de fila (1, 2, o 3): ", 1, 3)
+        columna = validarOpcionUsuario(f"{jugador}, ingresa el número de columna (1, 2, o 3): ", 1, 3)
+        print(fila)
+        print(columna)
+        print("")
+        checked = validarMovimiento(matrizJuego, fila, columna)
+        
+        if checked:
+            isValido = False
+        else:
+            print("Error: La posición elegida ya está ocupada. Inténtelo de nuevo.")
+            isValido = True
+
+    
+    return [fila, columna]
 
 
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
@@ -249,7 +292,7 @@ def validarArchivoApertura(lstJugadores, rutaFile):
         print(f"Error: {e}.\n")
         return False
     
-    print(lstJugadores)  #eliminarLuego
+    # print(lstJugadores)  #eliminarLuego
     abrirArchivo.close()
     return lstJugadores
 
@@ -260,6 +303,80 @@ def validarExisteJugador(jugador, lstJugadores):
         if jugador in lstJugadores[i][1]:
             print(lstJugadores[i][1])
             return True
+    return False
+
+
+def validarMovimiento(matrizJugador, fila, columna):
+    if matrizJugador[fila - 1][columna - 1] == "":
+        return True
+    else:
+        return False
+
+
+def validarVictoria(matrizJuego, ficha):
+    contador = 0
+    
+    #Verificando una posible victoria en las filas del tablero
+    for f in range(len(matrizJuego)):
+        if ficha in matrizJuego[f]:
+            contador += 1
+        
+        if contador == 3:
+            print("Ganó por tres en línea en una fila")
+            return True
+    
+    
+    #Verificando una posible victoria en las columnas del tablero
+    for f in range(len(matrizJuego)):
+        contador = 0
+        for c in range(len(matrizJuego[f])):
+            if ficha in matrizJuego[f][c]:
+                contador += 1
+
+            if contador == 3:
+                print("Ganó por tres en línea en una columna")
+                return True
+    
+    
+    contador = 0
+    #Verificando una posible victoria en diagonal de esquina 
+    #superior izquierda a esquina inferior derecha
+    for i in range(3):
+        if ficha in matrizJuego[i][i]:
+            contador += 1
+        
+        if contador == 3:
+            print("Ganó por una diagonal principal")
+            return True
+    
+    
+    contador = 0
+    #Lo mismo que arriba pero al revés
+    for i in range(3):
+        if ficha in matrizJuego[i][2 - i]:
+            contador += 1
+        
+        if contador == 3:
+            print("Ganó por una diagonal secundaria.")
+            return True
+
+
+#Si esta función se ejecuta, significa que la validación de ganador fue falsa
+def validarEmpate(matrizJuego):
+    posicionesOcupadas = 0
+    posicionesTotales = len(matrizJuego) * len(matrizJuego[0])
+    
+    #Verificar cuantas casillas han sido ocupadas
+    for f in range(len(matrizJuego)):
+        for c in range(len(matrizJuego[f])):
+            if matrizJuego[f][c] != "":
+                posicionesOcupadas += 1
+                
+    #Verificar si las casillas ocupadas son iguales a las casillas totales
+    if posicionesOcupadas == posicionesTotales:
+        print("¡La ronda ha quedado en un empate!")
+        return True
+    
     return False
 
 
@@ -274,13 +391,45 @@ def menu(msj):
     return validarOpcionUsuario(msj, 1, 3)
 
 
+#Una vez iniciado todo lo necesario para el juego, se entra a la lógica de este, iniciando otras funciones más
+def jugar(lstJugadores, indiceJugador):
+    jugando = True
+    turnoActual = indiceJugador
+    
+    #Creando el tablero del juego y mostrándolo en pantalla
+    matrizJuego = crearMatrices(3)
+    llenarTableroInicial(matrizJuego)
+    mostrarTablero(matrizJuego)
+    
+    
+    while jugando:
+        # print(turnoActual)  #eliminarLuego
+        # print(len(lstJugadores))  #eliminarLuego
+        
+        print(f"¡Turno de {lstJugadores[turnoActual][1]} ! Elije el movimiento de tu ficha a continuación:")
+        matrizJuego = actualizarTableroMatriz(matrizJuego, turnoActual)
+        
+        
+        #Validar si ha ocurrido una victoria
+        if validarVictoria(matrizJuego, lstJugadores[turnoActual][2]):
+            mensajeVictoria(lstJugadores[turnoActual][1])
+            jugando = False
+        
+        #Validar si ha ocurrido un empate
+        if validarEmpate(matrizJuego):
+            mensajeEmpate()
+            jugando = False
+        
+        turnoActual = cambiarTurno(turnoActual)
+
+
 # Esta función contendrá múltiples llamados a otras funciones que inicializarán todos los aspectos
 # necesarios para que el juego inicie correctamente.
-def inicializarJuego(lstJugadores, count, idUsers):
+def inicializarJuego(lstJugadores, count):
     ejecutar = True
     
     validarArchivoApertura(lstJugadores, rutaFile)
-    test = jugadoresNombre("\n>> Nombre del jugador n°1: ", ">> Nombre del jugador n°2: ", lstJugadores, idUsers)
+    test = jugadoresNombre("\n>> Nombre del jugador n°1: ", ">> Nombre del jugador n°2: ", lstJugadores)
     jugadorFicha1, jugadorFicha2, iniciaJuego = eleccionFicha(lstJugadores, count)
     
     
@@ -288,14 +437,17 @@ def inicializarJuego(lstJugadores, count, idUsers):
     while ejecutar:
         iniciarJuego = validarOpcionUsuario(">> ¿Desean iniciar el juego? (1 SI / 0 NO): ", 0, 1)
         
+        
+        for i in range(len(lstJugadores)):
+            if iniciaJuego in lstJugadores[i]:
+                # jugadorInicial = lstJugadores[i][1]
+                indiceJugador = i
+        
+        
         #Si los jugadores están listos para jugar, se ejecuta el siguiente código:
         if iniciarJuego == 1:
-            #Creando el tablero del juego y mostrándolo en pantalla
-            matrizJuego = crearMatrices(3)
-            llenarTableroInicial(matrizJuego)
-            mostrarTablero(matrizJuego)
-            
-            input()
+            jugar(lstJugadores, indiceJugador)
+            input("Testeando...")
             ejecutar = False
         
         #Si los jugadores aún no están listos, se ejecuta lo siguiente:
@@ -308,9 +460,9 @@ def inicializarJuego(lstJugadores, count, idUsers):
                 ejecutar = True
     
     
-    print(test)  #eliminarLuego
-    print(jugadorFicha1, jugadorFicha2)  #eliminarLuego
-    print(f"Inicia juego: {iniciaJuego}")  #eliminarLuego
+    # print(test)  #eliminarLuego
+    # print(jugadorFicha1, jugadorFicha2)  #eliminarLuego
+    # print(f"Inicia juego: {iniciaJuego}")  #eliminarLuego
 
 
 # CREANDO LA ESTRUCTURA DEL PROGRAMA
@@ -318,7 +470,7 @@ while isVerdadero:
     opcionUsuario = menu("   >> Escoja una opción: ")
     
     if opcionUsuario == 1:
-        inicializarJuego(lstJugadores, count, idUsers)
+        inicializarJuego(lstJugadores, count)
         #Esta variable contador permite que el primer usuario sea el que ingrese siempre la opción, 
         #a pesar de existir más de dos jugadores registrados. Se suma de dos en dos.
         count += 2
