@@ -400,10 +400,17 @@ def jugar(lstJugadores, indiceJugador):
     llenarTableroInicial(matrizJuego)
     mostrarTablero(matrizJuego)
     
+    #Creando las variables principales para registrar el tiempo por turno
+    tiempoInicio = 0
+    tiempoFin = 0
+    tiempoJugadorTotal = 0
+    tiempoGlobalTotal = 0
+    
     
     while jugando:
         # print(turnoActual)  #eliminarLuego
         # print(len(lstJugadores))  #eliminarLuego
+        tiempoInicio = time.time()
         
         print(f"¡Turno de {lstJugadores[turnoActual][1]}! Elije el movimiento de tu ficha a continuación:")
         matrizJuego = actualizarTableroMatriz(matrizJuego, turnoActual)
@@ -432,8 +439,14 @@ def jugar(lstJugadores, indiceJugador):
             else:
                 mensajeEmpate()
                 jugando = False
-        
         turnoActual = cambiarTurno(turnoActual, lstJugadores)
+
+
+        tiempoFin = time.time()
+        tiempoJugadorTotal += (tiempoFin - tiempoInicio)
+        tiempoGlobalTotal += tiempoJugadorTotal
+        
+        print(time.strftime("%H:%M:%S", time.gmtime(tiempoFin)), time.strftime("%H:%M:%S", time.gmtime(tiempoJugadorTotal)), time.strftime("%H:%M:%S", time.gmtime(tiempoGlobalTotal)))  #eliminarLuego
         print(lstJugadores)  #eliminarLuego
 
 
