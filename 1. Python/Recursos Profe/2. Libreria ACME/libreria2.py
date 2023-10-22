@@ -20,8 +20,8 @@ def filtrarTexto(texto):
         if texto[i] != "":
             textoFinalArray.append(texto[i])
     
-    textoValidar = "".join(textoFinalArray)
-    textoFinal = " ".join(textoFinalArray)
+    textoValidar = "".join(textoFinalArray).lower()
+    textoFinal = " ".join(textoFinalArray).upper()
     
     return [textoValidar, textoFinal]
 
@@ -199,16 +199,30 @@ def inicializarPrograma(rutaFile, dictLibros):
     return validarAbrirInfoArchivo(rutaFile, dictLibros)
 
 
-def insertarLibro(cod, tit, autor, precio):
+def insertarLibro(cod, tit, autor, precio, dictLibros):
     print("\n*** INSERTAR LIBRO ***")
     print("Ingrese a continuación la siguiente información sobre el libro:\n")
     
-    codigo = validarCodigo(cod, 1, 1)
-    titulo = validarTexto(tit, 1)
-    autorLibro = validarTexto(autor, 1)
-    precioLibro = validarPrecio(precio, 1000)
-    
-    return [codigo, titulo, autorLibro, precioLibro]
+    #Verificar que el código sea válido y no esté registrado
+    while True:
+        codigo = validarCodigo(cod, 1, 1) 
+        validarExisteLibro = dictLibros.get(codigo)
+        
+        if validarExisteLibro == None:
+            titulo = validarTexto(tit, 1)
+            autorLibro = validarTexto(autor, 1)
+            precioLibro = validarPrecio(precio, 1000)
+            return [codigo, titulo, autorLibro, precioLibro]
+        
+        else:
+            print("Error: El código ingresado ya pertenece a un libro registrado.")
+            reintentar = validarOpcionUsuario(">> ¿Deseas volver a intentarlo? (1 SI / 0 NO): ", 0, 1)
+            print("")
+            
+            if reintentar == 1:
+                continue
+            elif reintentar == 0:
+                return False
 
 
 def consultarLibro(cod, dictLibros):
@@ -241,15 +255,17 @@ def consultarLibro(cod, dictLibros):
         seguirConsultando = validarOpcionUsuario("\n>> ¿Deseas consultar otro libro? (1 SI / 0 NO): ", 0, 1)
         
         if seguirConsultando == 1:
-            input("Presione cualquier tecla cuando estés listo para buscar otro libro en el sistema...")
             continue
         elif seguirConsultando == 0:
-            input("\nPresione cualquier tecla para regresar al menú...")
+            input("Presione cualquier tecla para regresar al menú...")
             break
-        
 
-def editarLibro():
-    pass
+
+def editarLibro(cod, dictLibros):
+    print("\n*** EDITAR LIBRO ***\n")
+    
+    while True:
+        codigo = validarCodigo(cod, 1, 1)
 
 
 def borrarLibro():
@@ -272,30 +288,46 @@ while isVerdadero:
     opcionUsuario = menu("   >> Elije una opción: ")
     
     if opcionUsuario == 1:
-        infoLibroAgregar = insertarLibro(">> Código: ", ">> Título: ", ">> Autor: ", ">> Precio: ")
-        codigo, titulo, autor, precio = infoLibroAgregar
-        
-        print(dictLibros)  #eliminarLuego
-        #Agregar la información del libro a un diccionario vacío
-        dictLibrosMemoria = {}
-        dictLibrosMemoria[codigo] = {
-            "titulo": titulo,
-            "autor": autor,
-            "precio": precio
-        }
-    
-        dictLibros.update(dictLibrosMemoria)
-        print(dictLibros)  #eliminarLuego
-        
-        #Cargar información al archivo JSON
-        validarEscribirInfoArchivo(rutaFile, dictLibros)
-        input()
+        while True:
+            infoLibroAgregar = insertarLibro(">> Código: ", ">> Título: ", ">> Autor: ", ">> Precio: ", dictLibros)
+            
+            #Verifica si el código del libro existe o no mediante la respuesta de la función "insertarLibro()" por parte de la función "existeLibro()"
+            if infoLibroAgregar == False:
+                break
+            else:
+                codigo, titulo, autor, precio = infoLibroAgregar
+            
+            
+            #Agregar la información del libro a un diccionario vacío
+            dictLibrosMemoria = {}
+            dictLibrosMemoria[codigo] = {
+                "titulo": titulo,
+                "autor": autor,
+                "precio": precio
+            }
+            dictLibros.update(dictLibrosMemoria)
+            
+            #Cargar información al archivo JSON
+            if validarEscribirInfoArchivo(rutaFile, dictLibros):
+                print(f"\n¡El libro '{titulo.title()}' con el código '{codigo}' ha sido guardado con éxito!")
+            else:
+                break
+            
+            
+            #Verificar si el usuario desea continuar agregando libros
+            continuar = validarOpcionUsuario(">> ¿Desea agregar otro libro? (1 SI / 0 NO): ", 0, 1)
+            if continuar == 1:
+                continue
+            elif continuar == 0:
+                input("Presione cualquiet tecla para regresar al menú...")
+                break
+
     
     elif opcionUsuario == 2:
         consultarLibro(">> Ingrese el código del libro a consultar: ", dictLibros)
     
     elif opcionUsuario == 3:
-        pass
+        editarLibro(">> Ingrese el código del libro a editar: ", dictLibros)
     
     elif opcionUsuario == 4:
         pass

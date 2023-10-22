@@ -1,11 +1,14 @@
-# Crear un diccionario vacío
-diccionario_vacio = {}
+def funcionTest(num1, num2, num3, checked):
+    if checked:
+        num10 = 10 + num1
+        num20 = 20 + num2
+        num30 = 30 + num3
+    else:
+        num10 = False
+        num20 = False
+        num30 = False
+    
+    return [num10, num20, num30]
 
-# Crear un diccionario con información
-diccionario_con_info = {"clave1": "valor1", "clave2": "valor2"}
 
-# Agregar elementos del diccionario con información al diccionario vacío
-diccionario_vacio.update(diccionario_con_info)
-
-# Ahora diccionario_vacio contiene la información del diccionario_con_info
-print(diccionario_vacio)
+print(funcionTest(1, 2, 3, False))
