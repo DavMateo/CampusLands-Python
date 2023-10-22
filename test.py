@@ -1,13 +1,11 @@
-dictTest = {"123": {"1": "ABC", "2": "DEF"}}
-dictTest2 = {"456": {"DEF"}}
-lstTest = []
-lstTest.append(dictTest)
-lstTest.append(dictTest2)
+# Crear un diccionario vacío
+diccionario_vacio = {}
 
-print(lstTest, len(lstTest))
-print(lstTest[0])
-print("")
-cod = "123"
+# Crear un diccionario con información
+diccionario_con_info = {"clave1": "valor1", "clave2": "valor2"}
 
+# Agregar elementos del diccionario con información al diccionario vacío
+diccionario_vacio.update(diccionario_con_info)
 
-print(dict(lstTest))
+# Ahora diccionario_vacio contiene la información del diccionario_con_info
+print(diccionario_vacio)
