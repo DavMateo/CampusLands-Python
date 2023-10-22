@@ -46,58 +46,57 @@ def modificarInfoLibro(codigo, infoLibroTab, infoLibroText, infoModVar, infoModT
     
     while True:
         print(f"\n==== {codigo} ====")
-        print(f"Anterior {infoModText.title()}: {infoModVar}")
         
         #Validar si se debe verificar con "validarTexto()" o con "validarPrecio()" de acuerdo al valor del parámetro "isTexto" (True / False).
         if isTexto:
+            print(f"Anterior {infoModText.title()}: {infoModVar}")
             nuevaModificacion = validarTexto(f">> Ingrese el nuevo {infoModText.lower()}: ", min).title()
         else:
+            print(f"Anterior {infoModText.title()}: ${infoModVar:,.0f} COP")
             nuevaModificacion = validarPrecio(f">> Ingrese el nuevo {infoModText.lower()}: ", min)
 
 
         #Rectificando que el usuario haya ingresado bien la información
-        if infoLibroTab.lower() == "titulo":
+        if infoModText.lower() == "titulo":
             print(f"\n==== Código: {codigo} ====")
-            print(f">> {tituloTab.upper()}: {nuevaModificacion.title()}")
+            print(f"--> {tituloTab.upper()}: {nuevaModificacion.title()}")
             print(f"{autorTab.upper()}: {autorLibro.title()}")
             print(f"{precioTab.upper()}: ${precioLibro:,.0f} COP")
-            isInfoCorrecta = validarOpcionUsuario(">> ¿Desea guardar los cambios? (2 SI / 1 NO / 0 SALIR): ", 0, 2)
+            isInfoCorrecta = validarOpcionUsuario("\n>> ¿Desea guardar los cambios? (1 SI / 0 NO / 2 SALIR): ", 0, 2)
         
-        elif infoLibroTab.lower() == "autor":
+        elif infoModText.lower() == "autor":
             print(f"\n==== Código: {codigo} ====")
             print(f"{tituloTab.upper()}: {tituloLibro.title()}")
-            print(f">> {autorTab.upper()}: {nuevaModificacion.title()}")
+            print(f"--> {autorTab.upper()}: {nuevaModificacion.title()}")
             print(f"{precioTab.upper()}: ${precioLibro:,.0f} COP")
-            isInfoCorrecta = validarOpcionUsuario(">> ¿Desea guardar los cambios? (2 SI / 1 NO / 0 SALIR): ", 0, 2)
+            isInfoCorrecta = validarOpcionUsuario("\n>> ¿Desea guardar los cambios? (1 SI / 0 NO / 2 SALIR): ", 0, 2)
         
-        elif infoLibroTab.lowe() == "precio":
+        elif infoModText.lower() == "precio":
             print(f"\n==== Código: {codigo} ====")
             print(f"{tituloTab.upper()}: {tituloLibro.title()}")
             print(f"{autorTab.upper()}: {autorLibro.title()}")
-            print(f">> {precioTab.upper()}: ${nuevaModificacion:,.0f} COP")
-            isInfoCorrecta = validarOpcionUsuario(">> ¿Desea guardar los cambios? (2 SI / 1 NO / 0 SALIR): ", 0, 2)
+            print(f"--> {precioTab.upper()}: ${nuevaModificacion:,.0f} COP")
+            isInfoCorrecta = validarOpcionUsuario("\n>> ¿Desea guardar los cambios? (1 SI / 0 NO / 2 SALIR): ", 0, 2)
         
         
         #Validando si el usuario está seguro de la información ingresada
-        if isInfoCorrecta == 2:
+        if isInfoCorrecta == 1:
             #Actualizar información en el diccionario de libros y verificando su escritura en disco
             dictLibros[codigo][f"{infoModText.lower()}"] = nuevaModificacion
             
             if validarEscribirInfoArchivo(rutaFile, dictLibros):
                 input("¡La información se ha actualizado con éxito!")
-                break
+                return True
             else:
                 print("Ha ocurrido un error al actualizar la información.")
-                input("Presione cualquier tecla para continuar...")
-                break
+                return False
             
-        elif isInfoCorrecta == 1:
+        elif isInfoCorrecta == 0:
             input("Antes de confirmar la información verifique que los datos sean correctos.")
             continue
         
-        elif isInfoCorrecta == 0:
-            input("Regresando al menú principal. Presione cualquier tecla para continuar...")
-            break
+        elif isInfoCorrecta == 2:
+            return False
 
 
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
@@ -332,8 +331,8 @@ def editarLibro(cod, dictLibros, rutaFile):
             volverIntentar = validarOpcionUsuario(">> ¿Desea volver a buscar el libro a editar? (1 SI / 0 NO): ", 0, 1)
             
             if volverIntentar == 1:
-                input("Asegúrate de que el código está escrito correctamente...")
                 continue
+            
             elif volverIntentar == 0:
                 input("Regresando al menú principal. Presione cualquier tecla para continuar...")
                 return
@@ -342,7 +341,7 @@ def editarLibro(cod, dictLibros, rutaFile):
             tituloTab, autorTab, precioTab = list(verificarExisteLibro[1].keys())
             tituloLibro, autorLibro, precioLibro = list(verificarExisteLibro[1].values())
             
-            print("\n<<< ¿Qué desea modificar? >>>")
+            print("\n|| ¿Qué desea modificar? ||")
             print("1. Modificar Título")
             print("2. Modificar Autor")
             print("3. Modificar Precio")
@@ -350,17 +349,23 @@ def editarLibro(cod, dictLibros, rutaFile):
             opcionUsuario = validarOpcionUsuario(">> Digite una opción: ", 1, 4)
             
             if opcionUsuario == 1:
-                modificarInfoLibro(verificarExisteLibro[0], list(verificarExisteLibro[1].keys()), list(verificarExisteLibro[1].values()), tituloLibro, tituloTab, 1, True)
+                checkedModInfoLibro = modificarInfoLibro(verificarExisteLibro[0], list(verificarExisteLibro[1].keys()), list(verificarExisteLibro[1].values()), tituloLibro, tituloTab, 1, True)
                 
             elif opcionUsuario == 2:
-                modificarInfoLibro(verificarExisteLibro[0], list(verificarExisteLibro[1].keys()), list(verificarExisteLibro[1].values()), autorLibro, autorTab, 1, True)
+                checkedModInfoLibro = modificarInfoLibro(verificarExisteLibro[0], list(verificarExisteLibro[1].keys()), list(verificarExisteLibro[1].values()), autorLibro, autorTab, 1, True)
             
             elif opcionUsuario == 3:
-                modificarInfoLibro(verificarExisteLibro[0], list(verificarExisteLibro[1].keys()), list(verificarExisteLibro[1].values()), precioLibro, precioTab, 1000, False)
+                checkedModInfoLibro = modificarInfoLibro(verificarExisteLibro[0], list(verificarExisteLibro[1].keys()), list(verificarExisteLibro[1].values()), precioLibro, precioTab, 1000, False)
             
             elif opcionUsuario == 4:
                 input("Saliendo...")
                 break
+            
+            if not checkedModInfoLibro:
+                input("Regresando al menú principal. Presione cualquier tecla para continuar...")
+                return
+            else:
+                pass
             
             
         #Preguntarle al usuario si desea editar otro libro y actuar en consecuencia
