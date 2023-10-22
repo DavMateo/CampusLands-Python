@@ -8,7 +8,6 @@ import json
 
 # DECLARANDO LAS VARIABLES PRINCIPALES
 lstLibros = []
-dictLibros = {}
 isVerdadero = True
 inicializandoSistema = True
 
@@ -31,6 +30,24 @@ def organizarInfoLibros():
     pass
 
 
+def existeLibro(cod, lstLibros):
+    codigo = validarCodigo(cod, 1, 1)
+    count = 0
+    print(type(codigo))
+    print(lstLibros, len(lstLibros))  #eliminarLuego
+    
+    while not count == len(lstLibros)+1:
+        try:
+            for i in range(len(lstLibros)):
+                if lstLibros[i][codigo]:
+                    return lstLibros[i][codigo]
+        
+        except KeyError:
+            count += 1
+            
+    return False
+
+
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
 def validarOpcionUsuario(msj, min, max):
     while True:
@@ -48,7 +65,7 @@ def validarOpcionUsuario(msj, min, max):
             print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
 
-def validarAbrirInfoArchivo(rutaFile, xd):
+def validarAbrirInfoArchivo(rutaFile, lstLibros):
     #Validación n°1 - Intentar abrir el archivo en modo lectura / escritura
     try:
         abrirArchivo = open(rutaFile, "r")
@@ -69,7 +86,7 @@ def validarAbrirInfoArchivo(rutaFile, xd):
         linea = abrirArchivo.readline()
         if linea.strip() != "":
             abrirArchivo.seek(0)
-            lstLibros = json.load(abrirArchivo)
+            lstLibros.extend(json.load(abrirArchivo))
         
         else:
             lstLibros = []
@@ -85,13 +102,28 @@ def validarAbrirInfoArchivo(rutaFile, xd):
     return lstLibros
 
 
-def validarEscribirInfoArchivo():
-    while True:
-        try:
-            pass
+def validarEscribirInfoArchivo(rutaFile, lstLibros):
+    #Validación n°1 - Abrir el archivo en modo escritura
+    try:
+        guardarInfo = open(rutaFile, "w")
+    
+    except Exception as e:
+        print("Ha ocurrido un problema al ejecutarse la función de guardado.")
+        print(f"Error: {e}.\n")
+        return False
 
-        except:
-            pass
+
+    #Validación n°2 - Escribir la información en el archivo correspondiente
+    try:
+        json.dump(lstLibros, guardarInfo)
+
+    except Exception as e:
+        print("Ha ocurrido un problema al guardar la información del libro ingresado.")
+        print(f"Error: {e}.\n")
+        return False
+    
+    guardarInfo.close()
+    return True
 
 
 def validarCodigo(msj, min, max):
@@ -171,7 +203,7 @@ def menu(msj):
     
 
 def inicializarPrograma(rutaFile, lstLibros):
-    validarAbrirInfoArchivo(rutaFile, lstLibros)
+    return validarAbrirInfoArchivo(rutaFile, lstLibros)
 
 
 def insertarLibro(cod, tit, autor, precio):
@@ -186,8 +218,21 @@ def insertarLibro(cod, tit, autor, precio):
     return [codigo, titulo, autorLibro, precioLibro]
 
 
-def consultarLibro():
-    pass
+def consultarLibro(cod, lstLibros):
+    print("\n*** CONSULTAR LIBRO ***\n")
+    verificarExisteLibro = existeLibro(cod, lstLibros)
+    
+    #Si "existeLibro()" retorna algo distinto de "False", entonces:
+    if verificarExisteLibro != False:
+        print("\nVerificar Libro:")  #eliminarLuego
+        print(verificarExisteLibro)  #eliminarLuego
+        input("Presione cualquier tecla para continuar...")  #eliminarLuego
+    
+    #Si "existeLibro()" retornó "False", entonces:
+    else:
+        print("\n")  #eliminarLuego
+        print(verificarExisteLibro)
+        input("Presione cualquier tecla para continuar...")  #eliminarLuego
 
 
 def editarLibro():
@@ -205,7 +250,8 @@ def listarLibros():
 # CREANDO LA ESTRUCTURA DEL PROGRAMA
 while isVerdadero:
     while inicializandoSistema:
-        inicializarPrograma("1. Python/Recursos Profe/2. Libreria ACME/data.json", lstLibros)
+        rutaFile = "1. Python/Recursos Profe/2. Libreria ACME/data.json"
+        lstLibros = inicializarPrograma(rutaFile, [])
         print("¡EL BUCLE DE INICIALIZANDO SISTEMA ACABA DE EJECUTARSE!")
         break
     
@@ -213,11 +259,24 @@ while isVerdadero:
     opcionUsuario = menu("   >> Elije una opción: ")
     
     if opcionUsuario == 1:
-        insertarLibro(">> Código: ", ">> Título: ", ">> Autor: ", ">> Precio: ")
+        infoLibroAgregar = insertarLibro(">> Código: ", ">> Título: ", ">> Autor: ", ">> Precio: ")
+        codigo, titulo, autor, precio = infoLibroAgregar
+        
+        #Agregar la información del libro a un diccionario vacío
+        dictLibros = {}
+        dictLibros[codigo] = {
+            "titulo": titulo,
+            "autor": autor,
+            "precio": precio
+        }
+        lstLibros.append(dictLibros)
+        
+        #Cargar información al archivo JSON
+        validarEscribirInfoArchivo(rutaFile, lstLibros)
         input()
     
     elif opcionUsuario == 2:
-        pass
+        consultarLibro(">> Ingrese el código del libro a consultar: ", lstLibros)
     
     elif opcionUsuario == 3:
         pass
