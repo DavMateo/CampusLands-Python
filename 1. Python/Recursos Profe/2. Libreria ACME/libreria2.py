@@ -265,7 +265,44 @@ def editarLibro(cod, dictLibros):
     print("\n*** EDITAR LIBRO ***\n")
     
     while True:
-        codigo = validarCodigo(cod, 1, 1)
+        verificarExisteLibro = existeLibro(cod, dictLibros)
+        
+        if verificarExisteLibro == False:
+            print("Error: El código ingresado no corresponde a ningún libro registrado. Inténtelo de nuevo.\n")
+            volverIntentar = validarOpcionUsuario(">> ¿Desea volver a buscar el libro a editar? (1 SI / 0 NO): ", 0, 1)
+            
+            if volverIntentar == 1:
+                input("Asegúrate de que el código está escrito correctamente...")
+                continue
+            elif volverIntentar == 0:
+                input("Regresando al menú principal. Presione cualquier tecla para continuar...")
+                break
+        
+        else:  
+            # tituloTab, autorTab, precioTab = list(verificarExisteLibro[1].keys())
+            # tituloLibro, autorLibro, precioLibro = list(verificarExisteLibro[1].values())
+            
+            # print(f"\n==== Código: {verificarExisteLibro[0]} ====")
+            # print(f"{tituloTab.upper()}: {tituloLibro.title()}")
+            # print(f"{autorTab.upper()}: {autorLibro.title()}")
+            # print(f"{precioTab}: ${precioLibro:,.0f} COP")
+            
+            print("\n*** ¿Qué desea modificar? ***")
+            print("1. Modificar Título")
+            print("2. Modificar Autor")
+            print("3. Modificar Precio")
+            print("4. Regresar al menú principal")
+            opcionUsuario = validarOpcionUsuario(">> Digite una opción: ", 1, 4)
+            
+            
+        #Preguntarle al usuario si desea editar otro libro y actuar en consecuencia
+        seguirConsultando = validarOpcionUsuario("\n>> ¿Deseas editar otro libro? (1 SI / 0 NO): ", 0, 1)
+        
+        if seguirConsultando == 1:
+            continue
+        elif seguirConsultando == 0:
+            input("Presione cualquier tecla para regresar al menú...")
+            break
 
 
 def borrarLibro():
