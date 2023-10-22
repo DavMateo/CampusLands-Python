@@ -20,8 +20,8 @@ def filtrarTexto(texto):
         if texto[i] != "":
             textoFinalArray.append(texto[i])
     
-    textoValidar = "".join(textoFinalArray).lower()
-    textoFinal = " ".join(textoFinalArray).upper()
+    textoValidar = "".join(textoFinalArray)
+    textoFinal = " ".join(textoFinalArray)
     
     return [textoValidar, textoFinal]
 
@@ -31,13 +31,73 @@ def organizarInfoLibros():
 
 
 def existeLibro(cod, dictLibros):
-    codigo = validarCodigo(cod, 1, 1) 
+    codigo = validarCodigo(cod, 1, 1).upper()
     validarExisteLibro = dictLibros.get(codigo)
     
     if validarExisteLibro == None:
         return False
     else: 
         return codigo, validarExisteLibro
+
+
+def modificarInfoLibro(codigo, infoLibroTab, infoLibroText, infoModVar, infoModText, min, isTexto):
+    tituloTab, autorTab, precioTab = infoLibroTab
+    tituloLibro, autorLibro, precioLibro = infoLibroText
+    
+    while True:
+        print(f"\n==== {codigo} ====")
+        print(f"Anterior {infoModText.title()}: {infoModVar}")
+        
+        #Validar si se debe verificar con "validarTexto()" o con "validarPrecio()" de acuerdo al valor del parámetro "isTexto" (True / False).
+        if isTexto:
+            nuevaModificacion = validarTexto(f">> Ingrese el nuevo {infoModText.lower()}: ", min).title()
+        else:
+            nuevaModificacion = validarPrecio(f">> Ingrese el nuevo {infoModText.lower()}: ", min)
+
+
+        #Rectificando que el usuario haya ingresado bien la información
+        if infoLibroTab.lower() == "titulo":
+            print(f"\n==== Código: {codigo} ====")
+            print(f">> {tituloTab.upper()}: {nuevaModificacion.title()}")
+            print(f"{autorTab.upper()}: {autorLibro.title()}")
+            print(f"{precioTab.upper()}: ${precioLibro:,.0f} COP")
+            isInfoCorrecta = validarOpcionUsuario(">> ¿Desea guardar los cambios? (2 SI / 1 NO / 0 SALIR): ", 0, 2)
+        
+        elif infoLibroTab.lower() == "autor":
+            print(f"\n==== Código: {codigo} ====")
+            print(f"{tituloTab.upper()}: {tituloLibro.title()}")
+            print(f">> {autorTab.upper()}: {nuevaModificacion.title()}")
+            print(f"{precioTab.upper()}: ${precioLibro:,.0f} COP")
+            isInfoCorrecta = validarOpcionUsuario(">> ¿Desea guardar los cambios? (2 SI / 1 NO / 0 SALIR): ", 0, 2)
+        
+        elif infoLibroTab.lowe() == "precio":
+            print(f"\n==== Código: {codigo} ====")
+            print(f"{tituloTab.upper()}: {tituloLibro.title()}")
+            print(f"{autorTab.upper()}: {autorLibro.title()}")
+            print(f">> {precioTab.upper()}: ${nuevaModificacion:,.0f} COP")
+            isInfoCorrecta = validarOpcionUsuario(">> ¿Desea guardar los cambios? (2 SI / 1 NO / 0 SALIR): ", 0, 2)
+        
+        
+        #Validando si el usuario está seguro de la información ingresada
+        if isInfoCorrecta == 2:
+            #Actualizar información en el diccionario de libros y verificando su escritura en disco
+            dictLibros[codigo][f"{infoModText.lower()}"] = nuevaModificacion
+            
+            if validarEscribirInfoArchivo(rutaFile, dictLibros):
+                input("¡La información se ha actualizado con éxito!")
+                break
+            else:
+                print("Ha ocurrido un error al actualizar la información.")
+                input("Presione cualquier tecla para continuar...")
+                break
+            
+        elif isInfoCorrecta == 1:
+            input("Antes de confirmar la información verifique que los datos sean correctos.")
+            continue
+        
+        elif isInfoCorrecta == 0:
+            input("Regresando al menú principal. Presione cualquier tecla para continuar...")
+            break
 
 
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
@@ -205,7 +265,7 @@ def insertarLibro(cod, tit, autor, precio, dictLibros):
     
     #Verificar que el código sea válido y no esté registrado
     while True:
-        codigo = validarCodigo(cod, 1, 1) 
+        codigo = validarCodigo(cod, 1, 1)
         validarExisteLibro = dictLibros.get(codigo)
         
         if validarExisteLibro == None:
@@ -261,7 +321,7 @@ def consultarLibro(cod, dictLibros):
             break
 
 
-def editarLibro(cod, dictLibros):
+def editarLibro(cod, dictLibros, rutaFile):
     print("\n*** EDITAR LIBRO ***\n")
     
     while True:
@@ -276,23 +336,31 @@ def editarLibro(cod, dictLibros):
                 continue
             elif volverIntentar == 0:
                 input("Regresando al menú principal. Presione cualquier tecla para continuar...")
-                break
+                return
         
-        else:  
-            # tituloTab, autorTab, precioTab = list(verificarExisteLibro[1].keys())
-            # tituloLibro, autorLibro, precioLibro = list(verificarExisteLibro[1].values())
+        else:
+            tituloTab, autorTab, precioTab = list(verificarExisteLibro[1].keys())
+            tituloLibro, autorLibro, precioLibro = list(verificarExisteLibro[1].values())
             
-            # print(f"\n==== Código: {verificarExisteLibro[0]} ====")
-            # print(f"{tituloTab.upper()}: {tituloLibro.title()}")
-            # print(f"{autorTab.upper()}: {autorLibro.title()}")
-            # print(f"{precioTab}: ${precioLibro:,.0f} COP")
-            
-            print("\n*** ¿Qué desea modificar? ***")
+            print("\n<<< ¿Qué desea modificar? >>>")
             print("1. Modificar Título")
             print("2. Modificar Autor")
             print("3. Modificar Precio")
             print("4. Regresar al menú principal")
             opcionUsuario = validarOpcionUsuario(">> Digite una opción: ", 1, 4)
+            
+            if opcionUsuario == 1:
+                modificarInfoLibro(verificarExisteLibro[0], list(verificarExisteLibro[1].keys()), list(verificarExisteLibro[1].values()), tituloLibro, tituloTab, 1, True)
+                
+            elif opcionUsuario == 2:
+                modificarInfoLibro(verificarExisteLibro[0], list(verificarExisteLibro[1].keys()), list(verificarExisteLibro[1].values()), autorLibro, autorTab, 1, True)
+            
+            elif opcionUsuario == 3:
+                modificarInfoLibro(verificarExisteLibro[0], list(verificarExisteLibro[1].keys()), list(verificarExisteLibro[1].values()), precioLibro, precioTab, 1000, False)
+            
+            elif opcionUsuario == 4:
+                input("Saliendo...")
+                break
             
             
         #Preguntarle al usuario si desea editar otro libro y actuar en consecuencia
@@ -337,16 +405,16 @@ while isVerdadero:
             
             #Agregar la información del libro a un diccionario vacío
             dictLibrosMemoria = {}
-            dictLibrosMemoria[codigo] = {
-                "titulo": titulo,
-                "autor": autor,
+            dictLibrosMemoria[codigo.upper()] = {
+                "titulo": titulo.title(),
+                "autor": autor.title(),
                 "precio": precio
             }
             dictLibros.update(dictLibrosMemoria)
             
             #Cargar información al archivo JSON
             if validarEscribirInfoArchivo(rutaFile, dictLibros):
-                print(f"\n¡El libro '{titulo.title()}' con el código '{codigo}' ha sido guardado con éxito!")
+                print(f"\n¡El libro '{titulo.title()}' con el código '{codigo.upper()}' ha sido guardado con éxito!")
             else:
                 break
             
@@ -364,7 +432,7 @@ while isVerdadero:
         consultarLibro(">> Ingrese el código del libro a consultar: ", dictLibros)
     
     elif opcionUsuario == 3:
-        editarLibro(">> Ingrese el código del libro a editar: ", dictLibros)
+        editarLibro(">> Ingrese el código del libro a editar: ", dictLibros, rutaFile)
     
     elif opcionUsuario == 4:
         pass
