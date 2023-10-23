@@ -31,21 +31,10 @@ dictTest = {
     }
 }
 
-try:
-    cod = "789ghi".upper()
-    keysDiccionario = list(dictTest.keys())
-    # print(keysDiccionario)
-    valorKey = list(dictTest[cod].values())
-    # print(valorKey)
 
-    for i in range(len(keysDiccionario)):
-        if valorKey == list(dictTest[keysDiccionario[i]].values()):
-            # print("¡ES VERDADERO!", i)
-            valorKey.insert(0, keysDiccionario[i])
-    
-    # print("")
-    # print(valorKey)
-        
-except KeyError:
-    print("Error: El código no corresponde a ningún libro registrado. Inténtelo de nuevo.")
-    pass
+test1 = list(dictTest.items())
+print(test1)
+test2 = dict(test1)
+print(test2)
+
+print(test2 == dictTest)

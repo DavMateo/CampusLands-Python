@@ -27,35 +27,47 @@ def filtrarTexto(texto):
 
 
 def organizarInfoLibros(dictLibros, tipoOrden):
+    checkedOrdenCod = False
     lstKeysDictLibros = list(dictLibros.keys())
     lstValuesDictLibros = []
     
     for i in range(len(lstKeysDictLibros)):
         lstValuesDictLibros.append(list(dictLibros[lstKeysDictLibros[i]].values()))
-        print(lstValuesDictLibros)  #eliminarLuego
+        lstValuesDictLibros[i].insert(0, lstKeysDictLibros[i])
+        # print(lstValuesDictLibros)  #eliminarLuego
     
     
     #Inicio del algoritmo de ordenamiento burbuja
     for i in range(0, len(lstValuesDictLibros) - 1):
         for j in range(i+1, len(lstValuesDictLibros)):
-            if tipoOrden == "titulo":
+            if tipoOrden == "codigo":
                 if lstValuesDictLibros[i][0] > lstValuesDictLibros[j][0]:
                     t = lstValuesDictLibros[i]
                     lstValuesDictLibros[i] = lstValuesDictLibros[j]
                     lstValuesDictLibros[j] = t
+                    checkedOrdenCod = True
             
-            elif tipoOrden == "autor":
+            elif tipoOrden == "titulo":
                 if lstValuesDictLibros[i][1] > lstValuesDictLibros[j][1]:
                     t = lstValuesDictLibros[i]
                     lstValuesDictLibros[i] = lstValuesDictLibros[j]
                     lstValuesDictLibros[j] = t
             
-            elif tipoOrden == "precio":
+            elif tipoOrden == "autor":
                 if lstValuesDictLibros[i][2] > lstValuesDictLibros[j][2]:
                     t = lstValuesDictLibros[i]
                     lstValuesDictLibros[i] = lstValuesDictLibros[j]
                     lstValuesDictLibros[j] = t
+            
+            elif tipoOrden == "precio":
+                if lstValuesDictLibros[i][3] > lstValuesDictLibros[j][3]:
+                    t = lstValuesDictLibros[i]
+                    lstValuesDictLibros[i] = lstValuesDictLibros[j]
+                    lstValuesDictLibros[j] = t
     
+    if checkedOrdenCod:
+        for i in range(len(lstValuesDictLibros)):
+            lstValuesDictLibros[i].pop(0)
     
     #Asociar las claves de los libros a sus valores correspondientes
     try:
@@ -196,6 +208,21 @@ def mostrarListaLibros(dictLibros, paginacion, tipoOrden):
                     inicioBucle = limitePaginacion
                     limitePaginacion += paginacion
                     continue
+
+
+def ordenarInfoArchivo(rutaFile, dictLibros):
+    print(dictLibros)  #eliminarLuego
+    lstConvDict = []
+    lstValueDictLibrosOrdenado = organizarInfoLibros(dictLibros, "codigo")
+    print("LISTA", lstValueDictLibrosOrdenado)  #eliminarLuego
+    
+    for i in range(len(lstValueDictLibrosOrdenado)):
+        codTupla, titTupla, autorTupla, precioTupla = lstValueDictLibrosOrdenado[i]
+        lstConvDict.append((codTupla, {'titulo': titTupla, 'autor': autorTupla, 'precio': precioTupla}))
+    
+    dictLibros = {}
+    dictLibros = dict(lstConvDict)
+    return dictLibros
 
 
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
@@ -354,7 +381,13 @@ def menu(msj):
 
 
 def inicializarPrograma(rutaFile, dictLibros):
-    return validarAbrirInfoArchivo(rutaFile, dictLibros)
+    dictLibrosArchivo = validarAbrirInfoArchivo(rutaFile, dictLibros)
+    dictLibrosOrganizado = ordenarInfoArchivo(rutaFile, dictLibrosArchivo)
+    # print(dictLibrosOrganizado)  #eliminarLuego
+    validarEscribirInfoArchivo(rutaFile, dictLibrosOrganizado)
+    return dictLibrosOrganizado
+    
+    # return validarAbrirInfoArchivo
 
 
 def insertarLibro(cod, tit, autor, precio, dictLibros):
@@ -610,3 +643,4 @@ while isVerdadero:
     elif opcionUsuario == 6:
         isVerdadero = False
         print("Saliendo...")
+        
