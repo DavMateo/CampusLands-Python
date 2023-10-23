@@ -146,6 +146,58 @@ def modificarInfoLibro(codigo, infoLibroTab, infoLibroText, infoModVar, infoModT
             return False
 
 
+def mostrarListaLibros(dictLibros, paginacion, tipoOrden):
+    lstValoresLibrosOrdenados =  organizarInfoLibros(dictLibros, f"{tipoOrden}")
+    # lstKeysDictLibros = list(dictLibros.keys())
+    limitePaginacion = paginacion
+    inicioBucle = 0
+    checked = False
+    print("\n==== ORDENAR POR TÍTULO ====\n")
+    
+    if len(dictLibros) <= 3:
+        print("{:<8} {:<12} {:<30} {:<30} {:<14}".format("N°", "CÓDIGO", "TÍTULO DEL LIBRO", "AUTOR DEL LIBRO", "PRECIO"))
+        
+        for i in range(paginacion):
+            try:
+                # codigoLibro = lstKeysDictLibros[i]
+                codigo, titulo, autor, precio = lstValoresLibrosOrdenados[i]
+                print("{:<8} {:<12} {:<30} {:<30} {:<14}".format(i+1, codigo, titulo, autor, f"${precio:,.0f} COP"))
+            
+            except IndexError:
+                break
+    
+    else:
+        print("{:<8} {:<12} {:<30} {:<30} {:<14}".format("N°", "CÓDIGO", "TÍTULO DEL LIBRO", "AUTOR DEL LIBRO", "PRECIO"))
+        
+        while True:
+            for i in range(inicioBucle, limitePaginacion):
+                try:
+                    # codigoLibro = lstKeysDictLibros[i]
+                    codigo, titulo, autor, precio = lstValoresLibrosOrdenados[i]
+                    print("{:<8} {:<12} {:<30} {:<30} {:<14}".format(i+1, codigo, titulo, autor, f"${precio:,.0f} COP"))
+                    
+                    if i+1 == limitePaginacion:
+                        break
+                
+                except IndexError:
+                    checked = True
+                    break
+            
+            if checked:
+                break
+            else:
+                continuarListaLibros = validarOpcionUsuario("\n>> ¿Deseas listar más libros? (1 SI / 0 NO): ", 0, 1)
+                print("")
+                
+                if continuarListaLibros == 0:
+                    break
+                elif continuarListaLibros == 1:
+                    #Estas variables establecen el rango de inicio y fin en el bucle for
+                    inicioBucle = limitePaginacion
+                    limitePaginacion += paginacion
+                    continue
+
+
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
 def validarOpcionUsuario(msj, min, max):
     while True:
@@ -480,64 +532,16 @@ def listarLibros(msj, dictLibros, paginacion):
     
     
     if opcionUsuario == 1:
-        lstValoresLibrosOrdenados =  organizarInfoLibros(dictLibros, "titulo")
-        lstKeysDictLibros = list(dictLibros.keys())
-        limitePaginacion = paginacion
-        inicioBucle = 0
-        checked = False
-        print("\n==== ORDENAR POR TÍTULO ====\n")
-        
-        if len(dictLibros) <= 3:
-            print("{:<8} {:<12} {:<30} {:<30} {:<14}".format("N°", "CÓDIGO", "TÍTULO DEL LIBRO", "AUTOR DEL LIBRO", "PRECIO"))
-            
-            for i in range(paginacion):
-                try:
-                    # codigoLibro = lstKeysDictLibros[i]
-                    codigo, titulo, autor, precio = lstValoresLibrosOrdenados[i]
-                    print("{:<8} {:<12} {:<30} {:<30} {:<14}".format(i+1, codigo, titulo, autor, f"${precio:,.0f} COP"))
-                
-                except IndexError:
-                    break
-        
-        else:
-            print("{:<8} {:<12} {:<30} {:<30} {:<14}".format("N°", "CÓDIGO", "TÍTULO DEL LIBRO", "AUTOR DEL LIBRO", "PRECIO"))
-            
-            while True:
-                for i in range(inicioBucle, limitePaginacion):
-                    try:
-                        # codigoLibro = lstKeysDictLibros[i]
-                        codigo, titulo, autor, precio = lstValoresLibrosOrdenados[i]
-                        print("{:<8} {:<12} {:<30} {:<30} {:<14}".format(i+1, codigo, titulo, autor, f"${precio:,.0f} COP"))
-                        
-                        if i+1 == limitePaginacion:
-                            break
-                    
-                    except IndexError:
-                        checked = True
-                        break
-                
-                if checked:
-                    break
-                else:
-                    continuarListaLibros = validarOpcionUsuario("\n>> ¿Deseas listar más libros? (1 SI / 0 NO): ", 0, 1)
-                    print("")
-                    
-                    if continuarListaLibros == 0:
-                        break
-                    elif continuarListaLibros == 1:
-                        #Estas variables establecen el rango de inicio y fin en el bucle for
-                        inicioBucle = limitePaginacion
-                        limitePaginacion += paginacion
-                        continue
+        mostrarListaLibros(dictLibros, paginacion, "titulo")
     
     elif opcionUsuario == 2:
-        pass
+        mostrarListaLibros(dictLibros, paginacion, "autor")
     
     elif opcionUsuario == 3:
-        pass
+        mostrarListaLibros(dictLibros, paginacion, "precio")
     
     elif opcionUsuario == 4:
-        pass
+        return False
     
     input("\nPresione cualquier tecla para continuar...")
 
@@ -598,7 +602,10 @@ while isVerdadero:
         borrarLibro(">> Ingrese el código del libro a borrar: ", dictLibros, rutaFile)
     
     elif opcionUsuario == 5:
-        listarLibros(">> Seleccione una opción: ", dictLibros, 3)
+        checked = listarLibros(">> Seleccione una opción: ", dictLibros, 3)
+        
+        if not checked:
+            input("\nRegresando al menú principal. Presione cualquier tecla para continuar...")
     
     elif opcionUsuario == 6:
         isVerdadero = False
