@@ -13,5 +13,39 @@
 # print(numerosOrdenados)
 
 
-dictTest = {"123ABC": {"Titulo", "Autor", "Precio"}}
-print(list(dictTest.keys()), list(dictTest.values()))
+dictTest = {
+    "123ABC": {
+        "titulo": "Un título", 
+        "autor": "Un autor", 
+        "precio": "Un precio"
+    }, 
+    "456DEF": {
+        "titulo": "Otro título", 
+        "autor": "Otro autor", 
+        "precio": "Otro precio"
+    },
+    "789GHI": {
+        "titulo": "Otro título más",
+        "autor": "Otro nuevo autor",
+        "precio": "Un precio más"
+    }
+}
+
+try:
+    cod = "789ghi".upper()
+    keysDiccionario = list(dictTest.keys())
+    # print(keysDiccionario)
+    valorKey = list(dictTest[cod].values())
+    # print(valorKey)
+
+    for i in range(len(keysDiccionario)):
+        if valorKey == list(dictTest[keysDiccionario[i]].values()):
+            # print("¡ES VERDADERO!", i)
+            valorKey.insert(0, keysDiccionario[i])
+    
+    # print("")
+    # print(valorKey)
+        
+except KeyError:
+    print("Error: El código no corresponde a ningún libro registrado. Inténtelo de nuevo.")
+    pass

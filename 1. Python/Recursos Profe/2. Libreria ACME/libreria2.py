@@ -38,14 +38,36 @@ def organizarInfoLibros(dictLibros, tipoOrden):
     #Inicio del algoritmo de ordenamiento burbuja
     for i in range(0, len(lstValuesDictLibros) - 1):
         for j in range(i+1, len(lstValuesDictLibros)):
-            if lstValuesDictLibros[i] > lstValuesDictLibros[j]:
-                t = lstValuesDictLibros[i]
-                lstValuesDictLibros[i] = lstValuesDictLibros[j]
-                lstValuesDictLibros[j] = t
+            if tipoOrden == "titulo":
+                if lstValuesDictLibros[i][0] > lstValuesDictLibros[j][0]:
+                    t = lstValuesDictLibros[i]
+                    lstValuesDictLibros[i] = lstValuesDictLibros[j]
+                    lstValuesDictLibros[j] = t
+            
+            elif tipoOrden == "autor":
+                if lstValuesDictLibros[i][1] > lstValuesDictLibros[j][1]:
+                    t = lstValuesDictLibros[i]
+                    lstValuesDictLibros[i] = lstValuesDictLibros[j]
+                    lstValuesDictLibros[j] = t
+            
+            elif tipoOrden == "precio":
+                if lstValuesDictLibros[i][2] > lstValuesDictLibros[j][2]:
+                    t = lstValuesDictLibros[i]
+                    lstValuesDictLibros[i] = lstValuesDictLibros[j]
+                    lstValuesDictLibros[j] = t
     
     
     #Asociar las claves de los libros a sus valores correspondientes
+    try:
+        for i in range(len(lstKeysDictLibros)):
+            for j in range(len(dictLibros)):
+                if lstValuesDictLibros[i] == list(dictLibros[lstKeysDictLibros[j]].values()):
+                    lstValuesDictLibros[i].insert(0, lstKeysDictLibros[j])
     
+    except KeyError:
+        print("Error: El código no corresponde a ningún libro registrado. Inténtelo de nuevo.\n")
+        pass
+            
     
     print(lstValuesDictLibros)  #eliminarLuego
     return lstValuesDictLibros
@@ -470,9 +492,9 @@ def listarLibros(msj, dictLibros, paginacion):
             
             for i in range(paginacion):
                 try:
-                    codigoLibro = lstKeysDictLibros[i]
-                    titulo, autor, precio = lstValoresLibrosOrdenados[i]
-                    print("{:<8} {:<12} {:<30} {:<30} {:<14}".format(i+1, codigoLibro, titulo, autor, f"${precio:,.0f} COP"))
+                    # codigoLibro = lstKeysDictLibros[i]
+                    codigo, titulo, autor, precio = lstValoresLibrosOrdenados[i]
+                    print("{:<8} {:<12} {:<30} {:<30} {:<14}".format(i+1, codigo, titulo, autor, f"${precio:,.0f} COP"))
                 
                 except IndexError:
                     break
@@ -483,9 +505,9 @@ def listarLibros(msj, dictLibros, paginacion):
             while True:
                 for i in range(inicioBucle, limitePaginacion):
                     try:
-                        codigoLibro = lstKeysDictLibros[i]
-                        titulo, autor, precio = lstValoresLibrosOrdenados[i]
-                        print("{:<8} {:<12} {:<30} {:<30} {:<14}".format(i+1, codigoLibro, titulo, autor, f"${precio:,.0f} COP"))
+                        # codigoLibro = lstKeysDictLibros[i]
+                        codigo, titulo, autor, precio = lstValoresLibrosOrdenados[i]
+                        print("{:<8} {:<12} {:<30} {:<30} {:<14}".format(i+1, codigo, titulo, autor, f"${precio:,.0f} COP"))
                         
                         if i+1 == limitePaginacion:
                             break
