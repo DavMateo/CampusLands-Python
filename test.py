@@ -1,18 +1,17 @@
-dictTest = {
-    "123ABC": {
-        "title": "Lo Que Nunca Te Dije",
-        "autor": "Antonio Ortiz", 
-        "precio": 30500
-        },
-    
-    "456DEF": {
-        "titulo": "Don Quijote De La Mancha", 
-        "autor": "Miguel De Cervantes Saavedra", 
-        "precio": 78500
-    }
-}
-cod = "123ABC"
+# def ordenar_palabras(lista_palabras):
+#     for i in range(0, len(lista_palabras) - 1):
+#         for j in range(i+1, len(lista_palabras)):
+#             if lista_palabras[i] > lista_palabras[j]:
+#                 t = lista_palabras[i]
+#                 lista_palabras[i] = lista_palabras[j]
+#                 lista_palabras[j] = t
+#     return numeros
 
-print(dictTest)
-del dictTest[cod]
-print(dictTest)
+# # Ejemplo de uso
+# numeros = ["Manzana", "Limón", "Pera", "Uva", "Fresa", "Banano", "Ciruela", "Sandía"]
+# numerosOrdenados = ordenar_palabras(numeros)
+# print(numerosOrdenados)
+
+
+dictTest = {"123ABC": {"Titulo", "Autor", "Precio"}}
+print(list(dictTest.keys()), list(dictTest.values()))

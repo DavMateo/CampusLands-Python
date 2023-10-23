@@ -26,8 +26,29 @@ def filtrarTexto(texto):
     return [textoValidar, textoFinal]
 
 
-def organizarInfoLibros():
-    pass
+def organizarInfoLibros(dictLibros, tipoOrden):
+    lstKeysDictLibros = list(dictLibros.keys())
+    lstValuesDictLibros = []
+    
+    for i in range(len(lstKeysDictLibros)):
+        lstValuesDictLibros.append(list(dictLibros[lstKeysDictLibros[i]].values()))
+        print(lstValuesDictLibros)  #eliminarLuego
+    
+    
+    #Inicio del algoritmo de ordenamiento burbuja
+    for i in range(0, len(lstValuesDictLibros) - 1):
+        for j in range(i+1, len(lstValuesDictLibros)):
+            if lstValuesDictLibros[i] > lstValuesDictLibros[j]:
+                t = lstValuesDictLibros[i]
+                lstValuesDictLibros[i] = lstValuesDictLibros[j]
+                lstValuesDictLibros[j] = t
+    
+    
+    #Asociar las claves de los libros a sus valores correspondientes
+    
+    
+    print(lstValuesDictLibros)  #eliminarLuego
+    return lstValuesDictLibros
 
 
 def existeLibro(cod, dictLibros, checked=False):
@@ -425,8 +446,78 @@ def borrarLibro(cod, dictLibros, rutaFile):
                 return
 
 
-def listarLibros():
-    pass
+def listarLibros(msj, dictLibros, paginacion):
+    print("\n*** LISTAR LIBROS ***\n")
+    
+    print("|| ¿En qué orden le gustaría ordenar la lista de libros? ||")
+    print("1. Listar por título")
+    print("2. Listar por autor")
+    print("3. Listar por precio")
+    print("4. Regresar al menú")
+    opcionUsuario = validarOpcionUsuario(msj, 1, 4)
+    
+    
+    if opcionUsuario == 1:
+        lstValoresLibrosOrdenados =  organizarInfoLibros(dictLibros, "titulo")
+        lstKeysDictLibros = list(dictLibros.keys())
+        limitePaginacion = paginacion
+        inicioBucle = 0
+        checked = False
+        print("\n==== ORDENAR POR TÍTULO ====\n")
+        
+        if len(dictLibros) <= 3:
+            print("{:<8} {:<12} {:<30} {:<30} {:<14}".format("N°", "CÓDIGO", "TÍTULO DEL LIBRO", "AUTOR DEL LIBRO", "PRECIO"))
+            
+            for i in range(paginacion):
+                try:
+                    codigoLibro = lstKeysDictLibros[i]
+                    titulo, autor, precio = lstValoresLibrosOrdenados[i]
+                    print("{:<8} {:<12} {:<30} {:<30} {:<14}".format(i+1, codigoLibro, titulo, autor, f"${precio:,.0f} COP"))
+                
+                except IndexError:
+                    break
+        
+        else:
+            print("{:<8} {:<12} {:<30} {:<30} {:<14}".format("N°", "CÓDIGO", "TÍTULO DEL LIBRO", "AUTOR DEL LIBRO", "PRECIO"))
+            
+            while True:
+                for i in range(inicioBucle, limitePaginacion):
+                    try:
+                        codigoLibro = lstKeysDictLibros[i]
+                        titulo, autor, precio = lstValoresLibrosOrdenados[i]
+                        print("{:<8} {:<12} {:<30} {:<30} {:<14}".format(i+1, codigoLibro, titulo, autor, f"${precio:,.0f} COP"))
+                        
+                        if i+1 == limitePaginacion:
+                            break
+                    
+                    except IndexError:
+                        checked = True
+                        break
+                
+                if checked:
+                    break
+                else:
+                    continuarListaLibros = validarOpcionUsuario("\n>> ¿Deseas listar más libros? (1 SI / 0 NO): ", 0, 1)
+                    print("")
+                    
+                    if continuarListaLibros == 0:
+                        break
+                    elif continuarListaLibros == 1:
+                        #Estas variables establecen el rango de inicio y fin en el bucle for
+                        inicioBucle = limitePaginacion
+                        limitePaginacion += paginacion
+                        continue
+    
+    elif opcionUsuario == 2:
+        pass
+    
+    elif opcionUsuario == 3:
+        pass
+    
+    elif opcionUsuario == 4:
+        pass
+    
+    input("\nPresione cualquier tecla para continuar...")
 
 
 # CREANDO LA ESTRUCTURA DEL PROGRAMA
@@ -485,7 +576,7 @@ while isVerdadero:
         borrarLibro(">> Ingrese el código del libro a borrar: ", dictLibros, rutaFile)
     
     elif opcionUsuario == 5:
-        pass
+        listarLibros(">> Seleccione una opción: ", dictLibros, 3)
     
     elif opcionUsuario == 6:
         isVerdadero = False
