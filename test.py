@@ -1,14 +1,18 @@
-def funcionTest(num1, num2, num3, checked):
-    if checked:
-        num10 = 10 + num1
-        num20 = 20 + num2
-        num30 = 30 + num3
-    else:
-        num10 = False
-        num20 = False
-        num30 = False
+dictTest = {
+    "123ABC": {
+        "title": "Lo Que Nunca Te Dije",
+        "autor": "Antonio Ortiz", 
+        "precio": 30500
+        },
     
-    return [num10, num20, num30]
+    "456DEF": {
+        "titulo": "Don Quijote De La Mancha", 
+        "autor": "Miguel De Cervantes Saavedra", 
+        "precio": 78500
+    }
+}
+cod = "123ABC"
 
-
-print(funcionTest(1, 2, 3, False))
+print(dictTest)
+del dictTest[cod]
+print(dictTest)

@@ -30,9 +30,13 @@ def organizarInfoLibros():
     pass
 
 
-def existeLibro(cod, dictLibros):
-    codigo = validarCodigo(cod, 1, 1).upper()
-    validarExisteLibro = dictLibros.get(codigo)
+def existeLibro(cod, dictLibros, checked=False):
+    if checked:
+        validarExisteLibro = dictLibros.get(cod)
+    else:
+        codigo = validarCodigo(cod, 1, 1).upper()
+        validarExisteLibro = dictLibros.get(codigo)
+    
     
     if validarExisteLibro == None:
         return False
@@ -40,7 +44,7 @@ def existeLibro(cod, dictLibros):
         return codigo, validarExisteLibro
 
 
-def modificarInfoLibro(codigo, infoLibroTab, infoLibroText, infoModVar, infoModText, min, isTexto):
+def modificarInfoLibro(codigo, infoLibroTab, infoLibroText, infoModVar, infoModText, min, rutaFile, isTexto):
     tituloTab, autorTab, precioTab = infoLibroTab
     tituloLibro, autorLibro, precioLibro = infoLibroText
     
@@ -349,13 +353,13 @@ def editarLibro(cod, dictLibros, rutaFile):
             opcionUsuario = validarOpcionUsuario(">> Digite una opción: ", 1, 4)
             
             if opcionUsuario == 1:
-                checkedModInfoLibro = modificarInfoLibro(verificarExisteLibro[0], list(verificarExisteLibro[1].keys()), list(verificarExisteLibro[1].values()), tituloLibro, tituloTab, 1, True)
+                checkedModInfoLibro = modificarInfoLibro(verificarExisteLibro[0], list(verificarExisteLibro[1].keys()), list(verificarExisteLibro[1].values()), tituloLibro, tituloTab, 1, rutaFile, True)
                 
             elif opcionUsuario == 2:
-                checkedModInfoLibro = modificarInfoLibro(verificarExisteLibro[0], list(verificarExisteLibro[1].keys()), list(verificarExisteLibro[1].values()), autorLibro, autorTab, 1, True)
+                checkedModInfoLibro = modificarInfoLibro(verificarExisteLibro[0], list(verificarExisteLibro[1].keys()), list(verificarExisteLibro[1].values()), autorLibro, autorTab, 1, rutaFile, True)
             
             elif opcionUsuario == 3:
-                checkedModInfoLibro = modificarInfoLibro(verificarExisteLibro[0], list(verificarExisteLibro[1].keys()), list(verificarExisteLibro[1].values()), precioLibro, precioTab, 1000, False)
+                checkedModInfoLibro = modificarInfoLibro(verificarExisteLibro[0], list(verificarExisteLibro[1].keys()), list(verificarExisteLibro[1].values()), precioLibro, precioTab, 1000, rutaFile, False)
             
             elif opcionUsuario == 4:
                 input("Saliendo...")
@@ -378,8 +382,47 @@ def editarLibro(cod, dictLibros, rutaFile):
             break
 
 
-def borrarLibro():
-    pass
+def borrarLibro(cod, dictLibros, rutaFile):
+    print("\n*** BORRAR LIBRO ***\n")
+    
+    while True:
+        verificarExisteLibro = existeLibro(cod, dictLibros)
+        if verificarExisteLibro == False:
+            print("Error: El código ingresado no corresponde a ningún libro registrado. Inténtelo de nuevo.\n")
+            volverIntentar = validarOpcionUsuario(">> ¿Desea volver a buscar el libro a editar? (1 SI / 0 NO): ", 0, 1)
+            
+            if volverIntentar == 1:
+                continue
+            
+            elif volverIntentar == 0:
+                input("Regresando al menú principal. Presione cualquier tecla para continuar...")
+                return
+        
+        else:
+            infoElementoEliminar = list(dictLibros[verificarExisteLibro[0]].values())
+            confirmarEliminar = validarOpcionUsuario(f"¿Seguro que desea eliminar el libro '{infoElementoEliminar[0]}' cuyo código es '{verificarExisteLibro[0]}'? (1 SI / 0 NO / 2 SALIR): ", 0, 2)
+
+            if confirmarEliminar == 1:
+                titulo = dictLibros[verificarExisteLibro[0]]["titulo"]
+                codigo = verificarExisteLibro[0]
+                del dictLibros[verificarExisteLibro[0]]
+                
+                if not existeLibro(codigo, dictLibros, True) and validarEscribirInfoArchivo(rutaFile, dictLibros):
+                    print(f"¡El libro '{titulo} con código '{codigo}' ha sido eliminado con éxito!")
+                    input("Presione cualquier tecla para continuar...")
+                    break
+                else:
+                    print("Ha ocurrido un error al eliminar la información del libro.")
+                    input("Regresando al menú principal. Presione cualquier tecla para continuar...")
+                    return
+            
+            elif confirmarEliminar == 0:
+                print("")
+                continue
+            
+            elif confirmarEliminar == 2:
+                input("Regresando al menú principal. Presione cualquier tecla para continuar...")
+                return
 
 
 def listarLibros():
@@ -432,7 +475,6 @@ while isVerdadero:
                 input("Presione cualquiet tecla para regresar al menú...")
                 break
 
-    
     elif opcionUsuario == 2:
         consultarLibro(">> Ingrese el código del libro a consultar: ", dictLibros)
     
@@ -440,7 +482,7 @@ while isVerdadero:
         editarLibro(">> Ingrese el código del libro a editar: ", dictLibros, rutaFile)
     
     elif opcionUsuario == 4:
-        pass
+        borrarLibro(">> Ingrese el código del libro a borrar: ", dictLibros, rutaFile)
     
     elif opcionUsuario == 5:
         pass
