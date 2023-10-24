@@ -210,7 +210,7 @@ def mostrarListaLibros(dictLibros, paginacion, tipoOrden):
                     continue
 
 
-def ordenarInfoArchivo(rutaFile, dictLibros):
+def ordenarInfoArchivo(dictLibros):
     print(dictLibros)  #eliminarLuego
     lstConvDict = []
     lstValueDictLibrosOrdenado = organizarInfoLibros(dictLibros, "codigo")
@@ -382,7 +382,7 @@ def menu(msj):
 
 def inicializarPrograma(rutaFile, dictLibros):
     dictLibrosArchivo = validarAbrirInfoArchivo(rutaFile, dictLibros)
-    dictLibrosOrganizado = ordenarInfoArchivo(rutaFile, dictLibrosArchivo)
+    dictLibrosOrganizado = ordenarInfoArchivo(dictLibrosArchivo)
     # print(dictLibrosOrganizado)  #eliminarLuego
     validarEscribirInfoArchivo(rutaFile, dictLibrosOrganizado)
     return dictLibrosOrganizado
@@ -618,12 +618,16 @@ while isVerdadero:
             
             
             #Verificar si el usuario desea continuar agregando libros
+            dictLibrosOrganizar = ordenarInfoArchivo(dictLibros)
+            validarEscribirInfoArchivo(rutaFile, dictLibrosOrganizar)
+            
             continuar = validarOpcionUsuario(">> ¿Desea agregar otro libro? (1 SI / 0 NO): ", 0, 1)
             if continuar == 1:
                 continue
             elif continuar == 0:
-                input("Presione cualquiet tecla para regresar al menú...")
+                input("Presione cualquier tecla para regresar al menú...")
                 break
+        
 
     elif opcionUsuario == 2:
         consultarLibro(">> Ingrese el código del libro a consultar: ", dictLibros)
@@ -643,4 +647,3 @@ while isVerdadero:
     elif opcionUsuario == 6:
         isVerdadero = False
         print("Saliendo...")
-        
