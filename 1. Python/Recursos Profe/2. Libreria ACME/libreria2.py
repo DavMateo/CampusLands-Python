@@ -34,8 +34,7 @@ def organizarInfoLibros(dictLibros, tipoOrden):
     for i in range(len(lstKeysDictLibros)):
         lstValuesDictLibros.append(list(dictLibros[lstKeysDictLibros[i]].values()))
         lstValuesDictLibros[i].insert(0, lstKeysDictLibros[i])
-        # print(lstValuesDictLibros)  #eliminarLuego
-    
+        
     
     #Inicio del algoritmo de ordenamiento burbuja
     for i in range(0, len(lstValuesDictLibros) - 1):
@@ -80,8 +79,6 @@ def organizarInfoLibros(dictLibros, tipoOrden):
         print("Error: El código no corresponde a ningún libro registrado. Inténtelo de nuevo.\n")
         pass
             
-    
-    print(lstValuesDictLibros)  #eliminarLuego
     return lstValuesDictLibros
 
 
@@ -211,10 +208,8 @@ def mostrarListaLibros(dictLibros, paginacion, tipoOrden):
 
 
 def ordenarInfoArchivo(dictLibros):
-    print(dictLibros)  #eliminarLuego
     lstConvDict = []
     lstValueDictLibrosOrdenado = organizarInfoLibros(dictLibros, "codigo")
-    print("LISTA", lstValueDictLibrosOrdenado)  #eliminarLuego
     
     for i in range(len(lstValueDictLibrosOrdenado)):
         codTupla, titTupla, autorTupla, precioTupla = lstValueDictLibrosOrdenado[i]
@@ -254,7 +249,6 @@ def validarAbrirInfoArchivo(rutaFile, dictLibros):
         except Exception as d:
             print("Ha ocurrido un problema al intentar abrir el archivo necesario.")
             print(f"Error: {d}.\n")
-            input("Presione cualquier tecla para salir al menú principal...")  #eliminarLuego
             return False
     intentarAbrirArchivo.close()
     
@@ -274,7 +268,6 @@ def validarAbrirInfoArchivo(rutaFile, dictLibros):
     except Exception as e:
         print("Ha ocurrido un problema al intentar recuperar la información del sistema.")
         print(f"Error: {e}.\n")
-        input("Presione cualquier tecla para salir al menú principal...")  #eliminarLuego
         return False
     
     return dictLibros
@@ -383,7 +376,6 @@ def menu(msj):
 def inicializarPrograma(rutaFile, dictLibros):
     dictLibrosArchivo = validarAbrirInfoArchivo(rutaFile, dictLibros)
     dictLibrosOrganizado = ordenarInfoArchivo(dictLibrosArchivo)
-    # print(dictLibrosOrganizado)  #eliminarLuego
     validarEscribirInfoArchivo(rutaFile, dictLibrosOrganizado)
     return dictLibrosOrganizado
     
@@ -584,7 +576,6 @@ while isVerdadero:
     while inicializandoSistema:
         rutaFile = "1. Python/Recursos Profe/2. Libreria ACME/data.json"
         dictLibros = inicializarPrograma(rutaFile, {})
-        print("¡EL BUCLE DE INICIALIZANDO SISTEMA ACABA DE EJECUTARSE!")
         break
     
     inicializandoSistema = False
