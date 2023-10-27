@@ -6,12 +6,13 @@
 import random
 import json
 import time
+import colorama
 
 
 # DECLARANDO LAS VARIABLES NECESARIAS
-numRondas = 3
 isVerdadero = True
 iniciandoSistema = True
+configMod = False
 
 
 # DEFINIENDO LAS FUNCIONES COMPLEMENTARIAS
@@ -27,6 +28,61 @@ def filtrarTexto(texto):
     
     return [textoValidar, textoFinal]
 
+
+def accederConfig(rutaFileLocal, rutaFileGlobal, checked):
+    continuarConfig = True
+    dictInfoReturn = {}
+    
+    #Verificando que el jugador ya tenga una configuración previamente aplicada al juego
+    if rutaFileLocal == "" and rutaFileGlobal == "":
+        opcionUsuarioConfig = validarOpcionUsuario(">> ¿Desea configurar la app (Escribir 1) o quieres aplicar la configuración por defecto? (Escribir 0): ", 0, 1)
+        
+        #Si el jugador desea aplicar una configuración personalizada, entonces:
+        if opcionUsuarioConfig == 1:
+            #El bucle while es por si acaso el usuario desea configurar más parámetros del juego
+            while continuarConfig:
+                opcionElegida, configuracionAplicada = configuracion("Ejercicios adicionales/PiedraPapelTijera/data", "Ejercicios adicionales/PiedraPapelTijera/data", ">> ¿Cómo quieres que se llame la IA?: ", ">> ¿Cuántas rondas deseas que tenga una partida? (Default 3 rondas): ")
+                
+                if opcionElegida == 1:
+                    rutaFileLocal = configuracionAplicada
+                    print("\nCONFIG:", rutaFileLocal)
+                    dictInfoReturn[opcionElegida] = [opcionElegida, rutaFileLocal]
+                
+                elif opcionElegida == 2:
+                    rutaFileGlobal = configuracionAplicada
+                    print("\nCONFIG:", rutaFileGlobal)
+                    dictInfoReturn[opcionElegida] = [opcionElegida, rutaFileGlobal]
+                
+                elif opcionElegida == 3:
+                    nombreIA = configuracionAplicada
+                    print("\nCONFIG:", nombreIA)
+                    dictInfoReturn[opcionElegida] = [opcionElegida, nombreIA]
+                
+                elif opcionElegida == 4:
+                    numRondas = configuracionAplicada
+                    print("\nCONFIG:", numRondas)
+                    dictInfoReturn[opcionElegida] = [opcionElegida, numRondas]
+                
+                elif opcionElegida == 5:
+                    continuarConfig = False
+                    return False
+                
+                #Preguntarle al jugador si ya ha terminado de realizar las configuraciones pertinentes
+                continuar = validarOpcionUsuario(">> ¿Desea configurar o modificar otro parámetro? (1 SI / 0 NO): ", 0, 1)
+                
+                if continuar == 1:
+                    continue
+                elif continuar == 0:
+                    continuarConfig = False
+                    return dictInfoReturn
+        
+        #Si el jugador desea una configuración por defecto, entonces:
+        elif opcionUsuarioConfig == 0:
+            rutaFileGlobal = "Ejercicios adicionales/PiedraPapelTijera/data/datosGlobal.json"
+            rutaFileLocal = "Ejercicios adicionales/PiedraPapelTijera/data/datosLocal.json/"
+            nombreIA = "Computadora"
+            numRondas = 3
+            
 
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
 def validarOpcionUsuario(msj, min, max):
@@ -156,7 +212,7 @@ def menu(msj):
     print("\n\n", "JUEGO PIEDRA-PAPEL-TIJERA".center(20))
     print("MENU".center(26))
     
-    print("1. Tutorial")
+    print(colorama.Style.DIM + "1. Tutorial")
     print("2. Jugador vs IA")
     print("3. Jugador vs Jugador")
     print("4. Tabla de clasificación")
@@ -170,15 +226,56 @@ def inicializarPrograma(rutaFileLocal, dictJugadorIA, rutaFileGlobal, dictJugado
 
 
 def configuracion(rutaFileGlobal, rutaFileLocal, nameIA, rondasNum):
-    return [0, 0, 0, 0]
+    print("\n==== CONFIGURACIÓN ====")
+    print("1. Ruta personalizada de estadísticas Player vs IA")
+    print("2. Ruta personalizada del registro de victorias Player vs Player")
+    print("3. Darle un nombre a la IA")
+    print("4. Cambiar el número de rondas por partida")
+    print("5. Regresar al menú principal")
+    opcionUsuario = validarOpcionUsuario(">> Digite una opción: ", 1, 5)
+    
+    # Estructura de la configuración del programa
+    if opcionUsuario == 1:
+        print("\n", colorama.Fore.BLUE + "*** RUTA ARCHIVO PvE ***")
+        nombreArchivo = validarTexto(colorama.Fore.WHITE + "¿Cómo desea llamar al archivo?: ", 1)
+        rutaFileAI = f"{rutaFileLocal}" + f"/{nombreArchivo}.json"
+        
+        return [opcionUsuario, rutaFileAI]
+    
+    elif opcionUsuario == 2:
+        print("\n", colorama.Fore.BLUE + "*** RUTA ARCHIVO PvP ***")
+        nombreArchivo = validarTexto(colorama.Fore.WHITE + "¿Cómo desea llamar al archivo?: ", 1)
+        rutaFilePvP = f"{rutaFileGlobal}" + f"/{nombreArchivo}.json"
+        
+        return [opcionUsuario, rutaFilePvP]
+    
+    elif opcionUsuario == 3:
+        print("\n", colorama.Fore.BLUE + "*** NOMBRE IA ***")
+        return [opcionUsuario, validarTexto(colorama.Fore.WHITE + nameIA, 1)]
+    
+    elif opcionUsuario == 4:
+        print("\n", colorama.Fore.BLUE + "*** RONDAS POR PARTIDA ***")
+        return [opcionUsuario, validarOpcionUsuario(colorama.Fore.WHITE + rondasNum, 1, 30)]
+    
+    elif opcionUsuario == 5:
+        input("\nRegresando al menú principal. \nPresione cualquier tecla para continuar...")
+        return [opcionUsuario, False] 
 
 
 # CREANDO LA ESTRUCTURA DEL PROGRAMA
 while isVerdadero:
     while iniciandoSistema:
-        rutaFileGlobal, rutaFileLocal, nombreIA, numRondas = configuracion("Ejercicios adicionales/PiedraPapelTijera/data", "Ejercicios adicionales/PiedraPapelTijera/data", ">> ¿Cómo quieres que se llame la IA?: ", ">> ¿Cuántas rondas deseas que tenga una partida? (Default 3 rondas): ")
+        rutaFileConfig = "Ejercicios adicionales/PiedraPapelTijera/data/config.json"
+        rutaFileLocal = ''
+        rutaFileGlobal = ''
+        continuarConfig = True
+        
+        accederConfig(rutaFileLocal, rutaFileGlobal, False)
+                
+        #Inicializando el juego
         dictJugadorIA, dictJugadores = inicializarPrograma(rutaFileLocal, {}, rutaFileGlobal, {})
         break
+    
     
     iniciandoSistema = False
     opcionUsuario = menu("   >> Elija una opción: ")
@@ -196,7 +293,48 @@ while isVerdadero:
         pass
     
     elif opcionUsuario == 5:
-        pass
+        opcionUsuarioConfig = validarOpcionUsuario(">> ¿Desea configurar la app (Escribir 1) o quieres aplicar la configuración por defecto? (Escribir 0): ", 0, 1)
+        
+        #Si el jugador desea aplicar una configuración personalizada, entonces:
+        if opcionUsuarioConfig == 1:
+            #El bucle while es por si acaso el usuario desea configurar más parámetros del juego
+            while continuarConfig:
+                opcionElegida, configuracionAplicada = configuracion("Ejercicios adicionales/PiedraPapelTijera/data", "Ejercicios adicionales/PiedraPapelTijera/data", ">> ¿Cómo quieres que se llame la IA?: ", ">> ¿Cuántas rondas deseas que tenga una partida? (Default 3 rondas): ")
+                
+                if opcionElegida == 1:
+                    rutaFileLocal = configuracionAplicada
+                    print("\nCONFIG:", rutaFileLocal)
+                
+                elif opcionElegida == 2:
+                    rutaFileGlobal = configuracionAplicada
+                    print("\nCONFIG:", rutaFileGlobal)
+                
+                elif opcionElegida == 3:
+                    nombreIA = configuracionAplicada
+                    print("\nCONFIG:", nombreIA)
+                
+                elif opcionElegida == 4:
+                    numRondas = configuracionAplicada
+                    print("\nCONFIG:", numRondas)
+                
+                elif opcionElegida == 5:
+                    continuarConfig = False
+                    break
+                
+                #Preguntarle al jugador si ya ha terminado de realizar las configuraciones pertinentes
+                continuar = validarOpcionUsuario(">> ¿Desea configurar o modificar otro parámetro? (1 SI / 0 NO): ", 0, 1)
+                
+                if continuar == 1:
+                    continue
+                elif continuar == 0:
+                    continuarConfig = False
+        
+        #Si el jugador desea una configuración por defecto, entonces:
+        elif opcionUsuarioConfig == 0:
+            rutaFileGlobal = "Ejercicios adicionales/PiedraPapelTijera/data/datosGlobal.json"
+            rutaFileLocal = "Ejercicios adicionales/PiedraPapelTijera/data/datosLocal.json/"
+            nombreIA = "Computadora"
+            numRondas = 3
     
     elif opcionUsuario == 6:
         isVerdadero = False
