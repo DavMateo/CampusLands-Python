@@ -11,6 +11,7 @@ import colorama
 
 # DECLARANDO LAS VARIABLES NECESARIAS
 rutaFileConfig = "Ejercicios adicionales/PiedraPapelTijera/data/config.json"
+lstKeysPersonalizados = []
 isVerdadero = True
 iniciandoSistema = True
 configMod = False
@@ -30,10 +31,9 @@ def filtrarTexto(texto):
     return [textoValidar, textoFinal]
 
 
-def accederConfig(rutaFileLocal, rutaFileGlobal, checked):
+def accederConfig(rutaFileLocal, rutaFileGlobal, dictInfoReturn, lstConfigDefault, checked=False):
     countError = 0
     continuarConfig = True
-    dictInfoReturn = validarAbrirInfoArchivo(rutaFileConfig, {})
     
     #Verificando que el jugador ya tenga una configuración previamente aplicada al juego
     if (rutaFileLocal == "" and rutaFileGlobal == "") or checked:
@@ -47,22 +47,22 @@ def accederConfig(rutaFileLocal, rutaFileGlobal, checked):
                 
                 if opcionElegida == 1:
                     rutaFileLocal = configuracionAplicada
-                    print("\nCONFIG:", rutaFileLocal)
+                    print("\nCONFIG:", rutaFileLocal) #eliminarLuego
                     dictInfoReturn[str(opcionElegida)] = rutaFileLocal
                 
                 elif opcionElegida == 2:
                     rutaFileGlobal = configuracionAplicada
-                    print("\nCONFIG:", rutaFileGlobal)
+                    print("\nCONFIG:", rutaFileGlobal) #eliminarLuego
                     dictInfoReturn[str(opcionElegida)] = rutaFileGlobal
                 
                 elif opcionElegida == 3:
                     nombreIA = configuracionAplicada
-                    print("\nCONFIG:", nombreIA)
+                    print("\nCONFIG:", nombreIA) #eliminarLuego
                     dictInfoReturn[str(opcionElegida)] = nombreIA
                 
                 elif opcionElegida == 4:
                     numRondas = configuracionAplicada
-                    print("\nCONFIG:", numRondas)
+                    print("\nCONFIG:", numRondas) #eliminarLuego
                     dictInfoReturn[str(opcionElegida)] = numRondas
                 
                 elif opcionElegida == 5:
@@ -89,10 +89,8 @@ def accederConfig(rutaFileLocal, rutaFileGlobal, checked):
         
         #Si el jugador desea una configuración por defecto, entonces:
         elif opcionUsuarioConfig == 0:
-            dictInfoReturn["1"] = "Ejercicios adicionales/PiedraPapelTijera/data/datosLocal.json/"
-            dictInfoReturn["2"] = "Ejercicios adicionales/PiedraPapelTijera/data/datosGlobal.json"
-            dictInfoReturn["3"] = "Computadora"
-            dictInfoReturn["4"] = 3
+            for i in range(len(lstConfigDefault)):
+                dictInfoReturn[str(i+1)] = lstConfigDefault[i]
             
             #Verificar que el archivo de configuración se haya guardado correctamente
             if validarEscribirInfoArchivo(rutaFileConfig, dictInfoReturn):
@@ -101,7 +99,125 @@ def accederConfig(rutaFileLocal, rutaFileGlobal, checked):
                 print("Error: No se ha podido cargar la configuración predeterminada. Inténtelo de nuevo.\n")
                 return None
     else:
+        dictInfoReturn = validarAbrirInfoArchivo(rutaFileConfig, dictInfoReturn)
+        return dictInfoReturn
+
+
+def organizarInfoDicts(dictJuego, tipoOrden):
+    checkedOrdenId = False
+    lstKeysdictJuego = list(dictJuego.keys())
+    lstValuesdictJuego = []
+    
+    for i in range(len(lstKeysdictJuego)):
+        lstValuesdictJuego.append(list(dictJuego[lstKeysdictJuego[i]].values()))
+        lstValuesdictJuego[i].insert(0, lstKeysdictJuego[i])
+        
+    
+    #Inicio del algoritmo de ordenamiento burbuja
+    for i in range(0, len(lstValuesdictJuego) - 1):
+        for j in range(i+1, len(lstValuesdictJuego)):
+            if tipoOrden == "id":
+                if lstValuesdictJuego[i][0] > lstValuesdictJuego[j][0]:
+                    t = lstValuesdictJuego[i]
+                    lstValuesdictJuego[i] = lstValuesdictJuego[j]
+                    lstValuesdictJuego[j] = t
+                    checkedOrdenId = True
+            
+            elif tipoOrden == "username":
+                if lstValuesdictJuego[i][1] > lstValuesdictJuego[j][1]:
+                    t = lstValuesdictJuego[i]
+                    lstValuesdictJuego[i] = lstValuesdictJuego[j]
+                    lstValuesdictJuego[j] = t
+            
+            elif tipoOrden == "puntaje":
+                if lstValuesdictJuego[i][2] > lstValuesdictJuego[j][2]:
+                    t = lstValuesdictJuego[i]
+                    lstValuesdictJuego[i] = lstValuesdictJuego[j]
+                    lstValuesdictJuego[j] = t
+            
+            elif tipoOrden == "tiempo":
+                if lstValuesdictJuego[i][3] > lstValuesdictJuego[j][3]:
+                    t = lstValuesdictJuego[i]
+                    lstValuesdictJuego[i] = lstValuesdictJuego[j]
+                    lstValuesdictJuego[j] = t
+    
+    if checkedOrdenId:
+        for i in range(len(lstValuesdictJuego)):
+            lstValuesdictJuego[i].pop(0)
+    
+    #Asociar las claves de la información del JSON a sus valores correspondientes
+    try:
+        for i in range(len(lstKeysdictJuego)):
+            for j in range(len(dictJuego)):
+                if lstValuesdictJuego[i] == list(dictJuego[lstKeysdictJuego[j]].values()):
+                    lstValuesdictJuego[i].insert(0, lstKeysdictJuego[j])
+    
+    except KeyError:
+        print("Error: El ID no corresponde a ningún elemento registrado. Inténtelo de nuevo.\n")
+        pass
+            
+    print(lstValuesdictJuego) #eliminarLuego
+    return lstValuesdictJuego
+
+
+def keysPersonalizados(dictConfig):
+    lstDictConfigKeys = list(dictConfig.keys())
+    index = 0
+    
+    #Este bucle tiene como objetivo principal evaluar si hay valores personalizados o no dentro
+    #del archivo "config.json" para que así, si el usuario realiza modificaciones en configuración
+    #esta no sea sobreescrita
+    for i in range(len(lstDictConfigKeys)):
+        #Buscará dentro de "lstConfigDefault" el índice correcto para evaluar la condición principal
+        for j in range(len(lstConfigDefault)):
+            if dictConfig[lstDictConfigKeys[i]] == lstConfigDefault[j]:
+                index = j  #Toma el índice necesario de "lstConfigDefault"
+        
+        if dictConfig[lstDictConfigKeys[i]] != lstConfigDefault[index]:
+            lstKeysPersonalizados.append(lstDictConfigKeys[i])
+    
+    print("LISTA DE CLAVES PERSONALIZADAS:", lstKeysPersonalizados) #eliminarLuego
+    return lstKeysPersonalizados
+
+
+def rellenarInfoConfig(dictConfig, checkedError, isVerdadero):
+    if dictConfig != False:
+        #Rellenar la información en blanco con la configuración predeterminada en caso de que el 
+        #usuario no rellene algún campo
+        lstKeysPersonalizados = keysPersonalizados(dictConfig)
+        print("LSTKEYSPERSONALIZADOS", len(lstKeysPersonalizados))
+        count = 0
+        for i in range(len(lstConfigDefault)):
+            try:
+                if str(i+1) == lstKeysPersonalizados[count]:
+                    count += 1
+                else:
+                    dictConfig[str(i+1)] = lstConfigDefault[i]
+                
+            except IndexError:
+                for j in range(i, len(lstConfigDefault)):
+                    dictConfig[str(j+1)] = lstConfigDefault[j]
+                
+                #Verificar que la información se haya cargado correctamente
+                if validarEscribirInfoArchivo(rutaFileConfig, dictConfig):
+                    break
+                else:
+                    checkedError: False
+                    isVerdadero = False
+                    input("Error: La configuración aplicada no fue guardada. Inténtelo de nuevo.\n")
+                    break
+        
+    elif dictConfig == None:
+        checkedError = True
+        isVerdadero = False
+        input("Error: La configuración aplicada no fue guardada. Inténtelo de nuevo.\n")
+    
+    elif not dictConfig:
+        input("Regresando al menú principal. Presione Enter para continuar...")
         return False
+    
+    return [dictConfig, checkedError, isVerdadero]
+    # return False #eliminarLuego
             
 
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
@@ -285,23 +401,31 @@ def configuracion(rutaFileGlobal, rutaFileLocal, nameIA, rondasNum):
 # CREANDO LA ESTRUCTURA DEL PROGRAMA
 while isVerdadero:
     while iniciandoSistema:
-        rutaFileLocal = ''
-        rutaFileGlobal = ''
+        dictInfoConfig = validarAbrirInfoArchivo(rutaFileConfig, {})
+        lstConfigDefault = ["Ejercicios adicionales/PiedraPapelTijera/data/datosLocal.json/", "Ejercicios adicionales/PiedraPapelTijera/data/datosGlobal.json", "Computadora", 3]
         checkedError = False
+        
+        #Asignarle a las variables de "rutaFile" la ruta del archivo. Si no existe, se configura como una
+        #ruta vacía y el usuario decidirá si lo configura o aplica una configuración predeterminada.
+        try:
+            rutaFileLocal = dictInfoConfig["1"]
+            rutaFileGlobal = dictInfoConfig["2"]
+        except KeyError:
+            rutaFileLocal = ''
+            rutaFileGlobal = ''
+            
                 
         #Escribir la configuración del juego en el archivo JSON
-        dictConfig = accederConfig(rutaFileLocal, rutaFileGlobal, False)
-        if dictConfig != False:
+        dictConfig = accederConfig(rutaFileLocal, rutaFileGlobal, {}, lstConfigDefault)
+        print("RESULTADO DICTCONFIG:", dictConfig) #eliminarLuego
+        try:
+            # dictConfig = False  #eliminarLuego
+            dictConfig, checkedError, isVerdadero = rellenarInfoConfig(dictConfig, checkedError, isVerdadero)
+        except TypeError as e:
+            print("PASÉ POR EL EXCEPT!") #eliminarLuego
+            print(e) #eliminarLuego
             pass
         
-        elif dictConfig == None:
-            input("Error: La configuración aplicada no fue guardada. Inténtelo de nuevo.\n")
-            checkedError = True
-            isVerdadero = False
-            break
-        
-        elif not dictConfig:
-            input("Regresando al menú principal. Presione Enter para continuar...")
         
         #Inicializando el juego
         dictJugadorIA, dictJugadores = inicializarPrograma(rutaFileLocal, {}, rutaFileGlobal, {})
@@ -325,11 +449,21 @@ while isVerdadero:
             pass
         
         elif opcionUsuario == 5:
-            dictConfig = accederConfig(rutaFileLocal, rutaFileGlobal, True)
-            
-            if dictConfig != False:
+            dictConfig = accederConfig(rutaFileLocal, rutaFileGlobal, {}, lstConfigDefault, True)
+            print("\nOPCION 5 - RESULTADO DICTCONFIG:", dictConfig) #eliminarLuego
+            try:
+                # dictConfig = False  #eliminarLuego
+                dictConfig, checkedError, isVerdadero = rellenarInfoConfig(dictConfig, checkedError, isVerdadero)
+            except TypeError as e:
+                print("PASÉ POR EL EXCEPT!") #eliminarLuego
+                print(e) #eliminarLuego
                 pass
         
         elif opcionUsuario == 6:
             isVerdadero = False
             input("\nSaliendo...")
+
+
+#CORREGIR:
+#   1. Error en el orden de la lista de claves personalizadas (Qué los índices queden en orden numérico).
+#   2. Corregir error que no sobreescribe información correctamente al ingresar en el sub-menú "5. Configuración".
