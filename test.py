@@ -1,9 +1,12 @@
-dictTest = {}
+dictTest = {
+    "1": "Test1",
+    "2": "Test2",
+    "3": "Test3"
+}
 
+dictParaActualizar = {
+    "2": "XD"
+}
 
-dictTest[1] = [1, "A"]
-dictTest[2] = [2, "B"]
-dictTest[3] = [3, "C"]
-dictTest[1] = [1, "D"]
-
-print(int(dictTest))
+dictTest.update(dictParaActualizar)
+print(dictTest)

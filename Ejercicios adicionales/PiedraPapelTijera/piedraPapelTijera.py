@@ -40,6 +40,7 @@ def accederConfig(rutaFileLocal, rutaFileGlobal, dictInfoReturn, lstConfigDefaul
         opcionUsuarioConfig = validarOpcionUsuario(">> ¿Desea configurar la app (Escribir 1) o quieres aplicar la configuración por defecto? (Escribir 0): ", 0, 1)
         
         #Si el jugador desea aplicar una configuración personalizada, entonces:
+
         if opcionUsuarioConfig == 1:
             #El bucle while es por si acaso el usuario desea configurar más parámetros del juego
             while continuarConfig:
@@ -78,8 +79,17 @@ def accederConfig(rutaFileLocal, rutaFileGlobal, dictInfoReturn, lstConfigDefaul
                     continuarConfig = False
                     
                     #Verificar que el archivo de configuración se haya guardado correctamente
-                    if validarEscribirInfoArchivo(rutaFileConfig, dictInfoReturn):
-                        return dictInfoReturn
+                    checkedAbrirArchivo = validarAbrirInfoArchivo(rutaFileConfig, dictInfoReturn)
+                    if checkedAbrirArchivo != False:
+                        if validarEscribirInfoArchivo(rutaFileConfig, dictInfoReturn) != False:
+                            return dictInfoReturn
+                        else:
+                            print("Error: La configuración aplicada no fue guardada. Inténtelo de nuevo.\n")
+                            countError += 1
+                            if countError == 3:
+                                return None
+                            continue
+                        
                     else:
                         print("Error: La configuración aplicada no fue guardada. Inténtelo de nuevo.\n")
                         countError += 1
@@ -105,8 +115,8 @@ def accederConfig(rutaFileLocal, rutaFileGlobal, dictInfoReturn, lstConfigDefaul
 
 def organizarInfoDicts(dictJuego, tipoOrden):
     checkedOrdenId = False
-    lstKeysdictJuego = list(dictJuego.keys())
     lstValuesdictJuego = []
+    lstKeysdictJuego = list(dictJuego.keys())
     
     for i in range(len(lstKeysdictJuego)):
         lstValuesdictJuego.append(list(dictJuego[lstKeysdictJuego[i]].values()))
@@ -160,32 +170,12 @@ def organizarInfoDicts(dictJuego, tipoOrden):
     return lstValuesdictJuego
 
 
-def keysPersonalizados(dictConfig):
-    lstDictConfigKeys = list(dictConfig.keys())
-    index = 0
-    
-    #Este bucle tiene como objetivo principal evaluar si hay valores personalizados o no dentro
-    #del archivo "config.json" para que así, si el usuario realiza modificaciones en configuración
-    #esta no sea sobreescrita
-    for i in range(len(lstDictConfigKeys)):
-        #Buscará dentro de "lstConfigDefault" el índice correcto para evaluar la condición principal
-        for j in range(len(lstConfigDefault)):
-            if dictConfig[lstDictConfigKeys[i]] == lstConfigDefault[j]:
-                index = j  #Toma el índice necesario de "lstConfigDefault"
-        
-        if dictConfig[lstDictConfigKeys[i]] != lstConfigDefault[index]:
-            lstKeysPersonalizados.append(lstDictConfigKeys[i])
-    
-    print("LISTA DE CLAVES PERSONALIZADAS:", lstKeysPersonalizados) #eliminarLuego
-    return lstKeysPersonalizados
-
-
 def rellenarInfoConfig(dictConfig, checkedError, isVerdadero):
     if dictConfig != False:
         #Rellenar la información en blanco con la configuración predeterminada en caso de que el 
         #usuario no rellene algún campo
-        lstKeysPersonalizados = keysPersonalizados(dictConfig)
-        print("LSTKEYSPERSONALIZADOS", len(lstKeysPersonalizados))
+        lstKeysPersonalizados = organizarIdList(keysPersonalizados(dictConfig))
+        print("LSTKEYSPERSONALIZADOS", lstKeysPersonalizados, len(lstKeysPersonalizados)) #eliminarLuego
         count = 0
         for i in range(len(lstConfigDefault)):
             try:
@@ -218,6 +208,40 @@ def rellenarInfoConfig(dictConfig, checkedError, isVerdadero):
     
     return [dictConfig, checkedError, isVerdadero]
     # return False #eliminarLuego
+
+
+def organizarIdList(lstId):
+    #Inicio del algoritmo de ordenamiento burbuja
+    for i in range(0, len(lstId)):
+        for j in range(i+1, len(lstId)):
+            if lstId[i] > lstId[j]:
+                t = lstId[i]
+                lstId[i] = lstId[j]
+                lstId[j] = t
+                
+    print("LSTID: ", lstId) #eliminarLuego
+    return lstId
+
+
+def keysPersonalizados(dictConfig):
+    lstDictConfigKeys = list(dictConfig.keys())
+    index = 0
+    
+    #Este bucle tiene como objetivo principal evaluar si hay valores personalizados o no dentro
+    #del archivo "config.json" para que así, si el usuario realiza modificaciones en configuración
+    #esta no sea sobreescrita
+    for i in range(len(lstDictConfigKeys)):
+        #Buscará dentro de "lstConfigDefault" el índice correcto para evaluar la condición principal
+        for j in range(len(lstConfigDefault)):
+            if dictConfig[lstDictConfigKeys[i]] == lstConfigDefault[j]:
+                index = j  #Toma el índice necesario de "lstConfigDefault"
+                break
+        
+        if dictConfig[lstDictConfigKeys[i]] != lstConfigDefault[index]:
+            lstKeysPersonalizados.append(lstDictConfigKeys[i])
+    
+    print("LISTA DE CLAVES PERSONALIZADAS:", lstKeysPersonalizados) #eliminarLuego
+    return lstKeysPersonalizados
             
 
 # DEFINIENDO LAS FUNCIONES DE VALIDACIÓN
@@ -465,5 +489,4 @@ while isVerdadero:
 
 
 #CORREGIR:
-#   1. Error en el orden de la lista de claves personalizadas (Qué los índices queden en orden numérico).
-#   2. Corregir error que no sobreescribe información correctamente al ingresar en el sub-menú "5. Configuración".
+#   1. Verificar la actualización del diccionario en la función de "accederConfig()". El problema muy posiblemente se encuentre ahí.
