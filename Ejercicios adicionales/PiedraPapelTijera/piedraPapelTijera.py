@@ -32,6 +32,7 @@ def filtrarTexto(texto):
 
 
 def accederConfig(rutaFileLocal, rutaFileGlobal, dictInfoReturn, lstConfigDefault, checked=False):
+    print("DICTINFORETURN: ", dictInfoReturn) #eliminarLuego
     countError = 0
     continuarConfig = True
     
@@ -79,8 +80,19 @@ def accederConfig(rutaFileLocal, rutaFileGlobal, dictInfoReturn, lstConfigDefaul
                     continuarConfig = False
                     
                     #Verificar que el archivo de configuración se haya guardado correctamente
-                    checkedAbrirArchivo = validarAbrirInfoArchivo(rutaFileConfig, dictInfoReturn)
-                    if checkedAbrirArchivo != False:
+                    try:
+                        dictInfoConfig = validarAbrirInfoArchivo(rutaFileConfig, dictInfoReturn, True)
+                        
+                        #Comprobar la información nueva añadida y reemplazarla en la información recibida del archivo "config.json"
+                        # dictInfoConfigKeys = list(dictInfoConfig.keys())
+                        # try:
+                        for key in list(dictInfoReturn.keys()):
+                            for j in range(len(dictInfoConfig)):
+                                if dictInfoReturn[key] != dictInfoConfig[str(j+1)] and key == str(j+1):
+                                    pass
+                                else:
+                                    dictInfoReturn[str(j+1)] = dictInfoConfig[str(j+1)]                
+                    
                         if validarEscribirInfoArchivo(rutaFileConfig, dictInfoReturn) != False:
                             return dictInfoReturn
                         else:
@@ -90,8 +102,9 @@ def accederConfig(rutaFileLocal, rutaFileGlobal, dictInfoReturn, lstConfigDefaul
                                 return None
                             continue
                         
-                    else:
-                        print("Error: La configuración aplicada no fue guardada. Inténtelo de nuevo.\n")
+                    except TypeError as e:
+                        print("Error: La configuración aplicada no fue guardada. Inténtelo de nuevo")
+                        print(f"Error: {e}.\n")
                         countError += 1
                         if countError == 3:
                             return None
@@ -261,7 +274,7 @@ def validarOpcionUsuario(msj, min, max):
             print("Ha ocurrido un error inesperado. Inténtelo de nuevo o comuníquese con un administrador.\n")
 
 
-def validarAbrirInfoArchivo(rutaFileJson, dictJuego):
+def validarAbrirInfoArchivo(rutaFileJson, dictJuego, checked=False):
     #Validación n°1 - Intentar abrir el archivo en modo lectura / escritura
     try:
         intentarAbrirArchivo = open(rutaFileJson, "r")
@@ -281,13 +294,23 @@ def validarAbrirInfoArchivo(rutaFileJson, dictJuego):
     try:
         abrirArchivo = open(rutaFileJson, "r")
         
-        linea = abrirArchivo.readline()
-        if linea.strip() != "":
-            abrirArchivo.seek(0)
-            dictJuego.update(json.load(abrirArchivo))
+        #Si checked es falso entonces ejecutar el siguiente código normal
+        if not checked:
+            linea = abrirArchivo.readline()
+            if linea.strip() != "":
+                abrirArchivo.seek(0)
+                dictJuego.update(json.load(abrirArchivo)) #problema1
+            else:
+                dictJuego = {}
         
-        else:
-            dictJuego = {}
+        #De lo contrario, si checked es verdadero entonces ejecutar el fragmento de código anterior con una variante en "json.load()"
+        elif checked:
+            linea = abrirArchivo.readline()
+            if linea.strip() != "":
+                abrirArchivo.seek(0)
+                dictJuego = json.load(abrirArchivo) #problema1
+            else:
+                dictJuego = {}
     
     except Exception as e:
         print("Ha ocurrido un problema al intentar recuperar la información del sistema.")
@@ -441,6 +464,11 @@ while isVerdadero:
                 
         #Escribir la configuración del juego en el archivo JSON
         dictConfig = accederConfig(rutaFileLocal, rutaFileGlobal, {}, lstConfigDefault)
+        # if rutaFileLocal == "" and rutaFileGlobal == "":
+        #     rutaFileLocal = dictInfoConfig["1"]
+        #     rutaFileGlobal = dictInfoConfig["2"]
+        # #Lo anterior es en caso de que aún no haya nada escrito en las rutas.
+        
         print("RESULTADO DICTCONFIG:", dictConfig) #eliminarLuego
         try:
             # dictConfig = False  #eliminarLuego

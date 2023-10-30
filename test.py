@@ -1,12 +1,5 @@
-dictTest = {
-    "1": "Test1",
-    "2": "Test2",
-    "3": "Test3"
-}
+lstTest = [3, 1, 4]
 
-dictParaActualizar = {
-    "2": "XD"
-}
 
-dictTest.update(dictParaActualizar)
-print(dictTest)
+for i in lstTest:
+    print(i)
